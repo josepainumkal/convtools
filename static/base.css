@@ -1,0 +1,126 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  border-width:0;
+  font-family: Allerta, sans-serif;
+}
+#nonheaderBody {
+  border: solid #444; 
+  border-width: 10px 100px;
+}
+#headerBar {
+  height: 40px;
+  background: #74C2E1;
+}
+svg {
+  display: block;
+  margin: auto;
+}
+.box {
+  display: block;
+  margin: auto;
+  
+    -webkit-filter: drop-shadow( 0 -1px 5px #111111 );
+            filter: drop-shadow( 0 -1px 5px #111 ); /* Same syntax as box-shadow */
+}
+
+text {
+  font-family: Allerta, sans-serif;  
+}
+
+
+#search-header {
+  background-color: #74C2E1;
+  overflow:hidden;
+  height: 300px;
+}
+h1.search {
+    margin: 0 10px;
+}
+
+
+form {
+    margin: 10px auto;
+    width: 450px;
+}
+h1.search {
+    margin: 20px 10px;
+    width: 450px;
+}
+
+#content {
+  border: 1px solid;
+}
+
+.map_canvas {
+  border: 1px solid;
+  width: 250px;
+  height: 250px;
+}
+
+#appTitle {
+    border:0;
+    text-align: center;
+}
+#appHeader {
+    background:white;
+    height: 100px;
+} 
+#appHeader ul {
+  list-style: none;
+  padding: 0;
+  margin: 0px 25px;
+  border-width: 0 0 0 0;
+}
+
+#appHeader li {
+  display: inline;
+  border: solid;
+  border-width: 1px 1px 0px 1px;
+  background-color: white;
+  margin: 1em 1em 0 0;
+  padding: 0.4em 0 0 0;
+  line-height: 26pt;
+  font-size: 20pt;
+}
+
+#appHeader li.active {
+  padding-bottom: 1px;
+  background-color: #444;
+  border-width: 0px 0px 0px 0px;
+}
+
+#appHeader li a {
+  padding: 0 1.3em;
+  /*font: 1.2em arial, helvetica, sans-serif;*/
+  /*font-family: arial, helvetica, sans-serif;*/
+  font-size: 1.2em;
+  text-decoration: none;
+  color: black;
+}
+
+#appHeader li a:visited {
+  color: black; 
+}
+
+.active a{
+  color: white;
+}
+#appHeader .active a:visited{
+  color: white;
+}
+
+p#login-info {
+  margin: 15px;   
+  text-align: right;
+}
+
+#login-info a:visited, #login-info a:link {
+  color: #3a3;
+  text-decoration: none;
+}
+
+form {
+    margin: 0 auto;
+    width: 250px;
+}

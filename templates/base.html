@@ -11,18 +11,32 @@
 
   </head>
   <body>
+  <p id=login-info>
+  {% if user_name %} Welcome, {{ user_name }} <br> 
+  <a href="/account?user_name={{ user_name }}">My Account</a> <br>
+    <a href="#">Logout</a> 
+  {% else %}
+    <a href="/create_account">Create an Account</a> <br> or <a href="/login">Login</a>
+  {% endif %}
+  </p>
+
   {% set navigation_bar = [('/', 'index', 'Home'),
                            ('/search', 'search', 'Search'),
                            ('/about', 'about', 'About')] %}
   {% set active_page = active_page|default('index') %}
+
   <div id="appHeader">
   <h1 id=appTitle>Virtual Watershed Platform</h1>
     <ul>
+
       {% for href, id, caption in navigation_bar %}
+
       <li{% if id == active_page %} class="active"{% endif %}>
         <a href="{{ href|e }}" {% if id == active_page %}class="active"{% endif %}>{{ caption|e }}</a>
       </li>
+
       {% endfor %}
+
     </ul>
   </div>
   </div>
