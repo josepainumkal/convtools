@@ -1,0 +1,9 @@
+{% block content %}
+
+<form method="POST" id=login>
+  {{ form.user_name.label }} {{ form.user_name() }} <br><br>
+  {{ form.password.label }} {{ form.password() }} <br><br>
+  {{ form.submit() }}
+</form>
+
+{% endblock %}
