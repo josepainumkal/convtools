@@ -1,0 +1,21 @@
+{% block content %}
+
+<form method="POST" id=create-user>
+  {{ form.name.label }} {{ form.name() }} <br><br>
+
+  {{ form.affiliation.label }} {{ form.affiliation() }} <br><br>
+
+  {{ form.state.label }} {{ form.state() }} <br><br>
+
+  {{ form.city.label }} {{ form.city() }} <br><br>
+
+  {{ form.email.label }} {{ form.email() }} <br><br>
+
+  {{ form.password.label }} {{ form.password() }} <br><br>
+
+  {{ form.confirm.label }} {{ form.confirm() }} <br><br>
+  
+  {{ form.submit() }}
+</form>
+
+{% endblock %}
