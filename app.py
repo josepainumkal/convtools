@@ -11,7 +11,7 @@ from flask.ext.script import Manager
 from flask.ext.sqlalchemy import SQLAlchemy
 
 from wtforms import StringField, SubmitField, PasswordField
-from wtforms.validators import Required
+from wtforms.validators import Required, Length, EqualTo
 from wcwave_adaptors.watershed import default_vw_client
 
 from collections import defaultdict
@@ -94,6 +94,15 @@ def search():
                            user_name=session['user_name'])
 
 
+@app.route('/create', methods=['GET', 'POST'])
+def create_user():
+    "Create a new user"
+    form = CreateUserForm()
+
+    print form.validate_on_submit()
+
+    return render_template('create.html', form=form)
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
@@ -154,6 +163,26 @@ class LoginForm(Form):
     password = PasswordField('Enter your Password', validators=[Required()])
     submit = SubmitField('Go!')
 
+class CreateUserForm(Form):
+    """
+    Create a new user at /create
+    """
+    name = StringField('Full Name', validators=[Required()])
+    affiliation = StringField('Academic institution', validators=[Required()])
+    state = StringField('State', validators=[Required()])
+    city = StringField('City', validators=[Required()])
+    email = StringField('e-mail', validators=[Required()])
+
+    password = \
+        PasswordField('Password',
+                      validators=[Length(min=6),
+                                  Required(),
+                                  EqualTo('confirm',
+                                          message='Passwords must match')])
+
+    confirm = PasswordField('Repeat Password')
+
+    submit = SubmitField('Finish')
 
 class SearchForm(Form):
     """
@@ -179,8 +208,8 @@ class User(db.Model):
     affiliation = db.Column(db.String(64), index=True)
     state = db.Column(db.String(2), index=True)
     city = db.Column(db.String(20))
-    email = db.Column(db.String(20))
-    user_name = db.Column(db.String(20), unique=True)
+    email = db.Column(db.String(20), unique=True)
+    # user_name = db.Column(db.String(20), unique=True)
     # passwd = db.Column(db.String(20), primary_key=True)
 
     def __repr__(self):
