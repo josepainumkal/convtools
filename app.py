@@ -14,6 +14,9 @@ from wtforms import StringField, SubmitField, PasswordField
 from wtforms.validators import Required, Length, EqualTo
 from wcwave_adaptors.watershed import default_vw_client
 
+from flask_wtf.csrf import CsrfProtect
+
+
 from collections import defaultdict
 import os
 
@@ -22,11 +25,13 @@ BASEDIR = os.path.abspath(os.path.dirname(__file__))
 app = Flask(__name__)
 
 key = os.getenv('VWPLATFORM_KEY')
-app.secret_key = os.getenv('VWPLATFORM_KEY')
+app.secret_key = 'hard to guess'
 
 app.config['SQLALCHEMY_DATABASE_URI'] =\
     'sqlite:///' + os.path.join(BASEDIR, 'data.sqlite')
 app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
+
+CsrfProtect(app)
 
 db = SQLAlchemy(app)
 
@@ -103,6 +108,8 @@ def create_user():
     form = CreateUserForm()
 
     print form.validate_on_submit()
+    if form.validate_on_submit():
+        return render_template('print_created.html', form=form)
 
     return render_template('create.html', form=form)
 
@@ -221,4 +228,4 @@ class User(db.Model):
 
 if __name__ == "__main__":
     # manager.run()
-    app.run(debug=True)
+    app.run(debug=True, port=3000)

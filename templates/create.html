@@ -16,6 +16,7 @@ Already have an account? <a href="/login">Log in</a>
 
 <div class="form-container">
 <form method="POST" id=create-user>
+  {{ form.csrf_token }}
 
   {{ form.name.label }} {{ form.name() }} 
 
@@ -34,6 +35,10 @@ Already have an account? <a href="/login">Log in</a>
   {{ form.submit() }}
 </form>
 </div>
+
+{% if form.errors %}
+    {{ form.errors }}
+{% endif %}
 
 <br>
 

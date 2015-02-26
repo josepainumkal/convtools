@@ -2,6 +2,7 @@
 {% block content %}
 
 <form method="POST" id=login>
+  {{ form.csrf_token }}
   {{ form.email.label }} {{ form.email() }} <br><br>
   {{ form.password.label }} {{ form.password() }} <br><br>
   {{ form.submit() }}
