@@ -40,14 +40,14 @@ vw_client = default_vw_client()
 @app.route('/')
 def index():
     "Splash page"
-    if 'user_name' not in session:
-        session['user_name'] = None
+    if 'email' not in session:
+        session['email'] = None
 
     # search URL is like https://129.24.196.28
     watershed_ip = vw_client.searchUrl.split('/')[2]
 
     return render_template("index.html", ip=watershed_ip,
-                           user_name=session['user_name'])
+                           user_name=session['email'])
 
 
 
@@ -55,7 +55,7 @@ def index():
 @app.route('/about')
 def about():
     "About page"
-    return render_template("about.html", user_name=session['user_name'])
+    return render_template("about.html", user_name=session['email'])
 
 
 @app.route('/search', methods=['GET', 'POST'])
@@ -89,9 +89,12 @@ def search():
     # this enforces unique model_run_uuids TODO integrate new search/modelruns
     panels = {p['model_run_uuid']: p for p in panels}.values()
 
+    # if 'email' has not been initiated, need to do so or we'll have an error
+    if 'email' not in session:
+        session['email'] = None
     # pass the list of parsed records to the template to generate results page
     return render_template('search.html', form=form, panels=panels,
-                           user_name=session['user_name'])
+                           user_name=session['email'])
 
 
 @app.route('/create', methods=['GET', 'POST'])
@@ -109,8 +112,8 @@ def login():
 
     print form.validate_on_submit()
 
-    if form.user_name.data and form.password.data:
-        session['user_name'] = form.user_name.data
+    if form.email.data and form.password.data:
+        session['email'] = form.email.data
         return redirect(url_for('index'))
 
     return render_template('login.html', form=form)
@@ -159,8 +162,8 @@ class LoginForm(Form):
     """
     Login form for /login route
     """
-    user_name = StringField('Enter your User Name', validators=[Required()])
-    password = PasswordField('Enter your Password', validators=[Required()])
+    email = StringField('Enter your email address', validators=[Required()])
+    password = PasswordField('Enter your password', validators=[Required()])
     submit = SubmitField('Go!')
 
 class CreateUserForm(Form):

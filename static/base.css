@@ -4,6 +4,65 @@ html, body {
   border-width:0;
   font-family: Allerta, sans-serif;
 }
+
+p {
+  margin: 20px 60px;
+}
+
+.form-container {
+    
+}
+
+form {
+    text-align: left;
+    margin: 45px auto;
+    width: 400px;
+}
+
+form label {
+    display: table-cell;
+    text-align: right;
+}
+/*form input#name,*/
+/*form input#affiliation,*/
+/*form input#state,*/
+/*form input#city,*/
+/*form input#email,*/
+/*form input#password,*/
+/*form input#confirm{*/
+form input {
+  width: 400px;
+  background-color: #fafafa;
+  -webkit-border-radius: 3px;
+     -moz-border-radius: 3px;
+          border-radius: 3px;
+  border: 1px solid #cccccc;
+  padding: 5px;
+  font-size: 1.1em;
+  margin: 10px;
+}
+
+form input#submit {
+  width: 412px;
+  display: block;
+  -webkit-border-radius: 3px; 
+     -moz-border-radius: 3px;
+          border-radius: 3px;
+  margin: 25px 10px;
+  border:1px solid #d8d8d8;
+  font-weight:bold; 
+  text-align: center; 
+  color: #000000; 
+  background-color: #fafaf1;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f4f4f4), color-stop(100%, #e5e5e5));
+  background-image: -webkit-linear-gradient(top, #f4f4f4, #e5e5e5);
+  background-image: -moz-linear-gradient(top, #f4f4f4, #e5e5e5);
+  background-image: -ms-linear-gradient(top, #f4f4f4, #e5e5e5);
+  background-image: -o-linear-gradient(top, #f4f4f4, #e5e5e5);
+  background-image: linear-gradient(top, #f4f4f4, #e5e5e5);filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#f4f4f4, endColorstr=#e5e5e5);
+  font-size: 1.2em;
+}
+
 #nonheaderBody {
   border: solid #444; 
   border-width: 10px 100px;
@@ -39,10 +98,6 @@ h1.search {
 }
 
 
-form {
-    margin: 10px auto;
-    width: 450px;
-}
 h1.search {
     margin: 20px 10px;
     width: 450px;
@@ -118,9 +173,4 @@ p#login-info {
 #login-info a:visited, #login-info a:link {
   color: #3a3;
   text-decoration: none;
-}
-
-form {
-    margin: 0 auto;
-    width: 250px;
 }
