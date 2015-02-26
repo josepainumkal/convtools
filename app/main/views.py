@@ -1,48 +1,16 @@
-#!/usr/local/bin/python
-
-"""
-file: adaptors/human/app.py
-
-So far only search is exposed. Done via static/search.js.
-"""
-from flask import Flask, request, redirect, render_template, session, url_for
-from flask.ext.wtf import Form
-from flask.ext.script import Manager
-from flask.ext.sqlalchemy import SQLAlchemy
-
-from wtforms import StringField, SubmitField, PasswordField
-from wtforms.validators import Required, Length, EqualTo
-from wcwave_adaptors.watershed import default_vw_client
-
-from flask_wtf.csrf import CsrfProtect
-
-
 from collections import defaultdict
-import os
 
-BASEDIR = os.path.abspath(os.path.dirname(__file__))
+from flask import render_template, session, redirect, url_for
 
-app = Flask(__name__)
+from . import main
+from .forms import SearchForm, CreateUserForm, LoginForm
+from .. import db
+from ..models import User
 
-key = os.getenv('VWPLATFORM_KEY')
-app.secret_key = 'hard to guess'
-
-app.config['SQLALCHEMY_DATABASE_URI'] =\
-    'sqlite:///' + os.path.join(BASEDIR, 'data.sqlite')
-app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
-
-CsrfProtect(app)
-
-db = SQLAlchemy(app)
-
-manager = Manager(app)
-
-vw_client = default_vw_client()
+from .. import vw_client
 
 
-
-#### INDEX ####
-@app.route('/')
+@main.route('/')
 def index():
     "Splash page"
     if 'email' not in session:
@@ -55,15 +23,13 @@ def index():
                            user_name=session['email'])
 
 
-
-#### ABOUT ####
-@app.route('/about')
+@main.route('/about')
 def about():
     "About page"
     return render_template("about.html", user_name=session['email'])
 
 
-@app.route('/search', methods=['GET', 'POST'])
+@main.route('/search', methods=['GET', 'POST'])
 def search():
     """
     Create model run panels, rectangles on the search/home page that display
@@ -102,7 +68,7 @@ def search():
                            user_name=session['email'])
 
 
-@app.route('/create', methods=['GET', 'POST'])
+@main.route('/create', methods=['GET', 'POST'])
 def create_user():
     "Create a new user"
     form = CreateUserForm()
@@ -113,7 +79,8 @@ def create_user():
 
     return render_template('create.html', form=form)
 
-@app.route('/login', methods=['GET', 'POST'])
+
+@main.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
 
@@ -121,7 +88,7 @@ def login():
 
     if form.email.data and form.password.data:
         session['email'] = form.email.data
-        return redirect(url_for('index'))
+        return redirect(url_for('.index'))
 
     return render_template('login.html', form=form)
 
@@ -161,71 +128,3 @@ def _make_panel(search_record):
 
     return panel
 
-
-###############
-#### Forms ####
-###############
-class LoginForm(Form):
-    """
-    Login form for /login route
-    """
-    email = StringField('Enter your email address', validators=[Required()])
-    password = PasswordField('Enter your password', validators=[Required()])
-    submit = SubmitField('Go!')
-
-class CreateUserForm(Form):
-    """
-    Create a new user at /create
-    """
-    name = StringField('Full Name', validators=[Required()])
-    affiliation = StringField('Academic institution', validators=[Required()])
-    state = StringField('State', validators=[Required()])
-    city = StringField('City', validators=[Required()])
-    email = StringField('e-mail', validators=[Required()])
-
-    password = \
-        PasswordField('Password',
-                      validators=[Length(min=6),
-                                  Required(),
-                                  EqualTo('confirm',
-                                          message='Passwords must match')])
-
-    confirm = PasswordField('Repeat Password')
-
-    submit = SubmitField('Finish')
-
-class SearchForm(Form):
-    """
-    Flask-WTF form for the search page
-    """
-    model_run_name = StringField('Model Run Name')
-    # start_datetime = DateTimeField('Start Date/time')
-    # end_datetime = DateTimeField('End Date/time')
-    submit = SubmitField('Submit')
-
-
-###########################
-#### Model Definitions ####
-###########################
-class User(db.Model):
-    """
-    Our User model. Users have biographical information, a user id, user name,
-    and password.
-    """
-    __tablename__ = 'users'
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(64), index=True)
-    affiliation = db.Column(db.String(64), index=True)
-    state = db.Column(db.String(2), index=True)
-    city = db.Column(db.String(20))
-    email = db.Column(db.String(20), unique=True)
-    # user_name = db.Column(db.String(20), unique=True)
-    # passwd = db.Column(db.String(20), primary_key=True)
-
-    def __repr__(self):
-        return '<User %r>' % self.user_name
-
-
-if __name__ == "__main__":
-    # manager.run()
-    app.run(debug=True, port=3000)
