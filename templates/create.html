@@ -1,21 +1,40 @@
+{% extends "base.html" %}
 {% block content %}
 
+<p>
+  By creating an account, we can enable your shared data to better
+  reach its audience, increasing the likelihood that you get cited for
+  your data! This step is required for obtaining a DOI for your data,
+  as well as making your data available for <a href="/search">search</a> 
+  when you link or upload your data to the virtual watershed platform.
+  ut
+</p>
+
+<p>
+Already have an account? <a href="/login">Log in</a>
+</p>
+
+<div class="form-container">
 <form method="POST" id=create-user>
-  {{ form.name.label }} {{ form.name() }} <br><br>
 
-  {{ form.affiliation.label }} {{ form.affiliation() }} <br><br>
+  {{ form.name.label }} {{ form.name() }} 
 
-  {{ form.state.label }} {{ form.state() }} <br><br>
+  {{ form.affiliation.label }} {{ form.affiliation() }} 
 
-  {{ form.city.label }} {{ form.city() }} <br><br>
+  {{ form.state.label }} {{ form.state() }} 
 
-  {{ form.email.label }} {{ form.email() }} <br><br>
+  {{ form.city.label }} {{ form.city() }} 
 
-  {{ form.password.label }} {{ form.password() }} <br><br>
+  {{ form.email.label }} {{ form.email() }} 
 
-  {{ form.confirm.label }} {{ form.confirm() }} <br><br>
+  {{ form.password.label }} {{ form.password() }} 
+
+  {{ form.confirm.label }} {{ form.confirm() }} 
   
   {{ form.submit() }}
 </form>
+</div>
+
+<br>
 
 {% endblock %}
