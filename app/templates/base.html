@@ -2,7 +2,7 @@
   <head>
     <link href='//fonts.googleapis.com/css?family=Allerta' 
           rel='stylesheet' type='text/css'>
-    <link type="text/css" href='static/base.css' rel='stylesheet'></link>
+    <link type="text/css" href='/static/base.css' rel='stylesheet'></link>
 
 
     <title>Virtual Watershed Platform</title>
@@ -12,11 +12,11 @@
   </head>
   <body>
   <p id=login-info>
-  {% if user_name %} Welcome, {{ user_name }} <br> 
-  <a href="/account?user_name={{ user_name }}">My Account</a> <br>
-    <a href="#">Logout</a> 
+      {% if current_user and current_user.is_authenticated() %} Welcome, {{ current_user.name }} <br> 
+      <a href="#={{ current_user.name }}">My Account</a> <br>
+        <a href="/auth/logout">Logout</a> 
   {% else %}
-    <a href="/create">Create an Account</a> <br> or <a href="/login">Login</a>
+    <a href="/auth/register">Create an Account</a> <br> or <a href="/auth/login">Login</a>
   {% endif %}
   </p>
 
