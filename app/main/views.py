@@ -3,7 +3,7 @@ from collections import defaultdict
 from flask import render_template, session, redirect, url_for
 
 from . import main
-from .forms import SearchForm, CreateUserForm, LoginForm
+from .forms import SearchForm
 from .. import db
 from ..models import User
 
@@ -66,31 +66,6 @@ def search():
     # pass the list of parsed records to the template to generate results page
     return render_template('search.html', form=form, panels=panels,
                            user_name=session['email'])
-
-
-@main.route('/create', methods=['GET', 'POST'])
-def create_user():
-    "Create a new user"
-    form = CreateUserForm()
-
-    print form.validate_on_submit()
-    if form.validate_on_submit():
-        return render_template('print_created.html', form=form)
-
-    return render_template('create.html', form=form)
-
-
-@main.route('/login', methods=['GET', 'POST'])
-def login():
-    form = LoginForm()
-
-    print form.validate_on_submit()
-
-    if form.email.data and form.password.data:
-        session['email'] = form.email.data
-        return redirect(url_for('.index'))
-
-    return render_template('login.html', form=form)
 
 
 def _make_panel(search_record):
