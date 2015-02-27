@@ -2,3 +2,4 @@
 *.sqlite
 *.swp
 *.conf
+migrations/*
