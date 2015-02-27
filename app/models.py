@@ -17,7 +17,7 @@ class User(db.Model, UserMixin):
     and password.
     """
     __tablename__ = 'users'
-    user_id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), index=True)
     affiliation = db.Column(db.String(64), index=True)
     state = db.Column(db.String(2), index=True)
@@ -35,9 +35,6 @@ class User(db.Model, UserMixin):
 
     def verify_password(self, password):
         return check_password_hash(self.password_hash, password)
-
-    def get_id(self):
-        return self.user_id
 
     def __repr__(self):
         return '<User %r>' % self.name
