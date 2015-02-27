@@ -1,8 +1,8 @@
 ### Configuration file for the virtual watershed data adaptors ###
 [Common]
-watershedIP = 1.800.you.rock
-user = your_uname
-passwd = your_supersecret_password
+watershedIP = 129.24.196.43
+user = idaho
+passwd = WaterShed!
 parent_model_run_uuid = 373ae181-a0b2-4998-ba32-e27da190f6dd
 westBnd = -116.142905556
 eastBnd = -116.137583333
@@ -13,7 +13,7 @@ model_set_taxonomy = grid
 water_year = 2010
 
 [FGDC Metadata]
-template_path = /EDIT-THIS-PATH-TO/adaptors/resources/fgdc_template.xml
+template_path = /Users/rebirth/wcwave_adaptors/resources/fgdc_template.xml
 procdate = 11112014
 begdate = 10012010
 enddate = 09302011
@@ -32,7 +32,7 @@ longres = 2.5
 mapUnits = meters
 
 [Watershed Metadata]
-template_path = /EDIT-THIS-PATH-TO/adaptors/resources/watershed_template.json
+template_path = /Users/rebirth/wcwave_adaptors/resources/watershed_template.json
 orig_epsg = 4326
 epsg = 26911
 location = Dry Creek
