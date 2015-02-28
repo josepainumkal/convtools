@@ -1,0 +1,21 @@
+Dear {{ user.name }},
+
+First, thank you for registering for the Virtual Watershed Platform. Even by
+taking just this first step, you are contributing to the free flow of
+scientific information. 
+
+In order to help the WC-WAVE CI-Data team build a more useful product for you,
+tell us what you think and tell us or remind us which features you
+would most like to see. Would you like to be able to modify your data
+and run a model or models on that data? Would you like to enable the
+output of one type of data be input to another? Which models?
+
+Please email your feedback to me at maturner@uidaho.edu by simply
+replying to this email.
+
+Second, please confirm your account in order to log in by navigating
+to or clicking {{ url_for('auth.confirm', token=token, _external=True) }}
+
+Best regards and thanks again,
+
+Matt
