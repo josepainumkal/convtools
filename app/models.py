@@ -66,3 +66,27 @@ class User(db.Model, UserMixin):
 
     def __repr__(self):
         return '<User %r>' % self.name
+
+
+class Resource(db.Model):
+    """
+    Model to represent a user-contributed resource. Now we'll need to
+    set up relationship between the id in this table and the User
+    model id, since this is how we can match users to their
+    contributions.
+    """
+    # TODO figure out how to match this to the id from User
+    resource_id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(200), index=True, unique=True)
+    uuid = db.Column(db.String(36), index=True, unique=True)
+    description = db.Column(db.Text())
+    keywords = db.Column(db.Text())
+    url = db.Column(db.Text())
+
+
+    def __repr__(self):
+        print self.uuid
+        return "<Resource %s:\n\tuser_id: %s,\n\ttitle: %s,\n\tuuid: %s,\n\tdescription: %s,\n\tkeywords: %s,\n\turl: %s>" % (self.resource_id, self.user_id,
+                self.title, self.uuid, self.description,
+                self.keywords, self.url)

@@ -3,8 +3,6 @@ from wtforms.validators import Required, url
 from flask_wtf import Form
 from flask_wtf.html5 import URLField
 
-from ..models import User
-
 
 class ResourceForm(Form):
     """
@@ -13,8 +11,8 @@ class ResourceForm(Form):
     Scientist name is also required, but handled using current_user
     since share blueprint requires login.
     """
-    resource_title = StringField('Resource Title. This is enforced to '
-                                 'be unique', validators=[Required()])
+    title = StringField('Unique resource title (ex. Dry Creek iSNOBAL '
+            'Data)', validators=[Required()])
 
     description = StringField('Describe your new data resource',
                               validators=[Required()])
@@ -23,7 +21,7 @@ class ResourceForm(Form):
                            validators=[Required()])
 
     url = URLField('Resource URL. Leave blank if you will upload to the '
-                   'virtual watershed',
+                   'virtual watershed.',
                    validators=[url()])
 
     submit = SubmitField('Share your resource!')

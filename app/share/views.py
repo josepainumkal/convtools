@@ -2,9 +2,12 @@ from flask import render_template, flash, redirect, url_for, request
 from flask_login import login_required, current_user
 from . import share
 from .forms import ResourceForm
-from .. import db
-from ..models import User
-from ..email import send_email
+from ..models import Resource
+
+from wcwave_adaptors.watershed import default_vw_client
+
+
+vw_client = default_vw_client()
 
 
 @share.route('/')
@@ -13,7 +16,7 @@ def index():
     return render_template('share/index.html')
 
 
-@share.route('/resources')
+@share.route('/resources', methods=['GET', 'POST'])
 @login_required
 def resources():
     """"
@@ -25,11 +28,31 @@ def resources():
     # Display form for sharing a data resource
     form = ResourceForm()
 
+    print form.validate_on_submit()
     if form.validate_on_submit():
-        # push data to database
+        # initialize: post to virtual watershed
+        result_of_vwpost = 'x83j4j44-sddf-sdjlkjflka-dssdaf'
+        uuid = result_of_vwpost
 
         # get UUID and add full record to the 'resources' table in DB along with
         # user ID
+        resource = Resource(user_id=current_user.id,
+                            title=form.title.data,
+                            uuid=uuid,
+                            description=form.description.data,
+                            keywords=form.keywords.data,
+                            url=form.url.data)
+
+        resource.resource_id = 1
+
+        print resource.user_id
+        print form.title.data
+        print uuid
+        print form.description.data
+        print form.keywords.data
+        print form.url.data
+
+        print resource
 
         pass
 
@@ -39,7 +62,7 @@ def resources():
     return render_template('share/resources.html', form=form)
 
 
-@share.route('/files')
+@share.route('/files', methods=['GET', 'POST'])
 @login_required
 def files():
     "Interface for attaching/uploading individual files for a resource"

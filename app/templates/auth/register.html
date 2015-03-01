@@ -15,7 +15,7 @@ Already have an account? <a href={{ url_for('auth.login') }}>Log in</a>
 </p>
 
 <div class="form-container">
-<form method="POST" id=create-user>
+<form method="POST" class=fancy>
   {{ form.csrf_token }}
 
   {{ form.name.label }} {{ form.name() }} 

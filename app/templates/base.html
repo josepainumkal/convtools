@@ -35,9 +35,15 @@
 
       {% for href, id, caption in navigation_bar %}
 
-      <li{% if id == request.endpoint %} class="active"{% endif %}>
-        <a href="{{ href|e }}" {% if id == request.endpoint %}class="active"{% endif %}>{{ caption|e }}</a>
-      </li>
+        <li{% if id == request.endpoint or 
+                 request.endpoint[:5] == href[1:6] %} class="active" 
+           {% endif %}>
+
+          <a href="{{ href|e }}" 
+            {% if id == request.endpoint %} class="active" 
+            {% endif %}>{{ caption|e }}
+          </a>
+        </li>
 
       {% endfor %}
 
