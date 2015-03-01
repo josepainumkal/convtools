@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block style %}
+p {
+   margin: 10 300px; 
+}
+{% endblock %}
+
+{% block content %}
+<h1>Share your watershed data!</h1>
+<p id=share-index>
+Welcome to the watershed data sharing portal. </p><p>By sharing your data,
+you are helping to increase mankind's awareness of its predicament in
+this anthropocene era.
+</p>
+<p>
+  There are two options to share your data:
+  <a href={{ url_for('share.resources')
+        }}>Resources</a> and <a href={{ url_for('share.files') }}>Files</a>
+</p>
+{% endblock %}

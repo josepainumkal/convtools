@@ -37,12 +37,10 @@ def login():
 
 
 @auth.route('/register', methods=['GET', 'POST'])
-def create_user():
+def register():
     "Create a new user"
 
     form = RegistrationForm()
-
-    print form.validate_on_submit()
 
     if form.validate_on_submit():
         user = User(name=form.name.data,

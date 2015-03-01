@@ -3,11 +3,14 @@
     <link href='//fonts.googleapis.com/css?family=Allerta' 
           rel='stylesheet' type='text/css'>
     <link type="text/css" href='/static/base.css' rel='stylesheet'></link>
+    <style>{% block style %}{% endblock %}</style>
 
 
     <title>Virtual Watershed Platform</title>
 
+    {% block scripts %}
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>    
+    {% endblock %}
 
   </head>
   <body>
@@ -20,19 +23,20 @@
   {% endif %}
   </p>
 
-  {% set navigation_bar = [('/', 'index', 'Home'),
-                           ('/search', 'search', 'Search'),
-                           ('/about', 'about', 'About')] %}
+  {% set navigation_bar = [('/', 'main.index', 'Home'),
+                           ('/search', 'main.search', 'Search'),
+                           ('/about', 'main.about', 'About'),
+                           ('/share', 'share.index', 'Share')] %}
   {% set active_page = active_page|default('index') %}
 
   <div id="appHeader">
-  <h1 id=appTitle>Virtual Watershed Platform</h1>
+    <h1 id=appTitle>Virtual Watershed Platform</h1>
     <ul>
 
       {% for href, id, caption in navigation_bar %}
 
-      <li{% if id == active_page %} class="active"{% endif %}>
-        <a href="{{ href|e }}" {% if id == active_page %}class="active"{% endif %}>{{ caption|e }}</a>
+      <li{% if id == request.endpoint %} class="active"{% endif %}>
+        <a href="{{ href|e }}" {% if id == request.endpoint %}class="active"{% endif %}>{{ caption|e }}</a>
       </li>
 
       {% endfor %}

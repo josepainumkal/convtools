@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+<form>
+  {{ form.csrf_token }}
+
+  {{ form.resource_title.label }} {{ form.resource_title() }}
+  {{ form.description.label }} {{ form.description() }}
+  {{ form.keywords.label }} {{ form.keywords() }}
+  {{ form.url.label }} {{ form.url() }}
+
+  {{ form.submit() }}
+</form>
+{% endblock %}

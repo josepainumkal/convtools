@@ -1,6 +1,15 @@
 {% extends "base.html" %}
 
+{% block style %}
+h1#login { margin: 20px 30px; }
+/* form#login input { 0 } */
+{% endblock %}
+
 {% block content %}
+
+<h1 id="login">
+  Please log in to continue
+</h1>
 
 <form method="POST" id=login>
   {{ form.csrf_token }}
