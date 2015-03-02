@@ -17,7 +17,7 @@ def index():
         session['email'] = None
 
     # search URL is like https://129.24.196.28
-    watershed_ip = vw_client.searchUrl.split('/')[2]
+    watershed_ip = vw_client.search_url.split('/')[2]
 
     return render_template("index.html", ip=watershed_ip,
                            user_name=session['email'])

@@ -1,21 +1,99 @@
 {% extends "base.html" %}
 
 {% block style %}
-p {
+{{ super() }}
+div.user-resources {
+  margin: 0 200px;    
+  background-color: rgba(0,0,0,0.8);
+}
+.user-resources a:link,
+.user-resources a:visited {
+  color: #AAA;    
+}
+ul.user-resources {
+   color: white; 
+}
+li.user-resources {
+}
+p.share-index {
    margin: 10 300px; 
 }
 {% endblock %}
 
+
 {% block content %}
+{{ super() }}
 <h1>Share your watershed data!</h1>
-<p id=share-index>
-Welcome to the watershed data sharing portal. </p><p>By sharing your data,
+<p class=share-index>
+Welcome to the watershed data sharing portal. 
+</p>
+<p>
+By sharing your data,
 you are helping to increase mankind's awareness of its predicament in
 this anthropocene era.
 </p>
-<p>
-  There are two options to share your data:
-  <a href={{ url_for('share.resources')
-        }}>Resources</a> and <a href={{ url_for('share.files') }}>Files</a>
+<p class=share-index>
+Below you can either create a new resource, or upload files to an
+existing resource. Leave the URL field blank in the new resource field
+if your data is either not available over the web, or you'd prefer to
+upload your data without reference to the web-available version.
 </p>
+
+<h1>
+  Create a new Resource
+</h1>
+<form method='POST'>
+  {{ form.csrf_token }}
+
+  {{ form.title.label }} {{ form.title() }}
+  {{ form.description.label }} {{ form.description() }}
+  {{ form.keywords.label }} {{ form.keywords() }}
+  {{ form.url.label }} {{ form.url() }}
+
+  {{ form.submit() }}
+</form>
+
+{% if current_user.resources %}
+<h1>
+  Your Currently Shared Resources
+</h1>
+<h2>
+  Click "Add files to this resource" to populate this resource
+</h2>
+{% else %}
+<h1>
+  You haven't shared any resources yet.
+</h1>
+{% endif %}
+
+{% for r in current_user.resources %}
+<div class=user-resources>
+  <ul class=user-resources>
+    <li>
+      Resource Title: {{ r.title }}
+    </li>
+    <li>
+      Description: {{ r.description }}
+    </li>
+    <li>
+      Keywords: {{ r.keywords }}
+    </li>
+    <li>
+      URL: <a href={{ r.url }}>{{ r.url }}</a>
+    </li>
+  </ul>
+  <p text-align: right>
+  {% if r.url[:3] == 'ftp' %}
+    <a href="#">
+      Harvest (download all data on FTP, zipped into single archive)
+    </a>
+  {% endif %}
+  </p>
+  <p>
+    <a href={{ url_for('share.files', model_run_uuid=r.uuid) }}>
+      Add files to this resource
+    </a>
+  </p>
+</div>
+{% endfor %}
 {% endblock %}

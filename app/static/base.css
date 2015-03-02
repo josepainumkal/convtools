@@ -58,9 +58,11 @@ form input#submit {
   border-width: 10px 100px;
 }
 #headerBar {
+  margin: 0;
   height: 40px;
   background: #74C2E1;
 }
+
 svg {
   display: block;
   margin: auto;
@@ -77,6 +79,18 @@ text {
   font-family: Allerta, sans-serif;  
 }
 
+h1 {
+  margin: 5px 15px;
+}
+h2 {
+  margin: 5px 35px;
+}
+h3 {
+  margin: 0 55px;
+}
+h4 {
+  margin: 0 45px;
+}
 
 #search-header {
   background-color: #74C2E1;

@@ -1,7 +1,8 @@
 from wtforms import StringField, SubmitField
-from wtforms.validators import Required, url
+from wtforms.validators import Required
 from flask_wtf import Form
 from flask_wtf.html5 import URLField
+from werkzeug.datastructures import MultiDict
 
 
 class ResourceForm(Form):
@@ -12,7 +13,7 @@ class ResourceForm(Form):
     since share blueprint requires login.
     """
     title = StringField('Unique resource title (ex. Dry Creek iSNOBAL '
-            'Data)', validators=[Required()])
+                        'Data)', validators=[Required()])
 
     description = StringField('Describe your new data resource',
                               validators=[Required()])
@@ -21,7 +22,10 @@ class ResourceForm(Form):
                            validators=[Required()])
 
     url = URLField('Resource URL. Leave blank if you will upload to the '
-                   'virtual watershed.',
-                   validators=[url()])
+                   'virtual watershed.')
 
     submit = SubmitField('Share your resource!')
+
+    def reset(self):
+        blank_data = MultiDict([('csrf', self.reset_csrf())])
+        self.process(blank_data)
