@@ -80,7 +80,7 @@ class Resource(db.Model):
     contributions.
     """
     # TODO figure out how to match this to the id from User
-    resource_id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     title = db.Column(db.String(200), index=True, unique=True)
     uuid = db.Column(db.String(36), index=True, unique=True)
@@ -90,6 +90,6 @@ class Resource(db.Model):
 
     def __repr__(self):
         print self.uuid
-        return "<Resource %s:\n\tuser_id: %s,\n\ttitle: %s,\n\tuuid: %s,\n\tdescription: %s,\n\tkeywords: %s,\n\turl: %s>" % (self.resource_id, self.user_id,
+        return "<Resource %s:\n\tuser_id: %s,\n\ttitle: %s,\n\tuuid: %s,\n\tdescription: %s,\n\tkeywords: %s,\n\turl: %s>" % (self.id, self.user_id,
                 self.title, self.uuid, self.description,
                 self.keywords, self.url)
