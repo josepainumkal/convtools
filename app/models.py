@@ -41,7 +41,6 @@ class User(db.Model, UserMixin):
         return check_password_hash(self.password_hash, password)
 
     # account confirmation
-
     confirmed = db.Column(db.Boolean, default=False)
 
     def generate_confirmation_token(self, expiration=3600):
@@ -64,6 +63,11 @@ class User(db.Model, UserMixin):
 
         return True
 
+    # single user/many resources relationship;
+    # use like Resource(..., user=current_user)
+    # then will have list of all of a user's contributions via u.resources
+    resources = db.relationship('Resource', backref='user')
+
     def __repr__(self):
         return '<User %r>' % self.name
 
@@ -77,13 +81,12 @@ class Resource(db.Model):
     """
     # TODO figure out how to match this to the id from User
     resource_id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     title = db.Column(db.String(200), index=True, unique=True)
     uuid = db.Column(db.String(36), index=True, unique=True)
     description = db.Column(db.Text())
     keywords = db.Column(db.Text())
     url = db.Column(db.Text())
-
 
     def __repr__(self):
         print self.uuid
