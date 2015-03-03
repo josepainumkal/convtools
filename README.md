@@ -20,10 +20,10 @@ git clone https://github.com/tri-state-epscor/wcwave_adaptors.git
 
 and add the `wcwave_adaptors` directory to your `PYTHONPATH`.
 
-Then to launch view the web app first launch it
+Then launch the web app
 
 ```bash
 $ python models.py runserver
 ```
 
-Then view it at `localhost:5000` in your web browser.
+and view it at `localhost:5000` in your web browser.
