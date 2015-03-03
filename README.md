@@ -20,7 +20,7 @@ $ git submodule update --init --recursive
 Then to launch view the web app first launch it
 
 ```bash
-$ python app.py
+$ python models.py runserver
 ```
 
 Then view it at `localhost:5000` in your web browser.
