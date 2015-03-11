@@ -54,11 +54,15 @@ def search():
 
     search_results = vw_client.search(**search_args)
 
-    # make a panel of each metadata record
-    panels = [_make_panel(rec) for rec in search_results.records]
+    records = search_results.records
+    if records:
+        # make a panel of each metadata record
+        panels = [_make_panel(rec) for rec in records if rec]
 
-    # this enforces unique model_run_uuids TODO integrate new search/modelruns
-    panels = {p['model_run_uuid']: p for p in panels}.values()
+        # this enforces unique model_run_uuids TODO integrate new search/modelruns
+        panels = {p['model_run_uuid']: p for p in panels}.values()
+    else:
+        panels = []
 
     # if 'email' has not been initiated, need to do so or we'll have an error
     if 'email' not in session:
