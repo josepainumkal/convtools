@@ -32,10 +32,11 @@
   <div id="appHeader">
     <h1 id=appTitle>Virtual Watershed Platform</h1>
     <ul>
-
       {% for href, id, caption in navigation_bar %}
 
         {% if request.endpoint %}
+
+
         <li{% if id == request.endpoint or 
                  request.endpoint[:5] == href[1:6] %} class="active" 
            {% endif %}>
@@ -46,9 +47,15 @@
           </a>
         </li>
         {% elif href == request.script_root  %}
-          <a href="{{ href|e }}" class="active">{{ caption|e }} </a>
+          <a href="{{ href|e }}" class="active">{{ caption|e }}</a>
         </li>
-        {% endif %}
+
+
+       {% else %}
+
+       <li> <a href="{{ href|e }}">{{ caption|e }}</a></li>
+  
+       {% endif %}
 
       {% endfor %}
 
