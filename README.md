@@ -16,16 +16,11 @@ locally.
 
 # Quickstart
 
-To use the VWP, you have to run it locally, for now. That means you need to 
-have [Flask](http://flask.pocoo.org/) installed as well as some other 
-dependencies, and you need the virtual watershed adaptors
-(VWA). Clone the `wcwave_adaptors` repository to a suitable location,
+To run the web app locally for development, first install the requirements 
 
+```bash
+pip install -r requirements.txt
 ```
-git clone https://github.com/tri-state-epscor/wcwave_adaptors.git
-```
-
-and add the `wcwave_adaptors` directory to your `PYTHONPATH`.
 
 Then launch the web app
 
