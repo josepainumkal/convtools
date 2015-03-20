@@ -25,7 +25,7 @@ pip install -r requirements.txt
 Then launch the web app
 
 ```bash
-$ python models.py runserver
+$ python manage.py runserver
 ```
 
 and view it at `localhost:5000` in your web browser.
