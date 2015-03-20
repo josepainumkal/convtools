@@ -4,3 +4,4 @@
 *.conf
 migrations/*
 venv/
+default.conf
