@@ -30,6 +30,71 @@ $ python manage.py runserver
 
 and view it at `localhost:5000` in your web browser.
 
+That's great, but if you try to create users or contribute resources, you will
+run into an error because no databases have been created. To do this, we use
+[flask-migrate](https://flask-migrate.readthedocs.org/en/latest/). 
+
+First, create a `migrate` directory which will read information about the
+databases (as represented in `app/models.py`)
+
+```bash
+python manage.py db init
+```
+
+Then, create a script in the `migrate/versions` directory that will handle
+creating the database and tables for this version of the
+'upgrade'/initialization
+
+```bash
+python manage.py db migrate -m"initialize db"
+```
+
+The `-m` flag gives a migration message that is copied (spaces removed) to be
+part of the name of the migration script in `migration/versions`. 
+
+Finally, to create the database and `user` and `resource` tables, 
+
+```bash
+python manage.py db upgrade
+```
+
+Now you can start up sqlite and check that the database and tables have been
+created
+
+```bash
+sqlite3 data-dev.sqlite
+```
+
+and in the sqlite shell
+
+```sql
+sqlite> .tables
+alembic_version  resource         users
+```
+
+Now you can create users and resources through the app and see the results in
+the database
+
+```sql
+SELECT * FROM resource;
+```
+
+and
+
+```sql
+SELECT * FROM users;
+```
+
+This is enabled by the following lines in `manage.py`:
+
+```python
+...
+from flask.ext.migrate import Migrate, MigrateCommand
+...
+migrate = Migrate(app, db)
+...
+manager.add_command('db', MigrateCommand)
+```
 
 # Structure
 
