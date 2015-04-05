@@ -1,17 +1,22 @@
 {% extends "base.html" %}
 
 {% block content %}
+<div class="row">
+  <div class="col-xs-12 col-sm-offset-3 col-sm-6 col-md-offset-3 col-md-6 col-lg-offset-3 col-lg-6">
+    <h1>Hello, {{ current_user.name }}</h1>
+    <h2>You have not yet confirmed your account</h2>
+    <p>
+    In order to promote security of our site and data, please confirm your
+    account. Check your inbox for instructions.
+    </p>
+    <p>
+    Need another confirmation email?
+    <a href={{ url_for('auth.resend_confirmation') }}>Click here</a> </p>
 
-<h1>Hello, {{ current_user.name }}</h1>
-<h2>You have not yet confirmed your account</h2>
 
-<p>
-In order to promote security of our site and data, please confirm your
-account. Check your inbox for instructions. 
-</p>
+  </div>
+</div>
 
-<p>
-Need another confirmation email? 
-<a href={{ url_for('auth.resend_confirmation') }}>Click here</a> </p>
+
 
 {% endblock %}
