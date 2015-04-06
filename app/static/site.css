@@ -1,0 +1,24 @@
+@import url(http://fonts.googleapis.com/css?family=Lato:400,700);
+
+body {
+  font-family: 'Lato', 'sans-serif';
+  padding-bottom:60px;
+  padding-top:60px;
+}
+
+.navbar .navbar-brand {
+  padding: 0px;
+}
+.navbar .navbar-brand img {
+  width: 50px;
+}
+
+
+.name-holder{
+  padding:10px;
+  /*color: #002E62;*/
+}
+
+.container{
+  font-size:1.2em;
+}
