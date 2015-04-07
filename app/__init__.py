@@ -3,15 +3,13 @@ VW Platform Application Package Constructor
 """
 
 from flask import Flask
-from flask.ext.mail import Mail
-from flask.ext.moment import Moment
-from flask.ext.sqlalchemy import SQLAlchemy
-from flask.ext.login import LoginManager
+from flask_moment import Moment
+from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager
 from config import config
 
 from wcwave_adaptors.watershed import default_vw_client
 
-mail = Mail()
 moment = Moment()
 db = SQLAlchemy()
 
@@ -27,7 +25,6 @@ def create_app(config_name):
     app.config.from_object(config[config_name])
     config[config_name].init_app(app)
 
-    mail.init_app(app)
     moment.init_app(app)
     db.init_app(app)
     login_manager.init_app(app)
