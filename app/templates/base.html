@@ -1,77 +1,108 @@
 <!DOCTYPE html>
   <head>
-    <link href='//fonts.googleapis.com/css?family=Allerta' 
-          rel='stylesheet' type='text/css'>
-    <link type="text/css" href='/static/base.css' rel='stylesheet'></link>
-    <style>{% block style %}{% endblock %}</style>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/static/site.css" rel="stylesheet">
     <title>Virtual Watershed Platform</title>
 
     {% block scripts %}
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>    
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     {% endblock %}
 
   </head>
   <body>
-  <p id=login-info>
-      {% if current_user and current_user.is_authenticated() %} Welcome, {{ current_user.name }} <br> 
-      <a href="#={{ current_user.name }}">My Account</a> <br>
-        <a href="/auth/logout">Logout</a> 
-  {% else %}
-    <a href="/auth/register">Create an Account</a> <br> or <a href="/auth/login">Login</a>
-  {% endif %}
-  </p>
 
   {% set navigation_bar = [('/', 'main.index', 'Home'),
                            ('/search', 'main.search', 'Search'),
-                           ('/about', 'main.about', 'About'),
-                           ('/share', 'share.index', 'Share')] %}
+                           ('/share', 'share.index', 'Share'),
+                           ('/about', 'main.about', 'About')] %}
   {% set active_page = active_page|default('index') %}
 
-  <div id="appHeader">
-    <h1 id=appTitle>Virtual Watershed Platform</h1>
-    <ul>
-      {% for href, id, caption in navigation_bar %}
-
-        {% if request.endpoint %}
+  <div class="container">
 
 
-        <li{% if id == request.endpoint or 
-                 request.endpoint[:5] == href[1:6] %} class="active" 
-           {% endif %}>
-
-          <a href="{{ href|e }}" 
-            {% if id == request.endpoint %} class="active" 
-            {% endif %}>{{ caption|e }}
+  <header>
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">
+            <img src="http://placehold.it/60x60&text=LOGO"> <span class="name-holder">Virtual Watershed Platform</span>
           </a>
-        </li>
-        {% elif href == request.script_root  %}
-          <a href="{{ href|e }}" class="active">{{ caption|e }}</a>
-        </li>
+        </div>
+
+        <div class="collapse navbar-collapse" id="navbar">
+
+          <ul id="main-menu" class="nav navbar-nav navbar-right">
+            {% for href, id, caption in navigation_bar %}
+
+              {% if request.endpoint %}
 
 
-       {% else %}
+              <li{% if id == request.endpoint or
+                       request.endpoint[:5] == href[1:6] %} class="active"
+                 {% endif %}>
 
-       <li> <a href="{{ href|e }}">{{ caption|e }}</a></li>
-  
-       {% endif %}
+                <a href="{{ href|e }}"
+                  {% if id == request.endpoint %} class="active"
+                  {% endif %}>{{ caption|e }}
+                </a>
+              </li>
+              {% elif href == request.script_root  %}
+                <a href="{{ href|e }}" class="active">{{ caption|e }}</a>
+              </li>
 
-      {% endfor %}
 
-    </ul>
-  </div>
-  </div>
-  <div id=nonheaderBody>
-  {% block content %}
-    {% for message in get_flashed_messages() %}
-      <div class=flash-messages>
-        <button type="button" class="close" data-dismiss="alert">&times;</button>
-        {{ message }}
-        <h3>
+             {% else %}
+
+             <li> <a href="{{ href|e }}">{{ caption|e }}</a></li>
+
+             {% endif %}
+
+            {% endfor %}
+
+            <!-- profile -->
+            {% if current_user and current_user.is_authenticated() %}
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown"> {{ current_user.name }} <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  <li><a href="#={{ current_user.name }}">My Account</a></li>
+                  <li><a href="/auth/logout">Logout</a></li>
+                </ul>
+              </li>
+
+            {% else %}
+
+              <li><a href="/auth/register">Create an Account</a></li>
+              <li><a href="/auth/login">Login</a></li>
+            {% endif %}
+
+
+          </ul>
+        </div>
+        <!-- /.navbar-collapse -->
       </div>
-    {% endfor %}
+      <!-- /.container-fluid -->
+    </nav>
+
+  </header>
+
+  {# The main content #}
+  {% block content %}
   {% endblock %}
-  </div>
+
+</div>
+
+
   </body>
 </html>
