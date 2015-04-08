@@ -13,12 +13,6 @@ from wcwave_adaptors.watershed import default_vw_client
 VW_CLIENT = default_vw_client()
 
 
-# @share.route('/')
-# @login_required
-# def index():
-    # return render_template('share/index.html')
-
-
 @share.route('/', methods=['GET', 'POST'])
 @login_required
 def resources():

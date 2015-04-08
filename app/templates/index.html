@@ -4,9 +4,10 @@
 {% block content %}
 <h1>Currently using virtual watershed hosted at {{ ip }}</h1>
 
+{% if not current_user.is_authenticated() %}
 <p>
   Please <a href="/auth/login"> login </a> or <a href="/auth/register"> Register </a>
-
 </p>
+{% endif %}
 
 {% endblock %}
