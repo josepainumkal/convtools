@@ -27,6 +27,7 @@ def register():
     form = RegistrationForm()
 
     if form.validate_on_submit():
+
         user = User(name=form.name.data,
                     affiliation=form.affiliation.data,
                     state=form.state.data,
@@ -36,13 +37,6 @@ def register():
 
         db.session.add(user)
         db.session.commit()
-
-        token = user.generate_confirmation_token()
-        send_email(user.email, 'Confirm Your Account', 'auth/email/confirm',
-                   user=user, token=token)
-
-        flash('A confirmation email has been sent to you. Please click the '
-              'link to be confirm your account and log in.')
 
         return redirect(url_for('auth.login'))
 
