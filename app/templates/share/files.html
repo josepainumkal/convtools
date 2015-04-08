@@ -1,18 +1,21 @@
 {% extends "base.html" %}
 
-{% block style %}
-{{ super() }}
-{% endblock %}
 
 {% block content %}
-{% if model_run_uuid %}
-<h1>
-  Add files for resource with UUID {{ model_run_uuid }}
-</h1>
-{% else %}
-<p>
-Please return to {{ url_for('share.resources') }} and click the link
-for the resource you'd like to add to.
-</p>
-{% endif %}
+
+<div class="row">
+  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    {% if model_run_uuid %}
+    <h1>
+      Add files for resource with UUID {{ model_run_uuid }}
+    </h1>
+    {% else %}
+    <p>
+    Please return to {{ url_for('share.resources') }} and click the link
+    for the resource you'd like to add to.
+    </p>
+    {% endif %}
+  </div>
+</div>
+
 {% endblock %}

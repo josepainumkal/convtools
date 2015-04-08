@@ -22,3 +22,16 @@ body {
 .container{
   font-size:1.2em;
 }
+
+.centered{
+  text-align:center;
+}
+
+.fixed-height-list{
+  max-height: 250px;
+  overflow:scroll;
+}
+
+.page-header{
+  border-bottom: 1px solid #eee;
+}
