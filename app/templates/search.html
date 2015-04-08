@@ -1,4 +1,4 @@
-<!-- 
+<!--
   In template call, we will have something like this where there will be
   an array of json representations of each model run description. Then we can
   for-loop over them, and creating a new block for each JSON that's there.
@@ -6,109 +6,51 @@
 {% extends "base.html" %}
 {% set active_page = "search" %}
 {% block content %}
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js"></script>
-<script src="static/search.js"></script>
-  <!-- Search form. Currently only supports searching of model run names -->
-  <!--<div id=headerBar>-->
-    <form method="POST" class=search align=center>
-      {{ form.model_run_name.label }} {{ form.model_run_name(id='model_run_name') }}
-      {{ form.submit(id='search') }}
-    </form>
-      
-      <!--Model run name:<input type="text" name="model_run_name" -->
-      <!--id="model_run_name" placeholder="insert name here!">-->
-      <!--<button id="search">Search!</button></form> -->
+
+<div class="row">
+  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+    <div id="searchFormContainer" class="centered">
+      <form method="get" class="form-inline">
+
+        <div class="form-group">
+            <label for="model_run_name" class="control-label">{{form.model_run_name.label}}</label>
+            <input type="text" class="form-control" id="model_run_name" name="model_run_name">
+        </div>
+
+        <button type="submit" class="btn btn-small btn-success">{{form.submit.label}}</button>
+      </form>
+    </div>
+
 
     {% if panels %}
-    <h1 class=search> Search Results! </h1>
-  <!--</div>-->
-  {% for panel in panels %}
-  <br><br>
-    <div>
-      <svg class="box" width=650 height=390>
-        <g>
-          <rect class="box" x="5" y="5" width="630" height="370"
-            stroke-width="4"
-            rx="25"
-            ry="15"
-            style="stroke: #0C090A;
-                   fill: #B4CFEC;
-                   fill-opacity: 1.0;"
-            />
-            <text font-size="30" x="275" y="50" text-anchor="middle">
-              {{ panel.model_run_name }}
-            </text>
-            <text font-size="20" x="275" y="90" text-anchor="middle">
-              {{ panel.model_run_uuid }}
-            </text>
-            <text font-size="22" x="40" y="160" text-anchor="left">
-              Watershed: {{ panel.watershed }}
-            </text>
-            <text font-size="22" x="40" y="220" text-anchor="left">
-              State: {{ panel.state }}
-            </text>
-            <text font-size="22" x="40" y="280" text-anchor="left">
-              Model context: {{ panel.model }}
-            </text>
-            <!-- Include the google map -->
-            <foreignObject class="node" x="350" y="110" width="300px"
-            height="300px">
-              <body xmlns="http://www.w3.org/1999/xhtml">
-                <div class='map_canvas' id='{{ panel.model_run_uuid }}'></div>
-              </body>
-            </foreignObject>
-        </g>
-      </svg>
-    </div>
-  {% endfor %}
-  <script src="https://maps.googleapis.com/maps/api/js"></script>
-<script>
-  // For every entry in the list of panels, create a map for it. Create
-  // unique maps by tacking on the uuid
-  {% for panel in panels %}
-  function initialize_{{ panel.model_run_uuid }}() {
-        var mapCanvas = document.getElementById('{{ panel.model_run_uuid }}');
-        var centerlat = {{ panel.centerlat }};
-        var centerlon = {{ panel.centerlon }};
-        var watershedCenter = new google.maps.LatLng(centerlat, centerlon);
+      <h1 class="page-header"> Search Results! </h1>
+      {% for panel in panels %}
+        <div class="col-md-4">
+          <div class="panel panel-primary ">
+            <div class="panel-heading">
+               {{ panel.model_run_name }}
+            </div>
+            <ul class="list-group fixed-height-list">
+              <li class="list-group-item">
+                <strong>Watershed:</strong> {{ panel.watershed }}
+              </li>
+              <li class="list-group-item">
+                <strong>State:</strong>  {{ panel.state }}
+              </li>
+              <li class="list-group-item">
+                <strong>Model context:</strong>  {{ panel.model }}</a>
+              </li>
 
-        var mapOptions = {
-          center: watershedCenter,
-          zoom: 7,
-          mapTypeId: google.maps.MapTypeId.TERRAIN
-        }
+            </ul>
+          </div>
 
-        var map = new google.maps.Map(mapCanvas, mapOptions)
-
-        var rectangle = new google.maps.Rectangle({
-            strokeColor: "#FF0000",
-            strokeOpacity: 0.8,
-            strokeWeight: 2,
-            fillColor: '#FF0000',
-            fillOpacity: 0.35,
-            map: map,
-            bounds: new google.maps.LatLngBounds(
-              new google.maps.LatLng({{ panel.latmin }}, {{ panel.lonmin }}),
-              new google.maps.LatLng({{ panel.latmax }}, {{ panel.lonmax }})
-              )
-             });
-
-          var marker = new google.maps.Marker({
-              position: watershedCenter,
-              map: map,
-              title: "{{ panel.watershed }}",
-              icon: "https://maps.google.com/mapfiles/ms/icons/blue-dot.png"
-            })
-
-        }
-
-        google.maps.event.addDomListener(window, 'load', 
-            initialize_{{ panel.model_run_uuid }});
-
+        </div>
       {% endfor %}
 
-    </script>
-{% else %}
-<h2 align=center>No Records Found!</h2>
-{% endif %}
+    {% endif %}
+
+
+  </div>
+</div>
 {% endblock %}

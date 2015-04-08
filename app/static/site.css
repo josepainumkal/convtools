@@ -31,3 +31,7 @@ body {
   max-height: 250px;
   overflow:scroll;
 }
+
+.page-header{
+  border-bottom: 1px solid #eee;
+}
