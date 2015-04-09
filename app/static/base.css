@@ -5,6 +5,10 @@ html, body {
   font-family: Allerta, sans-serif;
 }
 
+.wcwave-logo {
+  height: 30px ;
+}
+
 p {
   margin: 20px 60px;
 }
