@@ -13,7 +13,12 @@ from .. import vw_client
 @main.route('/')
 def index():
     "About page"
-    return render_template("index.html", user_name=session['email'])
+    if 'email' in session:
+        user_name = session['email']
+    else:
+        user_name = None
+
+    return render_template("index.html", user_name=user_name)
 
 
 @main.route('/search', methods=['GET', 'POST'])
