@@ -1,5 +1,4 @@
 Cython==0.21
-GDAL==1.11.1
 Pygments==1.6
 Sphinx==1.2.3
 lxml==3.4.0

@@ -17,7 +17,7 @@
 
       <div class="well">
 
-          <form id="registrationForm" method="POST" action="/auth/register">
+          <form id="registrationForm" method="POST" action="/platform/auth/register">
               {{ form.csrf_token }}
 
               <div class="form-group {% if form.errors.name %} has-error {% endif %}">
