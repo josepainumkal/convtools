@@ -2,12 +2,80 @@
 {% extends "base.html" %}
 {% set active_page = "index" %}
 {% block content %}
-<h1>Currently using virtual watershed hosted at {{ ip }}</h1>
+<div class="container">
 
-{% if not current_user.is_authenticated() %}
-<p>
-  Please <a href="/auth/login"> login </a> or <a href="/auth/register"> Register </a>
-</p>
-{% endif %}
+
+    <h1>WC-WAVE Virtual Watershed Platform</h1>
+    <p>Hello and welcome to the WC-WAVE virtual watershed platform! 
+    Click one of the three options below to get
+    started. You can (eventually) browse data hosted by the virtual watershed, run
+    models, and manage your own data and metadata.</p>
+
+  <div id="splash-opts" class="row body" height="400">
+    <div class="col-md-4 col-sm-6 col-xs-12"> 
+      <a href="/search" class="splash-opt">
+       <div class="thumbnail">
+         
+        <h3 class="thumbnail-title">Browse and search</h3>
+        <img class="center-block" src="holder.js/250x250">
+        <p>Look here for publicly available data published by colleagues</p>
+       </div></a>        
+    </div>
+    <div class="col-md-4 col-sm-6 col-xs-12"> 
+      <a href="#" class="splash-opt">
+       <div class="thumbnail">
+        <h3 class="thumbnail-title">Modeling and Processing</h3>
+        <img class="center-block" src="holder.js/250x250">
+        <p>Find the right data to use for running your models.</p>
+       </div></a>
+     </div>
+    <div class="col-md-4 col-sm-6 col-xs-12"> 
+        <div class="thumbnail">
+          <h3 class="thumbnail-title">Manage your data</h3>
+          <a href="/share" class="splash-opt"><img class="center-block" src="holder.js/250x250"></a>        
+          <p>Share or upload data. Update metadata so your data is
+          easily found. </p>
+        </div>
+    </div>
+  </div>
+  </div>
+
+<div>
+    <p>The WC-WAVE project is funded by the National Science Foundation's Experimental
+    Program to Stimulate Competetive Research <a href=http://www.nsf.gov/od/iia/programs/epscor/index.jsp>(EPSCoR)</a> under three grants, one for each of the partner states, Idaho
+    (NSF Award Number: IIA-1329513), New Mexico (IIA-1301346), and Nevada (IIA-1301726).
+    As such, <em>Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the National Science Foundation.</em>
+    </p>
+
+    <p>
+    For more information, please see the <a href=http://www.nmepscor.org/science/western-consortium-water-analysis-visualization-and-exploration>Official WC-WAVE Summary Page</a>
+    put together by the EPSCoR folks. See also <a href=http://westernconsortium.org/>
+    westernconsortium.org</a> for even more info.
+    </p>
+
+
+
+</div>
+<table style="margin:auto;border-top:1px solid #ebebeb;width:820px;padding-top:35px;height:220px;" border="0" cellpadding="0" cellspacing="0">
+        <tbody><tr>
+            <td valign="top"><br>
+               <table valign="top" border="0" cellpadding="0" cellspacing="0" width="900">
+                  <tbody><tr>
+                    <td border="0" style="padding-right:45px;"
+                      valign="top"><a
+                    href="http://www.uidaho.edu/epscor"
+                target="_blank"><img src="/static/images/Footer_IdahoEpscor_logo.jpg" alt="Idaho EPSCoR" height="80" border="0"></a></td>
+                    <td style="padding-right:45px;padding-top:5px;"
+                      valign="top"><a
+                    href="http://www.nevada.edu/epscor"
+                target="_blank"><img src="/static/images/EPSCoR_NV_Logo.png" alt="Nevada EPSCoR" height="80" border="0"></a></td>
+                    <td align="right" valign="top"><a
+                        href="http://www.nmepscor.org"
+                    target="_blank"><img src="/static/images/NMEPSCoR.png" alt="New Mexico EPSCoR" height="80" border="0"></a></td>
+                  </tr>			
+               </tbody></table></td>  
+            </tr>                                      
+        </tbody></table>
+  </div>
 
 {% endblock %}

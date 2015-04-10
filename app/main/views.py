@@ -12,21 +12,8 @@ from .. import vw_client
 
 @main.route('/')
 def index():
-    "Splash page"
-    if 'email' not in session:
-        session['email'] = None
-
-    # search URL is like https://129.24.196.28
-    watershed_ip = vw_client.search_url.split('/')[2]
-
-    return render_template("index.html", ip=watershed_ip,
-                           user_name=session['email'])
-
-
-@main.route('/about')
-def about():
     "About page"
-    return render_template("about.html", user_name=session['email'])
+    return render_template("index.html", user_name=session['email'])
 
 
 @main.route('/search', methods=['GET', 'POST'])

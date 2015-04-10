@@ -12,6 +12,7 @@
     {% block scripts %}
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="/static/holder.min.js"></script>
     {% endblock %}
 
   </head>
@@ -19,8 +20,7 @@
 
   {% set navigation_bar = [('/', 'main.index', 'Home'),
                            ('/search', 'main.search', 'Search'),
-                           ('/share', 'share.index', 'Share'),
-                           ('/about', 'main.about', 'About')] %}
+                           ('/share', 'share.index', 'Share')] %}
   {% set active_page = active_page|default('index') %}
 
   <div class="container">

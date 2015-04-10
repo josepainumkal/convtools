@@ -59,3 +59,52 @@ div#main {
 body, p {
   margin: 20px 60px;
 }
+
+#splash-opts {
+  display: table;
+}
+.thumbnail{
+    height: 395px;
+    border: 4pt black;
+}
+
+.thumbnail:hover {
+    
+    height: 405;
+}
+
+#splash-opts .panel {
+  float: none;
+  display: table-cell;
+  vertical-align: top;
+}
+
+.thumbnail {
+  background: #216999; 
+  font-size: 14px;
+
+  color: white;
+  
+  text-decoration:none;
+}
+.thumbnail h3 {
+  font-size: 20px;
+}
+.thumbnail:hover {
+  color: black; 
+  text-decoration: none;
+  background: lightblue;
+}
+a.splash-opt {
+  text-decoration: none;
+}
+.thumbnail:link  {
+  color: black; 
+  text-decoration: none;
+}
+
+.thumbnail-title {
+  margin: 2% 5%;
+  font-weight: bold;
+  /*text-align: center;*/
+}
