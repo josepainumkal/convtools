@@ -17,10 +17,10 @@
   </head>
   <body>
 
-  {% set navigation_bar = [('/platform', 'main.index', 'Home'),
-                           ('/platform/search', 'main.search', 'Search'),
-                           ('/platform/share', 'share.index', 'Share'),
-                           ('/platform/about', 'main.about', 'About')] %}
+  {% set navigation_bar = [('/', 'main.index', 'Home'),
+                           ('/search', 'main.search', 'Search'),
+                           ('/share', 'share.index', 'Share'),
+                           ('/about', 'main.about', 'About')] %}
   {% set active_page = active_page|default('index') %}
 
   <div class="container">
@@ -77,14 +77,14 @@
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"> {{ current_user.name }} <b class="caret"></b></a>
                 <ul class="dropdown-menu">
                   <li><a href="#={{ current_user.name }}">My Account</a></li>
-                  <li><a href="/platform/auth/logout">Logout</a></li>
+                  <li><a href="/auth/logout">Logout</a></li>
                 </ul>
               </li>
 
             {% else %}
 
-              <li><a href="/platform/auth/register">Create an Account</a></li>
-              <li><a href="/platform/auth/login">Login</a></li>
+              <li><a href="/auth/register">Create an Account</a></li>
+              <li><a href="/auth/login">Login</a></li>
             {% endif %}
 
 

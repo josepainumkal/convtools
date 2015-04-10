@@ -30,12 +30,12 @@ def create_app(config_name):
     login_manager.init_app(app)
 
     from .main import main as main_blueprint
-    app.register_blueprint(main_blueprint, url_prefix='/platform')
+    app.register_blueprint(main_blueprint)
 
     from .auth import auth as auth_blueprint
-    app.register_blueprint(auth_blueprint, url_prefix='/platform/auth')
+    app.register_blueprint(auth_blueprint, url_prefix='/auth')
 
     from .share import share as share_blueprint
-    app.register_blueprint(share_blueprint, url_prefix='/platform/share')
+    app.register_blueprint(share_blueprint, url_prefix='/share')
 
     return app
