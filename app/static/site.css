@@ -7,7 +7,7 @@ body {
 }
 
 .navbar .navbar-brand {
-  padding: 0px;
+  padding: 10px;
 }
 .navbar .navbar-brand img {
   width: 50px;
@@ -34,4 +34,25 @@ body {
 
 .page-header{
   border-bottom: 1px solid #eee;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  border-width:0;
+  font-family: Allerta, sans-serif;
+}
+
+div#main {
+  font-family: 'Antic Slab', serif;
+  margin-top: 50px;
+}
+
+#navbar {
+  font-family: 'Audiowide', cursive;
+}
+
+
+body, p {
+  margin: 20px 60px;
 }
