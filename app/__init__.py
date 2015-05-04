@@ -8,7 +8,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from config import config
 
-from wcwave_adaptors.watershed import default_vw_client
+from wcwave_adaptors import default_vw_client
 
 moment = Moment()
 db = SQLAlchemy()

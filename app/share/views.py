@@ -7,7 +7,7 @@ from .forms import ResourceForm
 from .. import db
 from ..models import Resource
 
-from wcwave_adaptors.watershed import default_vw_client
+from wcwave_adaptors import default_vw_client
 
 
 VW_CLIENT = default_vw_client()
