@@ -16,10 +16,17 @@ locally.
 
 # Quickstart
 
-To run the web app locally for development, first install the requirements 
+The first step is to clone this repository
 
 ```bash
-pip install -r requirements.txt
+git clone https://github.com/mtpain/vwplatform.git 
+```
+
+To run the web app locally for development, first start up and activate a virtual
+environment, then install the requirements.
+
+```bash
+virtualenv venv && source venv/bin/activate && pip install -r requirements.txt
 ```
 
 Then launch the web app
@@ -28,7 +35,7 @@ Then launch the web app
 $ python manage.py runserver
 ```
 
-and view it at `localhost:5000` in your web browser.
+and view it at http://localhost:5000 in your web browser.
 
 That's great, but if you try to create users or contribute resources, you will
 run into an error because no databases have been created. To do this, we use
