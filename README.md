@@ -16,10 +16,18 @@ locally.
 
 # Quickstart
 
+### Get code, start dev server
+
 The first step is to clone this repository
 
 ```bash
 git clone https://github.com/mtpain/vwplatform.git 
+```
+
+and grab the [wcwave_adaptors]() submodule from the vwplatform directory
+
+```bash
+cd vwplatform && git submodule update --init
 ```
 
 To run the web app locally for development, first start up and activate a virtual
@@ -36,6 +44,8 @@ $ python manage.py runserver
 ```
 
 and view it at http://localhost:5000 in your web browser.
+
+### Initialize Databases
 
 That's great, but if you try to create users or contribute resources, you will
 run into an error because no databases have been created. To do this, we use
