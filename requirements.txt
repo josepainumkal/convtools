@@ -1,3 +1,4 @@
+numpy==1.9.2
 Pygments==1.6
 Sphinx==1.2.3
 simplejson==3.6.5
@@ -14,7 +15,6 @@ Flask-SQLAlchemy==2.0
 Flask-WTF==0.11
 itsdangerous==0.24
 Mako==1.0.1
-numpy==1.9.2
 SQLAlchemy==0.9.8
 Werkzeug==0.10.1
 WTForms==2.0.2
