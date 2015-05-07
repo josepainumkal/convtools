@@ -37,6 +37,17 @@ environment, then install the requirements.
 virtualenv venv && source venv/bin/activate && pip install -r requirements.txt
 ```
 
+You will also need to add your userid (email) and password to default.conf, which you'll copy from `wcwave_adaptors/default.conf.template`.
+Be careful not to sync your personalized `default.conf`, since this will expose your credentials to the world.
+
+From the root directory of the repository
+
+```bash
+cp wcwave_adaptors/default.conf.template default.conf
+```
+
+then edit `default.conf`. If you need a Virtual Watershed account, please email maturner@uidaho.edu.
+
 Then launch the web app
 
 ```bash
