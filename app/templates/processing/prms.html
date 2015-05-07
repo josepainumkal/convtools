@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% set active_page = "processing.index" %}
+
+{% block content %}
+<div class="container">
+
+  <h1>PRMS</h1>
+
+  <p>
+    Upload your PRMS data here to generate and download a NetCDF
+    translation of your data. Eventually your data and the NetCDF
+    version of your data will both be automatically inserted to the 
+    virtual watershed. Once we have that done, we will make it so that 
+    you can actually run PRMS on the data you upload.
+  </p>
+
+  <p>
+    For more information on PRMS see the <a
+      href="http://wwwbrr.cr.usgs.gov/projects/SW_MoWS/PRMS.html">USGS's
+    PRMS documentation</a>.
+  </p>
+
+</div>
+{% endblock %}
