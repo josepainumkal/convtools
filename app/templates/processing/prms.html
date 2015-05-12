@@ -20,5 +20,25 @@
     PRMS documentation</a>.
   </p>
 
-</div>
-{% endblock %}
+  <body>      
+       
+  <form action="upload" method="post" enctype="multipart/form-data">
+    <div align = "center">
+    <table>
+        <tr><td>Upload input file</td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td><input name = "input-file" type = "file" value = '' id = "input-file"></input></td></tr>
+        <tr><td>Upload hru file</td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td><input name = "hru-file" type = "file" value = '' id = "hru-file"></input></td></tr>
+        <tr><td>Number of rows</td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td><input name = "row" type = "text" value = '' id = "row"></input></td></tr>
+        <tr><td>Number of columns</td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td><input name = "column" type = "text" value = '' id = "column"></input></td></tr>
+        <tr><td> EPSG value </td> <td>&nbsp;&nbsp;&nbsp;&nbsp;</td> <td><input name = "epsg" type = "text" value = '4326' id = "epsg"></input></td></tr>
+    </table> 
+    <br/>
+    <div align = center><INPUT Type="submit" VALUE="Convert" ></div>
+    </div>
+  </form>
+  
+  </body>
+
+<br/>
+
+<div align = "center">{{InputErrorMessage}}</div>
+{% endblock %}   
