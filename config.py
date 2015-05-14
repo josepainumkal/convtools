@@ -20,6 +20,9 @@ class Config:
         <vwplatform-admin@northwestknowledge.net'
     VWPLATFORM_ADMIN = os.environ.get('VWPLATFORM_ADMIN') or 'Admin'
 
+    UPLOAD_FOLDER = "/home/likewise-open/UNR/lpalathingal/Desktop/uploads"
+    ALLOWED_EXTENSIONS = set(['param', 'DAT'])
+
     @staticmethod
     def init_app(app):
         pass

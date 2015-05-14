@@ -44,7 +44,7 @@ def generateMetaData():
 
 def moveFilesToANewDirectory():
     
-    folderName = "/home/lisa/Desktop/New Files"
+    folderName = "/home/likewise-open/UNR/lpalathingal/Desktop/New Files"
     
     if not os.path.exists(folderName):
         os.makedirs(folderName)

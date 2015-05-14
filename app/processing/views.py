@@ -1,18 +1,10 @@
 from flask import Flask, request, render_template
+from flask import current_app as app
 from werkzeug import secure_filename
 
 from . import processing
 
 import os, osr, gdal, util, numpy
-
-app = Flask(__name__)
-
-UPLOAD_FOLDER = "/home/lisa/Desktop/uploads"
-if not os.path.exists(UPLOAD_FOLDER):
-    os.makedirs(UPLOAD_FOLDER)
-
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.config['ALLOWED_EXTENSIONS'] = set(['param', 'DAT'])
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1] in app.config['ALLOWED_EXTENSIONS']
@@ -27,6 +19,9 @@ def prms():
 
 @processing.route('/upload', methods=['POST'])
 def upload():
+
+    if not os.path.exists(app.config['UPLOAD_FOLDER']):
+        os.makedirs(app.config['UPLOAD_FOLDER'])
     
     if request.files['input-file'].filename == '' or request.files['hru-file'].filename == '' or request.form['row'] == '' or request.form['column'] == '' or request.form['epsg'] == '':
         return render_template('processing/prms.html', InputErrorMessage = "Please upload required files and/or fill in all the fields")
