@@ -1,3 +1,4 @@
+from flask import current_app as app
 import os, shutil, netCDF4
 
 def findAverageResolution(fileHandle, numberOfRows, numberOfColumns):
@@ -44,19 +45,19 @@ def generateMetaData():
 
 def moveFilesToANewDirectory():
     
-    folderName = "/home/likewise-open/UNR/lpalathingal/Desktop/New Files"
+    #folderName = "/home/likewise-open/UNR/lpalathingal/Desktop/New Files"
     
-    if not os.path.exists(folderName):
-        os.makedirs(folderName)
+    if not os.path.exists(app.config['DOWNLOAD_FOLDER']):
+        os.makedirs(app.config['DOWNLOAD_FOLDER'])
 
-    if os.path.exists(folderName):
-        shutil.rmtree(folderName)
-        os.makedirs(folderName)
+    if os.path.exists(app.config['DOWNLOAD_FOLDER']):
+        shutil.rmtree(app.config['DOWNLOAD_FOLDER'])
+        os.makedirs(app.config['DOWNLOAD_FOLDER'])
 
     source = os.listdir(os.getcwd())
     for files in source:
         if files.endswith(".nc"):
-            shutil.move(files, folderName)
+            shutil.move(files, app.config['DOWNLOAD_FOLDER'])
 
 
 

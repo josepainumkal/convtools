@@ -22,6 +22,7 @@ class Config:
 
     UPLOAD_FOLDER = "/home/likewise-open/UNR/lpalathingal/Desktop/uploads"
     ALLOWED_EXTENSIONS = set(['param', 'DAT'])
+    DOWNLOAD_FOLDER = "/home/likewise-open/UNR/lpalathingal/Desktop/downloads"
 
     @staticmethod
     def init_app(app):
