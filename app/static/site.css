@@ -79,6 +79,22 @@ body, p {
   vertical-align: top;
 }
 
+.central-nav-blurb {
+  top: 300px;
+}
+
+.central-nav-img {
+  width: 220px;
+  top: 20px;
+  border-top: 100px;
+  position: relative;
+}
+
+.central-nav-blurb {
+  top: 45px;
+  position: relative;
+}
+
 .thumbnail {
   background: #216999; 
   font-size: 14px;
