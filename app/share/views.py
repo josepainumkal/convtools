@@ -56,7 +56,7 @@ def resources():
         # get UUID and add full record to the 'resources' table in DB along with
         # user ID
         url = (form.url.data or
-               VW_CLIENT.search_url + '&model_run_uuid=' + UUID)
+               VW_CLIENT.dataset_search_url + '&model_run_uuid=' + UUID)
 
         resource = Resource(user_id=current_user.id,
                             title=form.title.data,

@@ -44,7 +44,7 @@ def search():
     if model_run_name:
         search_args['model_run_name'] = model_run_name
 
-    search_results = vw_client.search(**search_args)
+    search_results = vw_client.modelrun_search(**search_args)
 
     records = search_results.records
     if records:
@@ -72,30 +72,9 @@ def _make_panel(search_record):
     Returns: (dict) that will be an element of the list of panel_data to be
         displayed as search results
     """
-    lonmin, latmin, lonmax, latmax = \
-        (el for el in search_record['spatial']['bbox'])
-
-    centerlat = latmin + 0.5*(latmax - latmin)
-    centerlon = lonmin + 0.5*(lonmax - lonmin)
-
-    assert latmin < latmax, "Error, min lat is less than max lat"
-    assert latmin < latmax, "Error, min lon is less than max lon"
-
-    cats = search_record['categories'][0]
-    state = cats['state']
-    modelname = cats['modelname']
-    watershed = cats['location']
-
-    model_run_name = search_record['model_run_name']
-    model_run_uuid = search_record['model_run_uuid'].replace('-', '')
-
-    panel = {"latmin": latmin, "latmax": latmax,
-             "lonmin": lonmin, "lonmax": lonmax,
-             "centerlat": centerlat, "centerlon": centerlon, "state": state,
-             "watershed": watershed,
-             "model_run_name": model_run_name,
-             "model_run_uuid": model_run_uuid,
-             "model": modelname}
+    panel = {"keywords": search_record['Keywords'],
+             "description": search_record['Description'],
+             "model_run_name": search_record['Model Run Name'],
+             "model_run_uuid": search_record['Model Run UUID']}
 
     return panel
-
