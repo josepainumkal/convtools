@@ -124,3 +124,11 @@ a.splash-opt {
   font-weight: bold;
   /*text-align: center;*/
 }
+
+.border-bottom{
+  border-bottom: 1px solid #e7e7e7;
+}
+
+.margin-bottom{
+  margin-bottom: 10px;
+}

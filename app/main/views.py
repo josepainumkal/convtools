@@ -1,11 +1,9 @@
 from collections import defaultdict
 
-from flask import render_template, session, redirect, url_for
+from flask import render_template, session, request, flash
 
 from . import main
 from .forms import SearchForm
-from .. import db
-from ..models import User
 
 from .. import vw_client
 
@@ -30,19 +28,18 @@ def search():
 
     Returns: (str) HTML string of the model run panel
     """
-    # build the search form
-    form = SearchForm()
-
-    model_run_name = ''
     panels = []
+    search_args = defaultdict()
+    form = SearchForm(request.args)
+    if request.args and not form.validate():
+        flash('Please fill up at least one field')
 
-    # if there was a submission, read the arguments and search
-    # res = vw_client.search(**(request.args.to_dict()))
-    search_args = defaultdict(str)
-    model_run_name = form.model_run_name.data
-
-    if model_run_name:
-        search_args['model_run_name'] = model_run_name
+        return render_template('search.html', form=form, panels=panels)
+    if form:
+        search_args['model_run_name'] = form.model_run_name.data
+        search_args['researcher_name'] = form.researcher_name.data
+        search_args['model_keywords'] = form.keywords.data
+        search_args['description'] = form.description.data
 
     search_results = vw_client.modelrun_search(**search_args)
 
@@ -50,19 +47,11 @@ def search():
     if records:
         # make a panel of each metadata record
         panels = [_make_panel(rec) for rec in records if rec]
-
-        # this enforces unique model_run_uuids TODO integrate new search/modelruns
         panels = {p['model_run_uuid']: p for p in panels}.values()
-    else:
-        panels = []
 
-    # if 'email' has not been initiated, need to do so or we'll have an error
-    if 'email' not in session:
-        session['email'] = None
     # pass the list of parsed records to the template to generate results page
-    return render_template('search.html', form=form, panels=panels,
-                           user_name=session['email'])
-
+    return render_template('search.html', form=form, panels=panels)
+    #return render_template('search.html', form=form, panels=panels)
 
 def _make_panel(search_record):
     """
@@ -74,6 +63,7 @@ def _make_panel(search_record):
     """
     panel = {"keywords": search_record['Keywords'],
              "description": search_record['Description'],
+             "researcher_name": search_record['Researcher Name'],
              "model_run_name": search_record['Model Run Name'],
              "model_run_uuid": search_record['Model Run UUID']}
 
