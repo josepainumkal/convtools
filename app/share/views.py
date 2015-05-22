@@ -15,7 +15,7 @@ from wcwave_adaptors import make_fgdc_metadata, metadata_from_file
 
 import os, osr, gdal, util, numpy
 
-VW_CLIENT = VWClient('https://vwp-dev.unm.edu', 'lisa.palathingal@gmail.com', 'Paul@123')
+VW_CLIENT = VWClient('https://vwp-dev.unm.edu', 'username', 'password')
 #VW_CLIENT = default_vw_client
 
 def allowed_file(filename):
