@@ -9,14 +9,13 @@ from .forms import ResourceForm
 from .. import db
 from ..models import Resource
 
-from wcwave_adaptors import VWClient
-#from wcwave_adaptors import default_vw_client
+# from wcwave_adaptors import VWClient
+from wcwave_adaptors import default_vw_client
 from wcwave_adaptors import make_fgdc_metadata, metadata_from_file
 
 import os, osr, gdal, util, numpy
 
-VW_CLIENT = VWClient('https://vwp-dev.unm.edu', 'username', 'password')
-#VW_CLIENT = default_vw_client
+VW_CLIENT = default_vw_client()
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1] in app.config['ALLOWED_EXTENSIONS']
@@ -117,11 +116,11 @@ def upload():
     inputFile = request.files['input-file']
     hruFile = request.files['hru-file']
     new_mr_uuid = str(request.form['uuid'])
-        
+
     if inputFile and allowed_file(inputFile.filename):
         inputFileName = secure_filename(inputFile.filename)
         inputFile.save(os.path.join(app.config['UPLOAD_FOLDER'], inputFileName))
-                       
+
     if hruFile and allowed_file(hruFile.filename):
         hruFileName = secure_filename(hruFile.filename)
         hruFile.save(os.path.join(app.config['UPLOAD_FOLDER'], hruFileName))
@@ -132,10 +131,10 @@ def upload():
     product = numberOfRows * numberOfColumns
 
     if product == numberOfLines:
-        hruFileHandle = open(os.path.join(app.config['UPLOAD_FOLDER'], hruFileName), 'r') 
+        hruFileHandle = open(os.path.join(app.config['UPLOAD_FOLDER'], hruFileName), 'r')
         values = util.findAverageResolution(hruFileHandle, numberOfRows, numberOfColumns)
 
-        inputFileHandle = open(os.path.join(app.config['UPLOAD_FOLDER'], inputFileName), 'r') 
+        inputFileHandle = open(os.path.join(app.config['UPLOAD_FOLDER'], inputFileName), 'r')
         copyParameterSectionFromInputFile(inputFileHandle)
 
         readncFile(numberOfRows, numberOfColumns, epsgValue, values[0], values[1], values[2], values[3])
@@ -145,9 +144,9 @@ def upload():
 
         dirList = os.listdir(app.config['DOWNLOAD_FOLDER'])
         for fname in dirList:
-            
+
             res = VW_CLIENT.upload(new_mr_uuid, os.path.join(app.config['DOWNLOAD_FOLDER'], fname))
-            
+
             input_file = fname
             parent_uuid = new_mr_uuid
             description = 'Lehman Creek PRMS Data'
@@ -159,7 +158,7 @@ def upload():
 
 	    # create XML FGDC-standard metadata that gets included in VW metadata
 	    fgdc_metadata = make_fgdc_metadata(input_file, None, new_mr_uuid, start_datetime, end_datetime, model=model_name)
-            
+
 	    # create VW metadata
 	    watershed_metadata = metadata_from_file(input_file, parent_uuid, new_mr_uuid, description, watershed_name, state, start_datetime=start_datetime, end_datetime=end_datetime, model_name=model_name, fgdc_metadata=fgdc_metadata)
 
@@ -171,39 +170,39 @@ def upload():
         return render_template("share/files.html", Error_Message = "The product of the number of rows and columns do not match the number of parameter values")
 
 def copyParameterSectionFromInputFile(inputFileHandle):
-    
-    temporaryFileWrite = open(os.path.join(app.config['UPLOAD_FOLDER'], "values.param"), 'w') 
+
+    temporaryFileWrite = open(os.path.join(app.config['UPLOAD_FOLDER'], "values.param"), 'w')
     foundParameterSection = False
     lines = inputFileHandle.readlines()
     for line in lines:
         if foundParameterSection or "Parameters" in line:
-            temporaryFileWrite.write(line) 
+            temporaryFileWrite.write(line)
             foundParameterSection = True
 
 def readncFile(numberOfRows, numberOfColumns, epsgValue, latitude, longitude, xavg, yavg):
-    
+
     index = 0
     monthIndex = 0
     parameterNames = []
     monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
-       
-    fileHandle = open(os.path.join(app.config['UPLOAD_FOLDER'], "values.param"), 'r') 
+
+    fileHandle = open(os.path.join(app.config['UPLOAD_FOLDER'], "values.param"), 'r')
     for line in fileHandle:
         if "####" in line:
             nameOfParameter = fileHandle.next().strip()
             parameterNames.append(nameOfParameter)
-            numberOfDimensions = int(fileHandle.next())            
+            numberOfDimensions = int(fileHandle.next())
             for i in range(numberOfDimensions):
                 fileHandle.next()
             numberOfValues = int(fileHandle.next())
             typeOfValues = int(fileHandle.next())
-                        
+
             if numberOfValues == 4704:
                 parameterNames.append(nameOfParameter)
-                parameterNames[index] = numpy.arange(4704).reshape(numberOfColumns, numberOfRows)     
+                parameterNames[index] = numpy.arange(4704).reshape(numberOfColumns, numberOfRows)
                 nameOfOutputFile = nameOfParameter+".nc"
                 storencValuesInArray(nameOfOutputFile, fileHandle, parameterNames, index, numberOfColumns, numberOfRows, epsgValue, latitude, longitude, xavg, yavg)
-                
+
             if numberOfDimensions == 2:
                 for i in range(12):
                     parameterNames.append(nameOfParameter)
@@ -218,13 +217,13 @@ def storencValuesInArray(nameOfOutputFile, fileHandle, parameterNames, index, nu
 
     listOfArrays = []
     outputFormat = 'netcdf'
-    
-    for j in range(numberOfColumns): 
+
+    for j in range(numberOfColumns):
         for k in range(numberOfRows):
             value = float(fileHandle.next().strip())
             parameterNames[index][j,k] = value
     listOfArrays.append(parameterNames[index])
-   
+
     for elements in listOfArrays:
         if numberOfColumns != len(elements):
             print "Failure"
@@ -237,15 +236,15 @@ def writencRaster(nameOfOutputFile, data, numberOfRows, numberOfColumns, xavg, y
 
     # Determining amount of bands to use based on number of items in data
     numberOfBands = len(data)
-   
+
     # Determining whether multiple files need to be used or not.
     multipleFiles = (numberOfBands > 1) and multipleFiles
-   
+
     print "EPSG", epsgValue
     #print headers
     # Register all gdal drivers with gdal
     gdal.AllRegister()
-   
+
     # Grab the specific driver needed
     # This could be used with other formats!
     driver = gdal.GetDriverByName(driver)
@@ -259,19 +258,19 @@ def writencRaster(nameOfOutputFile, data, numberOfRows, numberOfColumns, xavg, y
                 ds.append(driver.Create(nameOfOutputFile+"."+str(i)+".nc", numberOfRows, numberOfColumns, 1, datatype, []))
     except:
         print "ERROR"
-    
+
     # Here I am assuming that north is up in this projection
     if yavg > 0:
         yavg *= -1
     geoTransform = (longitude, xavg, 0, latitude, 0, yavg)
     print geoTransform
-    
+
     if not multipleFiles:
         ds.SetGeoTransform(geoTransform)
     else:
         for i in ds:
             i.SetGeoTransform(geoTransform)
-    
+
     #Write out datatype
     for i in xrange(0,numberOfBands):
         if multipleFiles:
@@ -279,19 +278,19 @@ def writencRaster(nameOfOutputFile, data, numberOfRows, numberOfColumns, xavg, y
         else:
             band = ds.GetRasterBand(i+1)
         band.WriteArray(numpy.array(data[i],dtype=numpy.float32),0,0)
-             
+
     # apply projection to data
     if epsgValue != -1:
         print "EPSG", epsgValue
         try:
             # First create a new spatial reference
             sr = osr.SpatialReference()
-            
+
             # Second specify the EPSG map code to be used
             if 6 == sr.ImportFromEPSG(epsgValue):
                 print "IGNORING EPSG VALUE TO SPECIFIED REASON"
                 return
-            
+
             # Third apply this projection to the dataset(s)
             if not multipleFiles:
                 ds.SetProjection(sr.ExportToWkt())
@@ -300,32 +299,32 @@ def writencRaster(nameOfOutputFile, data, numberOfRows, numberOfColumns, xavg, y
                     i.SetProjection(sr.ExportToWkt())
             print sr
         except:
-            print "IGNORING EPSG VALUE" 
+            print "IGNORING EPSG VALUE"
 
 def readtifFile(numberOfRows, numberOfColumns, epsgValue, latitude, longitude, xavg, yavg):
-    
+
     index = 0
     monthIndex = 0
     parameterNames = []
     monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
-       
-    fileHandle = open(os.path.join(app.config['UPLOAD_FOLDER'], "values.param"), 'r') 
+
+    fileHandle = open(os.path.join(app.config['UPLOAD_FOLDER'], "values.param"), 'r')
     for line in fileHandle:
         if "####" in line:
             nameOfParameter = fileHandle.next().strip()
             parameterNames.append(nameOfParameter)
-            numberOfDimensions = int(fileHandle.next())            
+            numberOfDimensions = int(fileHandle.next())
             for i in range(numberOfDimensions):
                 fileHandle.next()
             numberOfValues = int(fileHandle.next())
             typeOfValues = int(fileHandle.next())
-                        
+
             if numberOfValues == 4704:
                 parameterNames.append(nameOfParameter)
-                parameterNames[index] = numpy.arange(4704).reshape(numberOfColumns, numberOfRows)     
+                parameterNames[index] = numpy.arange(4704).reshape(numberOfColumns, numberOfRows)
                 nameOfOutputFile = nameOfParameter+".tif"
                 storetifValuesInArray(nameOfOutputFile, fileHandle, parameterNames, index, numberOfColumns, numberOfRows, epsgValue, latitude, longitude, xavg, yavg)
-                
+
             if numberOfDimensions == 2:
                 for i in range(12):
                     parameterNames.append(nameOfParameter)
@@ -340,13 +339,13 @@ def storetifValuesInArray(nameOfOutputFile, fileHandle, parameterNames, index, n
 
     listOfArrays = []
     outputFormat = 'gtiff'
-    
-    for j in range(numberOfColumns): 
+
+    for j in range(numberOfColumns):
         for k in range(numberOfRows):
             value = float(fileHandle.next().strip())
             parameterNames[index][j,k] = value
     listOfArrays.append(parameterNames[index])
-   
+
     for elements in listOfArrays:
         if numberOfColumns != len(elements):
             print "Failure"
@@ -359,15 +358,15 @@ def writetifRaster(nameOfOutputFile, data, numberOfRows, numberOfColumns, xavg, 
 
     # Determining amount of bands to use based on number of items in data
     numberOfBands = len(data)
-   
+
     # Determining whether multiple files need to be used or not.
     multipleFiles = (numberOfBands > 1) and multipleFiles
-   
+
     print "EPSG", epsgValue
     #print headers
     # Register all gdal drivers with gdal
     gdal.AllRegister()
-   
+
     # Grab the specific driver needed
     # This could be used with other formats!
     driver = gdal.GetDriverByName(driver)
@@ -381,19 +380,19 @@ def writetifRaster(nameOfOutputFile, data, numberOfRows, numberOfColumns, xavg, 
                 ds.append(driver.Create(nameOfOutputFile+"."+str(i)+".tif", numberOfRows, numberOfColumns, 1, datatype, []))
     except:
         print "ERROR"
-    
+
     # Here I am assuming that north is up in this projection
     if yavg > 0:
         yavg *= -1
     geoTransform = (longitude, xavg, 0, latitude, 0, yavg)
     print geoTransform
-    
+
     if not multipleFiles:
         ds.SetGeoTransform(geoTransform)
     else:
         for i in ds:
             i.SetGeoTransform(geoTransform)
-    
+
     #Write out datatype
     for i in xrange(0,numberOfBands):
         if multipleFiles:
@@ -401,19 +400,19 @@ def writetifRaster(nameOfOutputFile, data, numberOfRows, numberOfColumns, xavg, 
         else:
             band = ds.GetRasterBand(i+1)
         band.WriteArray(numpy.array(data[i],dtype=numpy.float32),0,0)
-             
+
     # apply projection to data
     if epsgValue != -1:
         print "EPSG", epsgValue
         try:
             # First create a new spatial reference
             sr = osr.SpatialReference()
-            
+
             # Second specify the EPSG map code to be used
             if 6 == sr.ImportFromEPSG(epsgValue):
                 print "IGNORING EPSG VALUE TO SPECIFIED REASON"
                 return
-            
+
             # Third apply this projection to the dataset(s)
             if not multipleFiles:
                 ds.SetProjection(sr.ExportToWkt())
@@ -422,6 +421,6 @@ def writetifRaster(nameOfOutputFile, data, numberOfRows, numberOfColumns, xavg, 
                     i.SetProjection(sr.ExportToWkt())
             print sr
         except:
-            print "IGNORING EPSG VALUE" 
+            print "IGNORING EPSG VALUE"
 
 
