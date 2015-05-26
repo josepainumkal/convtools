@@ -6,51 +6,107 @@
 {% extends "base.html" %}
 {% set active_page = "search" %}
 {% block content %}
-
-<div class="row">
-  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-
-    <div id="searchFormContainer" class="centered">
-      <form method="get" class="form-inline">
-
-        <div class="form-group">
-            <label for="model_run_name" class="control-label">{{form.model_run_name.label}}</label>
-            <input type="text" class="form-control" id="model_run_name" name="model_run_name">
+    <div class="row">
+        <div class="col-md-12">
+            <h3 class="border-bottom">
+                Search Form
+            </h3>
+            <p> Fill up the search form with your choice of query parameter </p>
         </div>
-
-        <button type="submit" class="btn btn-small btn-success">{{form.submit.label}}</button>
-      </form>
     </div>
 
+    <div class="row">
+    <div class="col-md-offset-2 col-md-8">
 
-    {% if panels %}
-      <h1 class="page-header"> Search Results! </h1>
-      {% for panel in panels %}
-        <div class="col-md-4">
-          <div class="panel panel-primary ">
-            <div class="panel-heading">
-               {{ panel.model_run_name }}
+        <div id="searchFormContainer" class="margin-bottom">
+                <form method="get" action="" >
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class=" form-group">
+                        <label for="exampleInputName2">{{ form.model_run_name.label }} </label>
+                        {{ form.model_run_name(class="form-control") }}
+                    </div>
+                    <div class=" form-group">
+                        <label for="exampleInputName2">{{ form.researcher_name.label }} </label>
+                        {{ form.researcher_name(class="form-control") }}
+                    </div>
+                        </div>
+                        <div class="col-md-6">
+                             <div class=" form-group">
+                        <label for="exampleInputName2">{{ form.keywords.label }} </label>
+                        {{ form.keywords(class="form-control") }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="exampleInputName2">{{ form.description.label }} </label>
+                        {{ form.description(class="form-control") }}
+                    </div>
+                        </div>
+                    </div>
+                    <div class="centered">
+                        <button type="submit" name="submit" value="submit" class="btn btn-success">Search Model Run</button>
+                    </div>
+
+                </form>
             </div>
-            <ul class="list-group fixed-height-list">
-              <li class="list-group-item">
-                <strong>Watershed:</strong> {{ panel.watershed }}
-              </li>
-              <li class="list-group-item">
-                <strong>State:</strong>  {{ panel.state }}
-              </li>
-              <li class="list-group-item">
-                <strong>Model context:</strong>  {{ panel.model }}</a>
-              </li>
+            {% set messages = get_flashed_messages() %}
+            {% if messages %}
+            <div class="bg-danger">{{ messages[0] }}</div>
+            {% endif %}
 
-            </ul>
-          </div>
+    </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+            {% if panels %}
+                <div class="bg-success">
+                    <h3>Found {{ panels|length }} results</h3>
+                </div>
+
+                {% set start_row = true %}
+                {% for panel in panels %}
+                    {% if start_row==true %}
+                        <div class="row">
+                        {% set start_row = false %}
+                    {% endif %}
+                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                                {{ panel.model_run_name }}
+                            </h3>
+
+                        </div>
+                        <ul class="list-group fixed-height-list">
+
+                            <li class="list-group-item">
+                                <strong>Description:</strong> {{ panel.description }}
+                            </li>
+                            <li class="list-group-item">
+                                <strong>Keywords:</strong> {{ panel.keywords }}
+                            </li>
+                            <li class="list-group-item">
+                                <strong>Researcher:</strong> {{ panel.researcher_name }}
+                            </li>
+
+                        </ul>
+
+                    </div>
+                </div>
+                {% if loop.index is divisibleby 3 %}
+                    </div>
+                    {% set start_row = true %}
+                {% endif %}
+                {% endfor %}
+
+            {% else %}
+                <div class="bg-warning">
+                    <h3>No results found for the query</h3>
+                </div>
+            {% endif %}
+
 
         </div>
-      {% endfor %}
-
-    {% endif %}
-
-
-  </div>
-</div>
+    </div>
 {% endblock %}

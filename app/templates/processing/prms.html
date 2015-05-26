@@ -6,6 +6,8 @@
 
   <h1>PRMS</h1>
 
+  <body>  
+
   <p>
     Upload your PRMS data here to generate and download a NetCDF
     translation of your data. Eventually your data and the NetCDF
@@ -20,8 +22,18 @@
     PRMS documentation</a>.
   </p>
 
-  <body>      
-       
+  <ul>
+  <li> input file holds the PRMS model parameters. The values in the file represent 
+  the values of parameters for hydrologic, climate, or other modules used in PRMS. </li>
+  <li> HRU (Hydrologic Response Units) is the model spatial discretization. The values 
+  in hru file represents the location of stream cells in PRMS. </li>
+  <li> Number of rows implies the number of rows of the dataset. </li>
+  <li> Number of columns implies the number of columns of the dataset. </li>
+  <li> EPSG value implies the EPSG code of the dataset used for the projection. By default, 
+  the value is set as 4326. </li>
+  </ul>
+  
+
   <form action="upload" method="post" enctype="multipart/form-data">
     <div align = "center">
     <table>

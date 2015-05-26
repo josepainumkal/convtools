@@ -4,7 +4,7 @@ Sphinx==1.2.3
 simplejson==3.6.5
 alembic==0.7.4
 blinker==1.3
-configparser==3.3.0.post2
+configparser==3.5.0b2
 Flask==0.10.1
 Flask-Login==0.2.11
 Flask-Mail==0.9.1

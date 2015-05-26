@@ -2,7 +2,7 @@ from flask import current_app as app
 import os, shutil, netCDF4
 
 def findAverageResolution(fileHandle, numberOfRows, numberOfColumns):
-    
+
     data = fileHandle.readline()
     words = data.split()
     latitude =  float(words[1])
@@ -15,23 +15,23 @@ def findAverageResolution(fileHandle, numberOfRows, numberOfColumns):
 
     for i in column[1]:
         listOfXHRUCells.append(float(i))
-        xmin = min(listOfXHRUCells) 
+        xmin = min(listOfXHRUCells)
         xmax = max(listOfXHRUCells)
-          
+
     for j in column[-1]:
         listOfYHRUCells.append(float(j))
-        ymin = min(listOfYHRUCells) 
+        ymin = min(listOfYHRUCells)
         ymax = max(listOfYHRUCells)
 
-    xres = xmax - xmin 
-    yres = ymax - ymin 
+    xres = xmax - xmin
+    yres = ymax - ymin
     xavg = xres/numberOfRows
     yavg = yres/numberOfColumns
-    
-    return latitude, longitude, xavg, yavg  
+
+    return latitude, longitude, xavg, yavg
 
 def generateMetaData():
- 
+
     source = os.listdir(os.getcwd())
     for files in source:
         if files.endswith(".nc"):
@@ -44,9 +44,7 @@ def generateMetaData():
 	    ncfile.close()
 
 def moveFilesToANewDirectory():
-    
-    #folderName = "/home/likewise-open/UNR/lpalathingal/Desktop/New Files"
-    
+
     if not os.path.exists(app.config['DOWNLOAD_FOLDER']):
         os.makedirs(app.config['DOWNLOAD_FOLDER'])
 
