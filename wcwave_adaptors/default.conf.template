@@ -1,0 +1,21 @@
+### Configuration file for the virtual watershed data adaptors ###
+[Connection]
+watershed_url = https://vwp-dev.unm.edu
+user          = your_uname
+pass          = your_password
+
+[Researcher]
+researcher_name = Your Name
+mailing_address = 8659 Your Work Street (Mailstop, etc.)
+city            = City of your Research Institution
+state           = State of your Research Institution
+zip_code        = Zip Code of your Research Institution
+phone           = 555-555-5555
+email           = youremail@yourinstitute.edu
+
+[Geo]
+# repo comes with these to include three WCWAVE states
+default_west_bound  = -120.01
+default_east_bound  = -102.66
+default_north_bound = 49.13
+default_south_bound = 31.17

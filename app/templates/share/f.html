@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% set active_page = "share.index" %}
+
+{% block content %}
+
+<div class="row">
+  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    {% if model_run_uuid %}
+    <h1>
+      Add files for resource with UUID {{ model_run_uuid }}
+    </h1>
+    {% else %}
+    <p>
+    Please return to {{ url_for('share.resources') }} and click the link
+    for the resource you'd like to add to.
+    </p>
+    {% endif %}
+  </div>
+</div>
+
+<br> </br>
+
+<div class="container">
+  <form action="insert" method="post" enctype="multipart/form-data">
+  <div align = "center">
+
+    <table>
+        <tr><td>Upload file</td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td><input name = "file" type = "file" value = '' id = "file"></input></td></tr>
+        <tr><td>Select model</td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td><select name = "model"><option value="iSNOBAL">iSNOBAL</option><option value="PRMS">PRMS</option><option value="reference">reference</option></select></td></tr>
+        <tr><td>Name of watershed</td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td><input name = "watershed" type = "text" value = '' id = "watershed"></input></td></tr>
+        <tr><td>Description of watershed</td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td><input name = "description" rows = "5" value = '' id = "description"></input></td></tr>
+        <tr><td> State </td> <td>&nbsp;&nbsp;&nbsp;&nbsp;</td> <td><select name = "state"><option value="Nevada">Nevada</option><option value="Idaho">Idaho</option><option value="New Mexico">New Mexico</option></select></td></input></td></tr>
+         <input name = "uuid" type = "hidden" value = {{ model_run_uuid }} id = "uuid"></input>
+    </table> 
+    <br/>
+    <div align = center><INPUT Type="submit" VALUE="Insert" ></div>
+    </div>
+  </form>
+  
+  </body>
+
+<br/>
+
+<div align = "center">{{Success_Message}}</div>
+
+{% endblock %}
