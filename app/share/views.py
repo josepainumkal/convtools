@@ -9,7 +9,6 @@ from .forms import ResourceForm
 from .. import db
 from ..models import Resource
 
-# from wcwave_adaptors import VWClient
 from wcwave_adaptors import default_vw_client
 from wcwave_adaptors import make_fgdc_metadata, metadata_from_file
 
@@ -85,13 +84,6 @@ def resources():
     # add it to the list above (i.e. reload the page)
     return render_template('share/index.html', form=form)
 
-
-# @share.route('/files/<model_run_uuid>', methods=['GET', 'POST'])
-# @login_required
-# def files():
-    # "Interface for attaching/uploading individual files for a resource"
-
-
 @share.route('/files/<model_run_uuid>')
 @login_required
 def files(model_run_uuid):
@@ -101,27 +93,58 @@ def files(model_run_uuid):
 
     "View of file submission for as yet unselected resource to add to"
     model_run_uuid = model_run_uuid
-    return render_template('share/files.html', model_run_uuid=model_run_uuid)
+    return render_template('share/f.html', model_run_uuid=model_run_uuid)
+
+@share.route('/files/insert', methods=['POST'])
+@login_required
+def insert():
+
+    if request.files['file'].filename == '' or request.form['watershed'] == '' or request.form['description'] == '' or request.form['state'] == '':
+        return render_template('share/f.html', InputErrorMessage = "Please upload required file and/or fill in all the fields")
+
+    uploadedFile = request.files['file']
+    watershed_name = str(request.form['watershed'])
+    model_name = str(request.form['model'])
+    description = str(request.form['description'])
+    state = str(request.form['state'])
+    new_mr_uuid = str(request.form['uuid'])
+
+    if uploadedFile:
+        uploadedFileName = secure_filename(uploadedFile.filename)
+        uploadedFile.save(os.path.join(app.config['UPLOAD_FOLDER'], uploadedFileName))
+        res = VW_CLIENT.upload(new_mr_uuid, os.path.join(app.config['UPLOAD_FOLDER'], uploadedFileName))
+
+        input_file = uploadedFileName
+        parent_uuid = new_mr_uuid
+        start_datetime = '2010-01-01 00:00:00'
+	end_datetime = '2010-01-01 01:00:00'
+
+	# create XML FGDC-standard metadata that gets included in VW metadata
+	fgdc_metadata = make_fgdc_metadata(input_file, None, new_mr_uuid, start_datetime, end_datetime, model=model_name)
+
+        # create VW metadata
+	watershed_metadata = metadata_from_file(input_file, parent_uuid, new_mr_uuid, description, watershed_name, state, start_datetime=start_datetime, end_datetime=end_datetime, model_name=model_name, fgdc_metadata=fgdc_metadata)
+
+        response = VW_CLIENT.insert_metadata(watershed_metadata)
+
+        if model_name == "PRMS":
+            return render_template("share/files.html", model_run_uuid = new_mr_uuid, inputFileName = input_file)
 
 @share.route('/files/upload', methods=['POST'])
 @login_required
 def upload():
 
-    if request.files['input-file'].filename == '' or request.files['hru-file'].filename == '' or request.form['row'] == '' or request.form['column'] == '' or request.form['epsg'] == '':
+    if request.files['hru-file'].filename == '' or request.form['row'] == '' or request.form['column'] == '' or request.form['epsg'] == '':
         return render_template('share/files.html', InputErrorMessage = "Please upload required files and/or fill in all the fields")
 
     numberOfRows = int(request.form['row'])
     numberOfColumns = int(request.form['column'])
     epsgValue = int(request.form['epsg'])
-    inputFile = request.files['input-file']
+    inputFileName = str(request.form['input'])
     hruFile = request.files['hru-file']
     new_mr_uuid = str(request.form['uuid'])
 
-    if inputFile and allowed_file(inputFile.filename):
-        inputFileName = secure_filename(inputFile.filename)
-        inputFile.save(os.path.join(app.config['UPLOAD_FOLDER'], inputFileName))
-
-    if hruFile and allowed_file(hruFile.filename):
+    if hruFile:
         hruFileName = secure_filename(hruFile.filename)
         hruFile.save(os.path.join(app.config['UPLOAD_FOLDER'], hruFileName))
 
@@ -163,9 +186,8 @@ def upload():
 	    watershed_metadata = metadata_from_file(input_file, parent_uuid, new_mr_uuid, description, watershed_name, state, start_datetime=start_datetime, end_datetime=end_datetime, model_name=model_name, fgdc_metadata=fgdc_metadata)
 
             response = VW_CLIENT.insert_metadata(watershed_metadata)
-            #print response.text
 
-        return render_template("share/files.html", Success_Message = "Successfully Downloaded NetCDF files")
+        return render_template("share/files.html", Success_Message = "Successfully Inserted into the Virtual Watershed")
     else:
         return render_template("share/files.html", Error_Message = "The product of the number of rows and columns do not match the number of parameter values")
 
@@ -422,5 +444,6 @@ def writetifRaster(nameOfOutputFile, data, numberOfRows, numberOfColumns, xavg, 
             print sr
         except:
             print "IGNORING EPSG VALUE"
+
 
 

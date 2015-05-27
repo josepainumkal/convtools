@@ -3,21 +3,6 @@
 
 {% block content %}
 
-<div class="row">
-  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-    {% if model_run_uuid %}
-    <h1>
-      Add files for resource with UUID {{ model_run_uuid }}
-    </h1>
-    {% else %}
-    <p>
-    Please return to {{ url_for('share.resources') }} and click the link
-    for the resource you'd like to add to.
-    </p>
-    {% endif %}
-  </div>
-</div>
-
 <div class="container">
   
    <h1>PRMS</h1>
@@ -57,7 +42,7 @@
   <div align = "center">
 
     <table>
-        <tr><td>Upload input file</td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td><input name = "input-file" type = "file" value = '' id = "input-file"></input></td></tr>
+        <input name = "input" type = "hidden" value = {{ inputFileName }} id = "input"></input>
         <tr><td>Upload hru file</td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td><input name = "hru-file" type = "file" value = '' id = "hru-file"></input></td></tr>
         <tr><td>Number of rows</td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td><input name = "row" type = "text" value = '' id = "row"></input></td></tr>
         <tr><td>Number of columns</td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td><input name = "column" type = "text" value = '' id = "column"></input></td></tr>
