@@ -109,6 +109,8 @@ def insert():
     state = str(request.form['state'])
     new_mr_uuid = str(request.form['uuid'])
 
+    print new_mr_uuid
+
     if uploadedFile:
         uploadedFileName = secure_filename(uploadedFile.filename)
         uploadedFile.save(os.path.join(app.config['UPLOAD_FOLDER'], uploadedFileName))
@@ -167,7 +169,7 @@ def upload():
 
         dirList = os.listdir(app.config['DOWNLOAD_FOLDER'])
         for fname in dirList:
-
+            print "uploading " + fname
             res = VW_CLIENT.upload(new_mr_uuid, os.path.join(app.config['DOWNLOAD_FOLDER'], fname))
 
             input_file = fname
