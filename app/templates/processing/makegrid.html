@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% set active_page = "processing.makegrid" %}
+
+{% block head_ext %}
+<!-- cdn for modernizr, if you haven't included it already -->
+<script src="http://cdn.jsdelivr.net/webshim/1.12.4/extras/modernizr-custom.js"></script>
+<!-- polyfiller file to detect and load polyfills -->
+<script src="http://cdn.jsdelivr.net/webshim/1.12.4/polyfiller.js"></script>
+<script>
+  webshims.setOptions('waitReady', false);
+  webshims.setOptions('forms-ext', {types: 'date'});
+  webshims.polyfill('forms forms-ext');
+</script>
+{% endblock %}
+
+
+
+{% block content %}
+<h1>Make some grids, yo!</h1>
+<div class="container" id="makegrid-form-container">
+  <form action="{{ url_for('.makegrid') }}" method=post 
+        class=add-entry id="makegrid-form" >
+    <dl>
+
+      <dt><h3 style="display:inline-block">Select a watershed: </h3>
+      <dd>
+        <div class="row">
+          <div class="col-sm-7">
+            <select id="makegrid-watershed-select" 
+                    class="selectpicker" data-width="auto" name="makegrid-watershed-select" 
+                    form="mdform">
+                  <option value="Dry Creek">Dry Creek</option>
+                  <option value="Reynolds Creek">Reynolds Creek</option>
+                  <option value="Valles Caldera">Valles Caldera</option>
+            </select>
+          </div>
+          <div class="col-sm-5"></div>
+        </div>
+
+      <dt><h3>Select a start date and hour</h3>
+      <dt>
+        <div class="row">
+          <div class="col-sm-5">
+            Date: <input type="date" name="makegrid-start-date" id="makegrid-start-date" 
+                     placeholder="2010-10-01"/>
+          </div>
+          <div class="col-sm-7">
+            Hour: <select id="makegrid-start-hour" name="makegrid-start-hour">
+              {% for i in range(24) %}
+              <option value="{{ i }}">{{ i }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+
+      <dt><h3>Select an end date and hour</h3>
+      <dt>
+        <div class="row">
+          <div class="col-sm-5">
+            Date: <input type="date" name="makegrid-end-date" id="makegrid-end-date" 
+                     placeholder="2011-10-01"/>
+          </div>
+          <div class="col-sm-7">
+            Hour: <select id="makegrid-end-hour" name="makegrid-end-hour">
+              {% for i in range(24) %}
+              <option value="{{ i }}">{{ i }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        
+    </dl>
+        <input type="submit" value='Submit' id="makegrid-submit" class="btn btn-primary btn-lg md-button"/>
+  </form>
+</div>
+
+{% endblock %}
