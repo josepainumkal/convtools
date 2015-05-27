@@ -21,7 +21,6 @@ class Config:
     VWPLATFORM_ADMIN = os.environ.get('VWPLATFORM_ADMIN') or 'Admin'
 
     UPLOAD_FOLDER = "uploads"
-    ALLOWED_EXTENSIONS = set(['param', 'DAT'])
     DOWNLOAD_FOLDER = "downloads"
 
     @staticmethod
