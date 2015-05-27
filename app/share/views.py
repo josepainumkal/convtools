@@ -107,30 +107,28 @@ def insert():
     model_name = str(request.form['model'])
     description = str(request.form['description'])
     state = str(request.form['state'])
-    new_mr_uuid = str(request.form['uuid'])
-
-    print new_mr_uuid
+    model_run_uuid = str(request.form['uuid'])
 
     if uploadedFile:
         uploadedFileName = secure_filename(uploadedFile.filename)
         uploadedFile.save(os.path.join(app.config['UPLOAD_FOLDER'], uploadedFileName))
-        res = VW_CLIENT.upload(new_mr_uuid, os.path.join(app.config['UPLOAD_FOLDER'], uploadedFileName))
+        res = VW_CLIENT.upload(model_run_uuid, os.path.join(app.config['UPLOAD_FOLDER'], uploadedFileName))
 
         input_file = uploadedFileName
-        parent_uuid = new_mr_uuid
+        parent_uuid = model_run_uuid
         start_datetime = '2010-01-01 00:00:00'
 	end_datetime = '2010-01-01 01:00:00'
 
 	# create XML FGDC-standard metadata that gets included in VW metadata
-	fgdc_metadata = make_fgdc_metadata(input_file, None, new_mr_uuid, start_datetime, end_datetime, model=model_name)
+	fgdc_metadata = make_fgdc_metadata(input_file, None, model_run_uuid, start_datetime, end_datetime, model=model_name)
 
         # create VW metadata
-	watershed_metadata = metadata_from_file(input_file, parent_uuid, new_mr_uuid, description, watershed_name, state, start_datetime=start_datetime, end_datetime=end_datetime, model_name=model_name, fgdc_metadata=fgdc_metadata)
+	watershed_metadata = metadata_from_file(input_file, parent_uuid, model_run_uuid, description, watershed_name, state, start_datetime=start_datetime, end_datetime=end_datetime, model_name=model_name, fgdc_metadata=fgdc_metadata)
 
         response = VW_CLIENT.insert_metadata(watershed_metadata)
 
-        if model_name == "PRMS":
-            return render_template("share/files.html", model_run_uuid = new_mr_uuid, inputFileName = input_file)
+    return render_template('share/f.html', model_run_uuid=model_run_uuid)
+
 
 @share.route('/files/upload', methods=['POST'])
 @login_required
