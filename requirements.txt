@@ -29,4 +29,4 @@ pytz==2015.2
 requests==2.6.2
 six==1.9.0
 utm==0.4.0
-cython==0.19
+gdal==1.9.0
