@@ -36,11 +36,19 @@
     <div align = center><INPUT Type="submit" VALUE="Insert" ></div>
     </div>
   </form>
-  
-  </body>
 
 <br/>
 
-<div align = "center">{{Success_Message}}</div>
+<table border="1" style="width:100%">
+      <tr><td><b>&nbsp;File Name</b></td>&nbsp;&nbsp;&nbsp;&nbsp;<td><b>&nbsp;Watershed Name</b></td>&nbsp;&nbsp;&nbsp;&nbsp;<td><b>&nbsp;Description</b></td>&nbsp;&nbsp;&nbsp;&nbsp;<td><b>&nbsp;Downloads/Services</b></td>&nbsp;&nbsp;&nbsp;&nbsp;</tr> 
+  {% for dResult in dataResults %}
+      <tr><td>&nbsp;{{dResult['name']}} </td>&nbsp;&nbsp;&nbsp;&nbsp;<td>&nbsp;{{dResult['categories'][0]['location']}}</td>&nbsp;&nbsp;&nbsp;&nbsp;<td>&nbsp;{{dResult['description']}} </td>&nbsp;&nbsp;&nbsp;&nbsp;<td>&nbsp;<a href= {{dResult['services'][1]['wcs']}} > wcs &nbsp;<a href= {{dResult['services'][0]['wms']}} > wms &nbsp;<a href= {{dResult['downloads'][0]['tif']}} > Download </td>&nbsp;&nbsp;&nbsp;&nbsp;</td></tr> 
+  {% endfor %}
+</table>
+  
+  </body>
+
+
+
 
 {% endblock %}

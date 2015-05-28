@@ -13,6 +13,7 @@ from wcwave_adaptors import default_vw_client
 from wcwave_adaptors import make_fgdc_metadata, metadata_from_file
 
 import os, osr, gdal, util, numpy
+import time
 
 VW_CLIENT = default_vw_client()
 
@@ -130,8 +131,14 @@ def insert():
                 taxonomy='geoimage', model_set_taxonomy='grid')
 
         response = VW_CLIENT.insert_metadata(watershed_metadata)
-
-    return render_template('share/f.html', model_run_uuid=model_run_uuid)
+ 
+        time.sleep(1)
+        
+        rData = VW_CLIENT.dataset_search(model_run_uuid = model_run_uuid) 
+        dataResults = rData.records 
+    
+    return render_template('share/f.html', model_run_uuid = model_run_uuid, dataResults = dataResults)
+    #return render_template('share/files.html', model_run_uuid = model_run_uuid, dataResults = dataResults, inputFileName = input_file)
 
 
 @share.route('/files/upload', methods=['POST'])
