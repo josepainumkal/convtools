@@ -29,24 +29,35 @@ def search():
     Returns: (str) HTML string of the model run panel
     """
     panels = []
-    search_args = defaultdict()
+    search_fields = ['model_run_name', 'researcher_name', 'model_keywords', 'description']
+    search_results = []
     form = SearchForm(request.args)
     if request.args and not form.validate():
         flash('Please fill up at least one field')
 
         return render_template('search.html', form=form, panels=panels)
-    if form:
-        search_args['model_run_name'] = form.model_run_name.data
-        search_args['researcher_name'] = form.researcher_name.data
-        search_args['model_keywords'] = form.keywords.data
-        search_args['description'] = form.description.data
+    if request.args:
+        words = form.model_run_name.data.split()
 
-    search_results = vw_client.modelrun_search(**search_args)
-
-    records = search_results.records
+    if request.args:
+        for search_field in search_fields:
+            search_args = defaultdict()
+            for w in words:
+                search_args[search_field] = w
+                results = vw_client.modelrun_search(**search_args)
+                search_results += results.records
+        #search_args['model_run_name'] = form.model_run_name.data
+        #search_args['researcher_name'] = form.researcher_name.data
+        #search_args['model_keywords'] = form.keywords.data
+        #search_args['description'] = form.description.data
+    #print search_results
+    #search_results = vw_client.modelrun_search(**search_args)
+    #search_results = [dict(t) for t in set([tuple(d.items()) for d in search_results])]
+    records = search_results
     if records:
         # make a panel of each metadata record
         panels = [_make_panel(rec) for rec in records if rec]
+
         panels = {p['model_run_uuid']: p for p in panels}.values()
 
     # pass the list of parsed records to the template to generate results page
