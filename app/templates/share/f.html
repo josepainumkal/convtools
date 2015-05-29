@@ -47,17 +47,21 @@
 <tr><td><b>FileName</b></td>   <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td> <td><b>Watershed Name</b></td>   <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>   <td><b>Description</b>    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>   <td><b>Services and Download</b></td></tr>
 
 {% for dResult in dataResults %}
+
 <tr><td>{{dResult['name']}}</td>  <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td> <td>{{dResult['categories'][0]['location']}}</td>  <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td> <td>{{dResult['description']}}</td>  <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td> 
 
 {% if dResult['services']|length > 0 %}
-<td><a href= {{dResult['services'][1]['wcs']}}>WCS</a>&nbsp;&nbsp;<a href= {{dResult['services'][0]['wms']}} >WMS</a>
+<td><a href= {{dResult['services'][1]['wcs']}}>WCS</a>&nbsp;&nbsp;<a href= {{dResult['services'][0]['wms']}} >WMS</a></td></tr>
 {% endif %}
 
-{% if dResult['name'].split('.')[-1] != 'tif' %}
-<td><a href= {{dResult['downloads'][0][dResult['name'].split('.')[-1]]}}>Download</a></td></tr>
+{% if not dResult['downloads'][0]['tif'] %}
+ {% for key in dResult['downloads'][0] %}
+ <td><a href= {{dResult['downloads'][0][key]}}>Download</a></td></tr>
+ {% endfor %}
 {% endif %}
 
 {% endfor %}
+
 </li>
 </table>
 </div>
