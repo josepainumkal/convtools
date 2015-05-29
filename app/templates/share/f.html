@@ -39,15 +39,18 @@
 
 <br/>
 
+<div align ="center">
 <ul class="list-group">
 <li class="list-group-item">
 <table>
-<tr><td><b>FileName</b></td>   <td>&nbsp;&nbsp;&nbsp;&nbsp;</td> <td><b>Watershed Name</b></td>   <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>   <td><b>Description</b>    <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>   <td><b>Services and Download</b></td></tr>
+<tr><td><b>FileName</b></td>   <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td> <td><b>Watershed Name</b></td>   <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>   <td><b>Description</b>    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>   <td><b>Services and Download</b></td></tr>
 {% for dResult in dataResults %}
-<tr><td>{{dResult['name']}}</td>  <td>&nbsp;&nbsp;&nbsp;&nbsp;</td> <td>{{dResult['categories'][0]['location']}}</td>  <td>&nbsp;&nbsp;&nbsp;&nbsp;</td> <td>{{dResult['description']}}</td>  <td>&nbsp;&nbsp;&nbsp;&nbsp;</td> <td><a href= {{dResult['services'][1]['wcs']}}>wcs</a>&nbsp;<a href= {{dResult['services'][0]['wms']}} >wms</a>&nbsp;<a href= {{dResult['downloads'][0]['tif']}}>Download</a></td></tr>
+<tr><td>{{dResult['name']}}</td>  <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td> <td>{{dResult['categories'][0]['location']}}</td>  <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td> <td>{{dResult['description']}}</td>  <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td> <td><a href= {{dResult['services'][1]['wcs']}}>wcs</a>&nbsp;&nbsp;<a href= {{dResult['services'][0]['wms']}} >wms</a>&nbsp;&nbsp;<a href= {{dResult['downloads'][0]['tif']}}>Download</a></td></tr>
 {% endfor %}
 </li>
 </table>
+</div>
+
 </body>
 
 {% endblock %}
