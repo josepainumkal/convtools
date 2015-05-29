@@ -295,7 +295,7 @@ def writencRaster(nameOfOutputFile, data, numberOfRows, numberOfColumns, xavg, y
     # Here I am assuming that north is up in this projection
     if yavg > 0:
         yavg *= -1
-    geoTransform = (longitude, xavg, 0, latitude, 0, yavg)
+    geoTransform = (latitude, xavg, 0, longitude, 0, yavg)
     print geoTransform
 
     if not multipleFiles:
@@ -417,7 +417,7 @@ def writetifRaster(nameOfOutputFile, data, numberOfRows, numberOfColumns, xavg, 
     # Here I am assuming that north is up in this projection
     if yavg > 0:
         yavg *= -1
-    geoTransform = (longitude, xavg, 0, latitude, 0, yavg)
+    geoTransform = (latitude, xavg, 0, longitude, 0, yavg)
     print geoTransform
 
     if not multipleFiles:
@@ -455,6 +455,4 @@ def writetifRaster(nameOfOutputFile, data, numberOfRows, numberOfColumns, xavg, 
             print sr
         except:
             print "IGNORING EPSG VALUE"
-
-
-
+            
