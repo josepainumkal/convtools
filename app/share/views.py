@@ -94,7 +94,11 @@ def files(model_run_uuid):
 
     "View of file submission for as yet unselected resource to add to"
     model_run_uuid = model_run_uuid
-    return render_template('share/f.html', model_run_uuid=model_run_uuid)
+    
+    rData = VW_CLIENT.dataset_search(model_run_uuid = model_run_uuid) 
+    dataResults = rData.records
+    
+    return render_template('share/f.html', model_run_uuid=model_run_uuid, dataResults = dataResults)
 
 @share.route('/files/insert', methods=['POST'])
 @login_required
