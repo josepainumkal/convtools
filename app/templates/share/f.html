@@ -39,32 +39,48 @@
 
 <br/>
 
-<div align ="center">
-<ul class="list-group">
-<li class="list-group-item">
-<table>
+<div class="container">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <td><b>File Name</b></td>   
+        <td><b>Watershed Name</b></td>   
+        <td><b>Description</b></td> 
+        <td><b>Services and Download</b></td>
+      </tr>
+    </thead>
 
-<tr><td><b>FileName</b></td>   <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td> <td><b>Watershed Name</b></td>   <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>   <td><b>Description</b>    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>   <td><b>Services and Download</b></td></tr>
+  {% for dResult in dataResults %}
+    <tr>
+      <td>{{dResult['name']}}</td>  
+      <td>{{dResult['categories'][0]['location']}}</td>   
+      <td>{{dResult['description']}}</td>  
 
-{% for dResult in dataResults %}
+      {% if dResult['services']|length > 0 %}
+      <td class="file-list">
+        <span class="badge">
+          <a href= {{dResult['services'][1]['wcs']}}>WCS</a>
+        </span>
+        <span class="badge">
+          <a href= {{dResult['services'][0]['wms']}}>WMS</a>
+        </span>
+      </td>
+      {% endif %}
 
-<tr><td>{{dResult['name']}}</td>  <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td> <td>{{dResult['categories'][0]['location']}}</td>  <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td> <td>{{dResult['description']}}</td>  <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td> 
+    {% if not dResult['downloads'][0]['tif'] %}
+     {% for key in dResult['downloads'][0] %}
+     <td class="file-list">
+       <span class="badge">
+         <a href= {{dResult['downloads'][0][key]}}>Download</a>
+       </span>
+     </td>
+     {% endfor %}
+    {% endif %}
+    </tr>
+  {% endfor %}
+  </table>
 
-{% if dResult['services']|length > 0 %}
-<td><a href= {{dResult['services'][1]['wcs']}}>WCS</a>&nbsp;&nbsp;<a href= {{dResult['services'][0]['wms']}} >WMS</a></td></tr>
-{% endif %}
-
-{% if not dResult['downloads'][0]['tif'] %}
- {% for key in dResult['downloads'][0] %}
- <td><a href= {{dResult['downloads'][0][key]}}>Download</a></td></tr>
- {% endfor %}
-{% endif %}
-
-{% endfor %}
-
-</li>
-</table>
-</div>
+</div> <!-- end of table displaying currently tracked files for model run -->
 
 </body>
 

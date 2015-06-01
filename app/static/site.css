@@ -170,3 +170,15 @@ a.splash-opt {
   width: 100%;
 }
 
+div.container table tr td.file-list {
+    vertical-align: middle;
+}
+
+span.badge {
+  float: right;
+  margin: auto 4px;
+}
+
+span.badge>a {
+  color: white;
+}
