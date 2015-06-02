@@ -61,7 +61,7 @@
 
             {% if panels %}
                 <div class="bg-success">
-                    <h3>Found {{ panels|length }} results</h3>
+                    <h3>Found {{ panels|length }} resources ready for iSNOBAL!</h3>
                 </div>
 
                 {% set start_row = true %}
@@ -89,6 +89,15 @@
                             <li class="list-group-item">
                                 <strong>Researcher:</strong> {{ panel.researcher_name }}
                             </li>
+                            {% if 'isnobal' in panel.keywords %}
+                              <li class="list-group-item">
+                              <a href="{{url_for('processing.isnobal')}}/{{ panel.model_run_uuid}}">
+                                <span class="btn btn-success isnobal-label">
+                                    Run iSNOBAL
+                                </span>
+                              </a>
+                              </li>
+                            {% endif %}
 
                         </ul>
 

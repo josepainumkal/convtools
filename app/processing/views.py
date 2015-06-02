@@ -3,6 +3,7 @@ from flask import current_app as app
 from flask_login import login_required, current_user
 from werkzeug import secure_filename
 from . import processing
+from ..main.views import _make_panel
 
 from wcwave_adaptors import default_vw_client
 from wcwave_adaptors import make_fgdc_metadata, metadata_from_file
@@ -33,11 +34,43 @@ def prms():
 
     # create a new model_run_name
     name = id_generator()
-    
-    # create a new model_run_uuid 
+
+    # create a new model_run_uuid
     new_mr_uuid = VW_CLIENT.initialize_modelrun(model_run_name=name, description='lehman creek', researcher_name=current_user.name, keywords='prms,example,nevada')
 
-    return render_template('processing/prms.html', model_run_uuid = new_mr_uuid)
+    return render_template('processing/prms.html', model_run_uuid=new_mr_uuid)
+
+@processing.route('/isnobal', methods=['GET'], defaults={'model_run_uuid': None})
+@processing.route('/isnobal/<model_run_uuid>', methods=['GET', 'POST'])
+@login_required
+def isnobal(model_run_uuid):
+
+    if model_run_uuid:
+
+        model_run_record = \
+            VW_CLIENT.modelrun_search(model_run_id=model_run_uuid).records[0]
+
+        model_run_name = model_run_record['Model Run Name']
+
+        panels = None
+
+    else:
+
+        model_run_name = None
+
+        isnobal_ready = filter(lambda r: 'isnobal' in r['Keywords'],
+                               VW_CLIENT.modelrun_search().records)
+
+        if isnobal_ready:
+            # make a panel of each metadata record
+            panels = [_make_panel(rec) for rec in isnobal_ready if rec]
+
+            panels = {p['model_run_uuid']: p for p in panels}.values()
+
+
+    return render_template('processing/isnobal.html',
+                           model_run_name=model_run_name,
+                           panels=panels)
 
 @processing.route('/upload', methods=['POST'])
 def upload():

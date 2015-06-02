@@ -197,6 +197,10 @@ span.badge {
   margin: auto 4px;
 }
 
+.isnobal-label {
+    width: 100%
+}
+
 span.badge>a {
   color: white;
   background-color: green;
