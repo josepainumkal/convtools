@@ -92,13 +92,22 @@ def files(model_run_uuid):
     if not os.path.exists(app.config['UPLOAD_FOLDER']):
         os.makedirs(app.config['UPLOAD_FOLDER'])
 
+    model_run_record = \
+        VW_CLIENT.modelrun_search(model_run_id=model_run_uuid).records[0]
+
+    model_run_name = model_run_record['Model Run Name']
+
+    model_run_desc = model_run_record['Description']
+
     "View of file submission for as yet unselected resource to add to"
     model_run_uuid = model_run_uuid
-    
-    rData = VW_CLIENT.dataset_search(model_run_uuid = model_run_uuid) 
+
+    rData = VW_CLIENT.dataset_search(model_run_uuid=model_run_uuid)
     dataResults = rData.records
-    
-    return render_template('share/f.html', model_run_uuid=model_run_uuid, dataResults = dataResults)
+
+    return render_template('share/f.html', model_run_name=model_run_name,
+                           model_run_desc=model_run_desc,
+                           dataResults=dataResults)
 
 @share.route('/files/insert', methods=['POST'])
 @login_required
@@ -135,12 +144,12 @@ def insert():
                 taxonomy='geoimage', model_set_taxonomy='grid')
 
         response = VW_CLIENT.insert_metadata(watershed_metadata)
- 
+
         time.sleep(1)
-        
-        rData = VW_CLIENT.dataset_search(model_run_uuid = model_run_uuid) 
-        dataResults = rData.records 
-    
+
+        rData = VW_CLIENT.dataset_search(model_run_uuid = model_run_uuid)
+        dataResults = rData.records
+
     return render_template('share/f.html', model_run_uuid = model_run_uuid, dataResults = dataResults)
     #return render_template('share/files.html', model_run_uuid = model_run_uuid, dataResults = dataResults, inputFileName = input_file)
 
@@ -459,4 +468,4 @@ def writetifRaster(nameOfOutputFile, data, numberOfRows, numberOfColumns, xavg, 
             print sr
         except:
             print "IGNORING EPSG VALUE"
-            
+

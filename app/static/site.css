@@ -133,6 +133,10 @@ h3.thumbnail-title:hover {
   text-decoration: none;
 }
 
+.borderless tbody tr td, .borderless tbody tr th, .borderless thead tr th {
+    border: none !important;
+}
+
 div#splash-opts>a:hover{
     text-decoration:none; 
 }
@@ -188,10 +192,12 @@ div.container table tr td.file-list {
 }
 
 span.badge {
-  float: right;
+  float: left;
+  background-color: green;
   margin: auto 4px;
 }
 
 span.badge>a {
   color: white;
+  background-color: green;
 }

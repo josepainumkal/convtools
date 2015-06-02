@@ -5,10 +5,12 @@
 
 <div class="row">
   <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-    {% if model_run_uuid %}
+    {% if model_run_name %}
     <h1>
-      Add files for resource with UUID {{ model_run_uuid }}
+      View or add files to resource
     </h1>
+    <h2 style="text-align:center"><span>Resource Name:</span> <b>{{ model_run_name }}</b></h2>
+    <h2 style="text-align:center"><span>Description:</span> <b>{{ model_run_desc }}</b></h2>
     {% else %}
     <p>
     Please return to {{ url_for('share.resources') }} and click the link
@@ -20,6 +22,7 @@
 
 <br> </br>
 
+<h1>Upload new data</h1>
 <div class="container">
   <form action="insert" method="post" enctype="multipart/form-data">
   <div align = "center">
@@ -38,6 +41,8 @@
   </form>
 
 <br/>
+
+<h1>List of data in this resource</h1>
 
 <div class="container">
   <table class="table table-striped">
@@ -76,6 +81,8 @@
      </td>
      {% endfor %}
     {% endif %}
+    <td><div class="btn-group-xs"><span class="btn btn-danger">Remove File</span>
+    </div></td>
     </tr>
   {% endfor %}
   </table>

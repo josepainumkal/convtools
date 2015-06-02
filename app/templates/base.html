@@ -24,7 +24,9 @@
 
   {% set navigation_bar = [('/', 'main.index', 'Home'),
                            ('/search', 'main.search', 'Search'),
-                           ('/share', 'share.index', 'Share')] %}
+                           ('/processing', 'processing.index', 'Modeling'),
+                           ('/share', 'share.index', 'Share'),
+                           ] %}
   {% set active_page = active_page|default('index') %}
 
   <div class="container">
