@@ -16,62 +16,106 @@
 
 
 {% block content %}
-<h1>Make some grids, yo!</h1>
-<div class="container" id="makegrid-form-container">
-  <form action="{{ url_for('.makegrid') }}" method=post 
-        class=add-entry id="makegrid-form" >
-    <dl>
+<div class="content">
+  <h1>Create gridded data</h1>
+  <p>
+    Select from the following options to create your customized gridded data. 
+    Currently we are only producing grids for historical Reynolds Creek data from
+    a combination of a Reynolds Creek DEM and a database of several decades of
+    weather station data.
+  </p>
+  <div class="container" id="makegrid-form-container">
+    <form action="{{ url_for('.makegrid') }}" method=post 
+          class=add-entry id="makegrid-form" >
+      <dl>
 
-      <dt><h3 style="display:inline-block">Select a watershed: </h3>
-      <dd>
-        <div class="row">
-          <div class="col-sm-7">
-            <select id="makegrid-watershed-select" 
-                    class="selectpicker" data-width="auto" name="makegrid-watershed-select" 
-                    form="mdform">
-                  <option value="Dry Creek">Dry Creek</option>
-                  <option value="Reynolds Creek">Reynolds Creek</option>
-                  <option value="Valles Caldera">Valles Caldera</option>
-            </select>
+        <dt><h3 style="display:inline-block">Select a watershed: </h3>
+        <dd>
+          <div class="row">
+            <div class="col-sm-7">
+              <select id="makegrid-watershed-select" 
+                      class="selectpicker" data-width="auto" name="makegrid-watershed-select" 
+                      form="mdform">
+                    <option value="Dry Creek">Dry Creek</option>
+                    <option value="Reynolds Creek">Reynolds Creek</option>
+                    <option value="Valles Caldera">Valles Caldera</option>
+              </select>
+            </div>
+            <div class="col-sm-5"></div>
           </div>
-          <div class="col-sm-5"></div>
+
+        <dt><h3>Select a start date and hour</h3>
+        <dt>
+          <div class="row">
+            <div class="col-sm-5">
+              Date: <input type="date" name="makegrid-start-date" id="makegrid-start-date" 
+                       placeholder="2010-10-01"/>
+            </div>
+            <div class="col-sm-7">
+              Hour: <select id="makegrid-start-hour" name="makegrid-start-hour">
+                {% for i in range(24) %}
+                <option value="{{ i }}">{{ i }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+
+        <dt><h3>Select an end date and hour</h3>
+        <dt>
+          <div class="row">
+            <div class="col-sm-5">
+              Date: <input type="date" name="makegrid-end-date" id="makegrid-end-date" 
+                       placeholder="2011-10-01"/>
+            </div>
+            <div class="col-sm-7">
+              Hour: <select id="makegrid-end-hour" name="makegrid-end-hour">
+                {% for i in range(24) %}
+                <option value="{{ i }}">{{ i }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+
+        <dt><h3>Specify Time Step</h3>
+        <dt>
+          <input type="radio" name="timestep" value="1 hour" checked>  1 hour
+          <br>
+          <input type="radio" name="timestep" value="3 hours">  3 hours
+          <br>
+
+        <dt><h3>Specify Kriging Method</h3>
+        <dt>
+          <input type="radio" name="kriging" value="Empirical Bayesian" checked>  Empirical Bayesian (Slower but more accurate)
+          <br>
+          <input type="radio" name="kriging" value="Detrended">  Detrended
+          <br>
+
+        <dt><h3>Select variables of interest</h3>
+        <div class="row">
+          <div class="col-sm-6">
+            {% for value in 
+              ["Run all tools", 
+               "Constants (roughness len, snow-water sat)",
+               "Air Temperature", "Dew Point Temperature", "Snow Depth",
+               "Precipitation Mass"] %}
+               <input type="checkbox" name="variables" value="{{ value }}">  {{ value }}<br>
+            {% endfor %}
+          </div>
+          <div class="col-sm-6">
+            {% for value in 
+              ["Snow Properties (temperature, density)", "Soil Temperature",
+               "Solar Radiation", "Thermal Radiation", "Vapor Pressure",
+               "Wind Speed"] %}
+               <input type="checkbox" name="variables" value="{{ value }}">  {{ value }}<br>
+            {% endfor %}
+          </div>
         </div>
 
-      <dt><h3>Select a start date and hour</h3>
-      <dt>
-        <div class="row">
-          <div class="col-sm-5">
-            Date: <input type="date" name="makegrid-start-date" id="makegrid-start-date" 
-                     placeholder="2010-10-01"/>
-          </div>
-          <div class="col-sm-7">
-            Hour: <select id="makegrid-start-hour" name="makegrid-start-hour">
-              {% for i in range(24) %}
-              <option value="{{ i }}">{{ i }}</option>
-              {% endfor %}
-            </select>
-          </div>
-        </div>
-
-      <dt><h3>Select an end date and hour</h3>
-      <dt>
-        <div class="row">
-          <div class="col-sm-5">
-            Date: <input type="date" name="makegrid-end-date" id="makegrid-end-date" 
-                     placeholder="2011-10-01"/>
-          </div>
-          <div class="col-sm-7">
-            Hour: <select id="makegrid-end-hour" name="makegrid-end-hour">
-              {% for i in range(24) %}
-              <option value="{{ i }}">{{ i }}</option>
-              {% endfor %}
-            </select>
-          </div>
-        </div>
-        
-    </dl>
-        <input type="submit" value='Submit' id="makegrid-submit" class="btn btn-primary btn-lg md-button"/>
-  </form>
+        <dt>
+          
+      </dl>
+          <input type="submit" value='Submit' id="makegrid-submit" class="btn btn-primary btn-lg md-button"/>
+    </form>
+  </div>
 </div>
-
 {% endblock %}
