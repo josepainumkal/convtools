@@ -95,9 +95,11 @@ def files(model_run_uuid):
     model_run_record = \
         VW_CLIENT.modelrun_search(model_run_id=model_run_uuid).records[0]
 
-    model_run_name = model_run_record['Model Run Name']
+    model_run_uuid = model_run_record['Model Run UUID']
 
     model_run_desc = model_run_record['Description']
+
+    model_run_name = model_run_record['Model Run Name']
 
     "View of file submission for as yet unselected resource to add to"
     model_run_uuid = model_run_uuid
@@ -107,6 +109,7 @@ def files(model_run_uuid):
 
     return render_template('share/f.html', model_run_name=model_run_name,
                            model_run_desc=model_run_desc,
+                           model_run_uuid=model_run_uuid,
                            dataResults=dataResults)
 
 @share.route('/files/insert', methods=['POST'])
