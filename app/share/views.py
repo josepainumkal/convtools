@@ -13,6 +13,7 @@ from wcwave_adaptors import default_vw_client
 from wcwave_adaptors import make_fgdc_metadata, metadata_from_file
 
 import os, osr, gdal, util, numpy
+import time
 
 VW_CLIENT = default_vw_client()
 
@@ -91,9 +92,22 @@ def files(model_run_uuid):
     if not os.path.exists(app.config['UPLOAD_FOLDER']):
         os.makedirs(app.config['UPLOAD_FOLDER'])
 
+    model_run_record = \
+        VW_CLIENT.modelrun_search(model_run_id=model_run_uuid).records[0]
+
+    model_run_name = model_run_record['Model Run Name']
+
+    model_run_desc = model_run_record['Description']
+
     "View of file submission for as yet unselected resource to add to"
     model_run_uuid = model_run_uuid
-    return render_template('share/f.html', model_run_uuid=model_run_uuid)
+
+    rData = VW_CLIENT.dataset_search(model_run_uuid=model_run_uuid)
+    dataResults = rData.records
+
+    return render_template('share/f.html', model_run_name=model_run_name,
+                           model_run_desc=model_run_desc,
+                           dataResults=dataResults)
 
 @share.route('/files/insert', methods=['POST'])
 @login_required
@@ -131,7 +145,13 @@ def insert():
 
         response = VW_CLIENT.insert_metadata(watershed_metadata)
 
-    return render_template('share/f.html', model_run_uuid=model_run_uuid)
+        time.sleep(1)
+
+        rData = VW_CLIENT.dataset_search(model_run_uuid = model_run_uuid)
+        dataResults = rData.records
+
+    return render_template('share/f.html', model_run_uuid = model_run_uuid, dataResults = dataResults)
+    #return render_template('share/files.html', model_run_uuid = model_run_uuid, dataResults = dataResults, inputFileName = input_file)
 
 
 @share.route('/files/upload', methods=['POST'])
@@ -288,7 +308,7 @@ def writencRaster(nameOfOutputFile, data, numberOfRows, numberOfColumns, xavg, y
     # Here I am assuming that north is up in this projection
     if yavg > 0:
         yavg *= -1
-    geoTransform = (longitude, xavg, 0, latitude, 0, yavg)
+    geoTransform = (latitude, xavg, 0, longitude, 0, yavg)
     print geoTransform
 
     if not multipleFiles:
@@ -410,7 +430,7 @@ def writetifRaster(nameOfOutputFile, data, numberOfRows, numberOfColumns, xavg, 
     # Here I am assuming that north is up in this projection
     if yavg > 0:
         yavg *= -1
-    geoTransform = (longitude, xavg, 0, latitude, 0, yavg)
+    geoTransform = (latitude, xavg, 0, longitude, 0, yavg)
     print geoTransform
 
     if not multipleFiles:
@@ -448,6 +468,4 @@ def writetifRaster(nameOfOutputFile, data, numberOfRows, numberOfColumns, xavg, 
             print sr
         except:
             print "IGNORING EPSG VALUE"
-
-
 

@@ -23,7 +23,7 @@ body {
 }
 
 .container{
-  font-size:1.2em;
+  font-size:1.15em;
 }
 
 .centered{
@@ -40,8 +40,8 @@ body {
 }
 
 html, body {
-  margin-left: -55px;
-  padding: 0;
+  /*margin-left: -15px;*/
+  padding: 10px;
   border-width:0;
   font-family: Allerta, sans-serif;
 }
@@ -65,13 +65,8 @@ body, p {
   display: table;
 }
 .thumbnail{
-    height: 395px;
+    height: 375px;
     border: 4pt black;
-}
-
-.thumbnail:hover {
-    
-    height: 405;
 }
 
 #splash-opts .panel {
@@ -117,22 +112,44 @@ body, p {
   position: relative;
 }
 
-.thumbnail {
-  background: #216999; 
+a.splash-opt .thumbnail {
+  background-color: #216999; 
   font-size: 14px;
 
   color: white;
   
   text-decoration:none;
 }
-.thumbnail h3 {
+a .thumbnail h3 {
   font-size: 20px;
 }
-.thumbnail:hover {
+
+a .thumbnail h3:hover {
+  text-decoration: none;
+}
+
+h3.thumbnail-title:hover {
+  font-size: 20px;
+  text-decoration: none;
+}
+
+.borderless tbody tr td, .borderless tbody tr th, .borderless thead tr th {
+    border: none !important;
+}
+
+div#splash-opts>a:hover{
+    text-decoration:none; 
+}
+
+h3:hover {
+    text-decoration: none;
+}
+a.splash-opt .thumbnail:hover {
   color: black; 
   text-decoration: none;
   background: lightblue;
 }
+
 a.splash-opt {
   text-decoration: none;
 }
@@ -170,3 +187,21 @@ a.splash-opt {
   width: 100%;
 }
 
+div.container table tr td.file-list {
+    vertical-align: middle;
+}
+
+span.badge {
+  float: left;
+  background-color: green;
+  margin: auto 4px;
+}
+
+.isnobal-label {
+    width: 100%
+}
+
+span.badge>a {
+  color: white;
+  background-color: green;
+}

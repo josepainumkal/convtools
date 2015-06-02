@@ -33,6 +33,7 @@
   the value is set as 4326. </li>
   </ul>
   
+  </br>
 
   <form action="upload" method="post" enctype="multipart/form-data">
     <div align = "center">
@@ -42,6 +43,7 @@
         <tr><td>Number of rows</td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td><input name = "row" type = "text" value = '' id = "row"></input></td></tr>
         <tr><td>Number of columns</td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td><input name = "column" type = "text" value = '' id = "column"></input></td></tr>
         <tr><td> EPSG value </td> <td>&nbsp;&nbsp;&nbsp;&nbsp;</td> <td><input name = "epsg" type = "text" value = '4326' id = "epsg"></input></td></tr>
+        <input name = "uuid" type = "hidden" value = {{ model_run_uuid }} id = "uuid"></input>
     </table> 
     <br/>
     <div align = center><INPUT Type="submit" VALUE="Convert" ></div>

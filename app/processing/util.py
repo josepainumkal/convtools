@@ -56,6 +56,8 @@ def moveFilesToANewDirectory():
     for files in source:
         if files.endswith(".nc"):
             shutil.move(files, app.config['DOWNLOAD_FOLDER'])
+        if files.endswith(".tif"):
+            shutil.move(files, app.config['DOWNLOAD_FOLDER'])
 
 
 

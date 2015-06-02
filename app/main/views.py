@@ -46,13 +46,7 @@ def search():
                 search_args[search_field] = w
                 results = vw_client.modelrun_search(**search_args)
                 search_results += results.records
-        #search_args['model_run_name'] = form.model_run_name.data
-        #search_args['researcher_name'] = form.researcher_name.data
-        #search_args['model_keywords'] = form.keywords.data
-        #search_args['description'] = form.description.data
-    #print search_results
-    #search_results = vw_client.modelrun_search(**search_args)
-    #search_results = [dict(t) for t in set([tuple(d.items()) for d in search_results])]
+
     records = search_results
     if records:
         # make a panel of each metadata record

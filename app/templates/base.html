@@ -3,10 +3,10 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/static/site.css" rel="stylesheet">
 <link href='http://fonts.googleapis.com/css?family=Audiowide|Antic+Slab' rel='stylesheet' type='text/css'>
     <link href="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="http://netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
-    <link href="/static/site.css" rel="stylesheet">
     <title>Virtual Watershed Platform</title>
 
     {% block scripts %}
@@ -24,7 +24,9 @@
 
   {% set navigation_bar = [('/', 'main.index', 'Home'),
                            ('/search', 'main.search', 'Search'),
-                           ('/share', 'share.index', 'Share')] %}
+                           ('/processing', 'processing.index', 'Modeling'),
+                           ('/share', 'share.index', 'Share')
+                           ] %}
   {% set active_page = active_page|default('index') %}
 
   <div class="container">
@@ -42,6 +44,7 @@
           </button> 
           <a href="/"><img height="45"
             src="/static/images/wcwave_logo.jpg"> </a>
+          <a style="padding:0 0 0 100px" href="https://github.com/mtpain/vwplatform/issues/new?labels=feedback&assignee=mtpain">FEEDBACK</a>
           
         </div>
 
