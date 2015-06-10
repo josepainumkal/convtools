@@ -127,30 +127,41 @@ def insert():
     model_run_uuid = str(request.form['uuid'])
 
     if uploadedFile:
+        # FIXME a bit of a hack to fix timeout issues; can fix when fixed
+        # on VW HTTP
+        _local_vw_client = default_vw_client()
+
         uploadedFileName = secure_filename(uploadedFile.filename)
-        uploadedFile.save(os.path.join(app.config['UPLOAD_FOLDER'], uploadedFileName))
-        res = VW_CLIENT.upload(model_run_uuid, os.path.join(app.config['UPLOAD_FOLDER'], uploadedFileName))
+
+        uploadedFile.save(os.path.join(app.config['UPLOAD_FOLDER'],
+                          uploadedFileName))
+
+        _local_vw_client.upload(model_run_uuid,
+                                os.path.join(app.config['UPLOAD_FOLDER'],
+                                uploadedFileName))
 
         input_file = uploadedFileName
         parent_uuid = model_run_uuid
         start_datetime = '2010-01-01 00:00:00'
-	end_datetime = '2010-01-01 01:00:00'
+        end_datetime = '2010-01-01 01:00:00'
 
-	# create XML FGDC-standard metadata that gets included in VW metadata
-	fgdc_metadata = make_fgdc_metadata(input_file, None, model_run_uuid, start_datetime, end_datetime, model=model_name)
+        # create XML FGDC-standard metadata that gets included in VW metadata
+        fgdc_metadata = \
+            make_fgdc_metadata(input_file, None, model_run_uuid,
+                start_datetime, end_datetime, model=model_name)
 
         # create VW metadata
-	watershed_metadata = metadata_from_file(input_file, parent_uuid,
-                model_run_uuid, description, watershed_name, state,
-                start_datetime=start_datetime, end_datetime=end_datetime,
-                model_name=model_name, fgdc_metadata=fgdc_metadata,
-                taxonomy='geoimage', model_set_taxonomy='grid')
+        watershed_metadata = metadata_from_file(input_file, parent_uuid,
+            model_run_uuid, description, watershed_name, state,
+            start_datetime=start_datetime, end_datetime=end_datetime,
+            model_name=model_name, fgdc_metadata=fgdc_metadata,
+            taxonomy='geoimage', model_set_taxonomy='grid')
 
-        response = VW_CLIENT.insert_metadata(watershed_metadata)
+        _local_vw_client.insert_metadata(watershed_metadata)
 
         time.sleep(1)
 
-        rData = VW_CLIENT.dataset_search(model_run_uuid = model_run_uuid)
+        rData = _local_vw_client.dataset_search(model_run_uuid = model_run_uuid)
         dataResults = rData.records
 
     model_run_record = \
@@ -212,17 +223,17 @@ def upload():
             input_file = fname
             parent_uuid = new_mr_uuid
             description = 'Lehman Creek PRMS Data'
-	    watershed_name = 'Lehman Creek'
-	    state = 'Nevada'
-	    start_datetime = '2010-01-01 00:00:00'
-	    end_datetime = '2010-01-01 01:00:00'
-	    model_name = 'prms'
+            watershed_name = 'Lehman Creek'
+            state = 'Nevada'
+            start_datetime = '2010-01-01 00:00:00'
+            end_datetime = '2010-01-01 01:00:00'
+            model_name = 'prms'
 
-	    # create XML FGDC-standard metadata that gets included in VW metadata
-	    fgdc_metadata = make_fgdc_metadata(input_file, None, new_mr_uuid, start_datetime, end_datetime, model=model_name)
+            # create XML FGDC-standard metadata that gets included in VW metadata
+            fgdc_metadata = make_fgdc_metadata(input_file, None, new_mr_uuid, start_datetime, end_datetime, model=model_name)
 
-	    # create VW metadata
-	    watershed_metadata = metadata_from_file(input_file, parent_uuid, new_mr_uuid, description, watershed_name, state, start_datetime=start_datetime, end_datetime=end_datetime, model_name=model_name, fgdc_metadata=fgdc_metadata)
+            # create VW metadata
+            watershed_metadata = metadata_from_file(input_file, parent_uuid, new_mr_uuid, description, watershed_name, state, start_datetime=start_datetime, end_datetime=end_datetime, model_name=model_name, fgdc_metadata=fgdc_metadata)
 
             response = VW_CLIENT.insert_metadata(watershed_metadata)
 
