@@ -1,5 +1,5 @@
 from flask import Blueprint
 
-processing = Blueprint('processing', __name__)
+models = Blueprint('models', __name__)
 
 from . import views

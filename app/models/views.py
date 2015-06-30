@@ -2,7 +2,7 @@ from flask import Flask, request, render_template
 from flask import current_app as app
 from flask_login import login_required, current_user
 from werkzeug import secure_filename
-from . import processing
+from . import models
 from ..main.views import _make_panel
 
 from wcwave_adaptors import default_vw_client
@@ -20,15 +20,15 @@ def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1] in app.config['ALLOWED_EXTENSIONS']
 
-@processing.route('/', methods=['GET'])
-def processing_index():
-    return render_template('processing/index.html')
+@models.route('/', methods=['GET'])
+def models_index():
+    return render_template('models/index.html')
 
-@processing.route('/makegrid', methods=['GET', 'POST'])
+@models.route('/makegrid', methods=['GET', 'POST'])
 def makegrid():
-    return render_template('processing/makegrid.html')
+    return render_template('models/makegrid.html')
 
-@processing.route('/prms', methods=['GET', 'POST'])
+@models.route('/prms', methods=['GET', 'POST'])
 @login_required
 def prms():
 
@@ -38,10 +38,10 @@ def prms():
     # create a new model_run_uuid
     new_mr_uuid = VW_CLIENT.initialize_modelrun(model_run_name=name, description='lehman creek', researcher_name=current_user.name, keywords='prms,example,nevada')
 
-    return render_template('processing/prms.html', model_run_uuid=new_mr_uuid)
+    return render_template('models/prms.html', model_run_uuid=new_mr_uuid)
 
-@processing.route('/isnobal', methods=['GET'], defaults={'model_run_uuid': None})
-@processing.route('/isnobal/<model_run_uuid>', methods=['GET', 'POST'])
+@models.route('/isnobal', methods=['GET'], defaults={'model_run_uuid': None})
+@models.route('/isnobal/<model_run_uuid>', methods=['GET', 'POST'])
 @login_required
 def isnobal(model_run_uuid):
 
@@ -68,18 +68,18 @@ def isnobal(model_run_uuid):
             panels = {p['model_run_uuid']: p for p in panels}.values()
 
 
-    return render_template('processing/isnobal.html',
+    return render_template('models/isnobal.html',
                            model_run_name=model_run_name,
                            panels=panels)
 
-@processing.route('/upload', methods=['POST'])
+@models.route('/upload', methods=['POST'])
 def upload():
 
     if not os.path.exists(app.config['UPLOAD_FOLDER']):
         os.makedirs(app.config['UPLOAD_FOLDER'])
 
     if request.files['input-file'].filename == '' or request.files['hru-file'].filename == '' or request.form['row'] == '' or request.form['column'] == '' or request.form['epsg'] == '':
-        return render_template('processing/prms.html', InputErrorMessage = "Please upload required files and/or fill in all the fields")
+        return render_template('models/prms.html', InputErrorMessage = "Please upload required files and/or fill in all the fields")
 
     numberOfRows = int(request.form['row'])
     numberOfColumns = int(request.form['column'])
@@ -134,9 +134,9 @@ def upload():
 
             response = VW_CLIENT.insert_metadata(watershed_metadata)
 
-        return render_template("processing/prms.html", Success_Message = "Successfully inserted NetCDF and GeoTIFF files in Virtual Watershed")
+        return render_template("models/prms.html", Success_Message = "Successfully inserted NetCDF and GeoTIFF files in Virtual Watershed")
     else:
-        return render_template("processing/prms.html", Error_Message = "The product of the number of rows and columns do not match the number of parameter values")
+        return render_template("models/prms.html", Error_Message = "The product of the number of rows and columns do not match the number of parameter values")
 
 def copyParameterSectionFromInputFile(inputFileHandle):
 
