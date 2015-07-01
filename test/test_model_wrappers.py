@@ -1,6 +1,7 @@
 """
 Tests for the modeling interface of the virtual watershed platform
 """
+import time
 import unittest
 
 from xray import open_dataset
@@ -23,25 +24,46 @@ class IsnobalWrapperTestCase(unittest.TestCase):
         # connect to the virtual watershed
         self.vwc = default_vw_client()
 
-
         # load NetCDF inputs and outputs from test data
-        self.input_dataset = open_dataset(nc_isnobal_input, 'r')
-        self.output_dataset = open_dataset(nc_isnobal_output, 'r')
+        self.input_dataset = open_dataset(nc_isnobal_input)
+        self.output_dataset = open_dataset(nc_isnobal_output)
 
         # insert NetCDF test input to virtual watershed
         input_mr_name = 'webapp-testing-input'
 
-        model_run_uuid = self.input_modelrun_uuid = \
-            vwc.initialize_modelrun(
+        modelruns = self.vwc.modelrun_search()
+        unittest_uuids = [r['Model Run UUID'] for r in modelruns.records
+                          if r['Model Run Name'] == 'webapp-testing-input']
+
+        for u in unittest_uuids:
+            s = self.vwc.delete_modelrun(u)
+            print "pre-test cleanup success on %s: %s" % (u, str(s))
+
+        self.model_run_uuid = \
+            self.vwc.initialize_modelrun(
                 model_run_name=input_mr_name,
                 description='test in vwplatform',
                 researcher_name='Matt Turner',
                 keywords='test,isnobal,webapp')
 
-        vwc.upload(model_run_uuid, nc_isnobal_input)
+        self.vwc.upload(self.model_run_uuid, nc_isnobal_input)
 
-        md = metadata_from_file(nc_isnobal_input)
-        self.input_uuid = vwc.insert_metadata(md)
+        self.start_datetime = '2010-10-01 00:00:00'
+        self.end_datetime = '2010-10-01 16:00:00'
+
+        md = metadata_from_file(nc_isnobal_input, self.model_run_uuid,
+                                self.model_run_uuid,
+                                'test input for isnobal run',
+                                'Dry Creek', 'Idaho', model_name='isnobal',
+                                start_datetime=self.start_datetime,
+                                end_datetime=self.end_datetime,
+                                model_set='inputs', taxonomy='geoimage',
+                                model_set_taxonomy='grid')
+        # import ipdb; ipdb.set_trace()
+
+        self.input_uuid = self.vwc.insert_metadata(md).text
+
+        time.sleep(1)
 
     def test_isnobal(self):
         """Test iSNOBAL wrapper is working properly"""
@@ -63,8 +85,5 @@ class IsnobalWrapperTestCase(unittest.TestCase):
 
         # compare output file from VW to expected
         dataset_from_vw = open_dataset('test/data/nc_out_fromvw.tmp')
-
-        assert dataset_from_vw.variables.keys() == self.output_dataset,\
-            "datasets don't have the same keys"
 
         assert dataset_from_vw.identical(self.output_dataset)

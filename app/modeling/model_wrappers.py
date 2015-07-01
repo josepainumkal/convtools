@@ -2,28 +2,33 @@
 Wrappers for running models. Functions are like `vw_{model}`
 """
 import os
+import shutil
+import netCDF4 as netCDF4
+
+from datetime import datetime
 
 from wcwave_adaptors import default_vw_client, isnobal, metadata_from_file
 
 
-def vw_isnobal(input_modelrun_uuid):
+def vw_isnobal(input_dataset_uuid):
     """
     Run isnobal with data from the virtual watershed
     """
     vwc = default_vw_client()
 
     # TODO when vwp gets fixed, just use (dataset) uuid
-    input_records = \
-        vwc.dataset_search(model_run_uuid=input_modelrun_uuid,
-                           model_set="inputs")
+    input_records = vwc.dataset_search(uuid=input_dataset_uuid).records
 
-    assert input_records.total == 1, \
+    assert len(input_records) == 1, \
         "Current implementation of vw_isnobal requires the user\n" + \
         "to use as input a model_run_uuid pointing to a model run\n" + \
-        "with a single record that is an input"
+        "with a single record that is an input. Found %s records" \
+        % len(input_records)
+
+    input_record = input_records[0]
 
     try:
-        dl_url = input_records[0]['downloads'][0]['nc']
+        dl_url = input_record['downloads'][0]['nc']
     except KeyError as e:
         e.args = ("downloads or nc not found in isnobal input record")
         raise
@@ -31,17 +36,34 @@ def vw_isnobal(input_modelrun_uuid):
     if not os.path.exists('tmp/'):
         os.mkdir('tmp/')
 
-    writedir = 'tmp/' + input_modelrun_uuid
+    model_run_uuid = input_record['model_run_uuid']
+
+    writedir = 'tmp/' + model_run_uuid
     os.mkdir(writedir)
-    outfile = os.path.join(writedir, 'in.nc')
+    input_file = os.path.join(writedir, 'in.nc')
 
-    input_nc = vwc.download(dl_url, outfile)
+    vwc.download(dl_url, input_file)
 
-    isnobal(input_nc, outfile)
+    input_nc = netCDF4.Dataset(input_file)
 
-    vwc.upload(input_modelrun_uuid, outfile)
+    output_file = os.path.join(writedir, 'out.nc')
 
-    md = metadata_from_file(outfile)
+    isnobal(input_nc, output_file)
+
+    vwc.upload(model_run_uuid, output_file)
+
+    parent_model_run_uuid = input_record['parent_model_run_uuid']
+    now_str = datetime.now().isoformat()
+    watershed = input_record['categories'][0]['location']
+    state = input_record['categories'][0]['state']
+
+    md = metadata_from_file(output_file, parent_model_run_uuid,
+                            model_run_uuid,
+                            'output netcdf from isnobal run ' + now_str,
+                            watershed, state, model_name='isnobal',
+                            model_set='outputs', taxonomy='geoimage',
+                            model_set_taxonomy='grid')
+
     vwc.insert_metadata(md)
 
-    os.removedirs(writedir)
+    shutil.rmtree(writedir)
