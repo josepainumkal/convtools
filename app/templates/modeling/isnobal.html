@@ -5,39 +5,15 @@
 {% if model_run_name %}
   <h2>Click below to run iSNOBAL with resource named</h1>
 
-  <h1 style="text-align:center"><b> {{ model_run_name }}</b></h1>
+  <h1 style="text-align:center"><b> {{ file_name }}</b></h1>
 
   <!-- run isnobal button triggers modal with finalization instruct/confirm -->
-  <button type="button" class="btn btn-success isnobal-label"
-          data-toggle="modal" data-target="#run-isnobal-modal"
-          >
+  <a type="button" class="btn btn-success isnobal-label" href="/modeling/isnobal/{{ model_run_uuid }}">
     Run iSNOBAL
-  </button>
-
-  <!-- instruct/confirm modal -->
-  <div id="run-isnobal-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="run-isnobal-aria">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times</span>
-          </button>
-          <h4 id="run-isnobal-aria" class="modal-title">Finalize iSNOBAL Run</h4>
-        </div>
-        <div class="modal-body">Are you sure?</div>
-        <div class="modal-footer">
-          <button class="btn btn-default" type="button" data-dismiss="modal">Cancel Run</button>
-          <a class="btn btn-primary" type="button" 
-            data-dismiss="modal">
-             Run with this configuration</a>
-        </div>
-      </div>
-    </div>
-  </div>
-
+  </a>
 
 {% else %}
-  <h2>Select a resource from the iSNOBAL-enabled resources below</h2>
+  <h2>Select a resource from the iSNOBAL resources below</h2>
 
   {% if panels %}
       <div class="bg-success">
@@ -70,9 +46,10 @@
                       <strong>Researcher:</strong> {{ panel.researcher_name }}
                   </li>
                   <li class="list-group-item">
-                      <span class="btn btn-success isnobal-label">
-                        Run iSNOBAL
-                      </span>
+                    <a type="button" class="btn btn-success isnobal-label" 
+                       href="/modeling/isnobal/{{ panel.model_run_uuid }}">
+                      Run iSNOBAL
+                    </a>
                   </li>
               </ul>
 

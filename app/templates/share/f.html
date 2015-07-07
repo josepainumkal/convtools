@@ -44,50 +44,7 @@
 
 <h1>List of data in this resource</h1>
 
-<div class="container">
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <td><b>File Name</b></td>   
-        <td><b>Watershed Name</b></td>   
-        <td><b>Description</b></td> 
-        <td><b>Services and Download</b></td>
-      </tr>
-    </thead>
-
-  {% for dResult in dataResults %}
-    <tr>
-      <td>{{dResult['name']}}</td>  
-      <td>{{dResult['categories'][0]['location']}}</td>   
-      <td>{{dResult['description']}}</td>  
-
-      {% if dResult['services']|length > 0 %}
-      <td class="file-list">
-        <span class="badge">
-          <a href= {{dResult['services'][1]['wcs']}}>WCS</a>
-        </span>
-        <span class="badge">
-          <a href= {{dResult['services'][0]['wms']}}>WMS</a>
-        </span>
-      </td>
-      {% endif %}
-
-    {% if not dResult['downloads'][0]['tif'] %}
-     {% for key in dResult['downloads'][0] %}
-     <td class="file-list">
-       <span class="badge">
-         <a href= {{dResult['downloads'][0][key]}}>Download</a>
-       </span>
-     </td>
-     {% endfor %}
-    {% endif %}
-    <td><div class="btn-group-xs"><span class="btn btn-danger">Remove File</span>
-    </div></td>
-    </tr>
-  {% endfor %}
-  </table>
-
-</div> <!-- end of table displaying currently tracked files for model run -->
+{% include "common/fileList.html" %}
 
 </body>
 

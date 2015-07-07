@@ -39,7 +39,10 @@ def vw_isnobal(input_dataset_uuid):
     model_run_uuid = input_record['model_run_uuid']
 
     writedir = 'tmp/' + model_run_uuid
+    if os.path.exists(writedir):
+        shutil.rmtree(writedir)
     os.mkdir(writedir)
+
     input_file = os.path.join(writedir, 'in.nc')
 
     vwc.download(dl_url, input_file)
@@ -64,6 +67,8 @@ def vw_isnobal(input_dataset_uuid):
                             model_set='outputs', taxonomy='geoimage',
                             model_set_taxonomy='grid')
 
-    vwc.insert_metadata(md)
+    dataset_uuid = vwc.insert_metadata(md).text
 
     shutil.rmtree(writedir)
+
+    return (dataset_uuid, model_run_uuid)

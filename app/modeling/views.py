@@ -1,8 +1,9 @@
-from flask import Flask, request, render_template
+from flask import request, render_template, jsonify
 from flask import current_app as app
 from flask_login import login_required, current_user
 from werkzeug import secure_filename
 from . import modeling
+from .model_wrappers import vw_isnobal
 from ..main.views import _make_panel
 
 from wcwave_adaptors import default_vw_client
@@ -40,36 +41,59 @@ def prms():
 
     return render_template('modeling/prms.html', model_run_uuid=new_mr_uuid)
 
-@modeling.route('/isnobal', methods=['GET'], defaults={'model_run_uuid': None})
 @modeling.route('/isnobal/<model_run_uuid>', methods=['GET', 'POST'])
+def select_isnobal_input(model_run_uuid):
+
+    model_run_record = \
+        VW_CLIENT.modelrun_search(model_run_id=model_run_uuid).records[0]
+
+    model_run_uuid = model_run_record['Model Run UUID']
+
+    model_run_desc = model_run_record['Description']
+
+    model_run_name = model_run_record['Model Run Name']
+
+    "View of file submission for as yet unselected resource to add to"
+    model_run_uuid = model_run_uuid
+
+    datasets_res = VW_CLIENT.dataset_search(model_run_uuid=model_run_uuid)
+    records_list = datasets_res.records
+
+    return render_template('modeling/runIsnobal.html',
+                           model_run_name=model_run_name,
+                           model_run_desc=model_run_desc,
+                           model_run_uuid=model_run_uuid,
+                           records_list=records_list)
+
+
+@modeling.route('/isnobal/run', methods=['POST'])
+def run_isnobal():
+
+    dataset_uuid = request.values['dataset_uuid']
+
+    output_uuid, model_run_uuid = vw_isnobal(dataset_uuid)
+
+    return jsonify({'output_uuid': output_uuid,
+                    'model_run_uuid': model_run_uuid})
+
+
+@modeling.route('/isnobal', methods=['GET'], defaults={'dataset_uuid': None})
 @login_required
-def isnobal(model_run_uuid):
+def isnobal():
 
-    if model_run_uuid:
+    file_name = None
 
-        model_run_record = \
-            VW_CLIENT.modelrun_search(model_run_id=model_run_uuid).records[0]
+    isnobal_ready = filter(lambda r: 'isnobal' in r['Keywords'],
+                           VW_CLIENT.modelrun_search().records)
 
-        model_run_name = model_run_record['Model Run Name']
+    if isnobal_ready:
+        # make a panel of each metadata record
+        panels = [_make_panel(rec) for rec in isnobal_ready if rec]
 
-        panels = None
-
-    else:
-
-        model_run_name = None
-
-        isnobal_ready = filter(lambda r: 'isnobal' in r['Keywords'],
-                               VW_CLIENT.modelrun_search().records)
-
-        if isnobal_ready:
-            # make a panel of each metadata record
-            panels = [_make_panel(rec) for rec in isnobal_ready if rec]
-
-            panels = {p['model_run_uuid']: p for p in panels}.values()
-
+        panels = {p['model_run_uuid']: p for p in panels}.values()
 
     return render_template('modeling/isnobal.html',
-                           model_run_name=model_run_name,
+                           file_name=file_name,
                            panels=panels)
 
 @modeling.route('/upload', methods=['POST'])

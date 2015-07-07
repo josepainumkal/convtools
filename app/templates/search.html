@@ -26,23 +26,6 @@
                         <label for="exampleInputName2">{{ form.model_run_name.label }} </label>
                         {{ form.model_run_name(class="form-control") }}
                     </div>
-                    {#<div class=" form-group">
-                        <label for="exampleInputName2">{{ form.researcher_name.label }} </label>
-                        {{ form.researcher_name(class="form-control") }}
-                    </div>
-                        </div>
-                        <div class="col-md-6">
-                             <div class=" form-group">
-                        <label for="exampleInputName2">{{ form.keywords.label }} </label>
-                        {{ form.keywords(class="form-control") }}
-                    </div>
-
-                    <div class="form-group">
-                        <label for="exampleInputName2">{{ form.description.label }} </label>
-                        {{ form.description(class="form-control") }}
-                    </div>#}
-                        </div>
-                    </div>
                     <div class="centered">
                         <button type="submit" name="submit" value="submit" class="btn btn-success">Search Model Run</button>
                     </div>
@@ -91,7 +74,7 @@
                             </li>
                             {% if 'isnobal' in panel.keywords %}
                               <li class="list-group-item">
-                              <a href="{{url_for('modeling.isnobal')}}/{{ panel.model_run_uuid}}">
+                              <a href="{{url_for('modeling.isnobal')}}/{{ panel.model_run_uuid }}">
                                 <span class="btn btn-success isnobal-label">
                                     Run iSNOBAL
                                 </span>
