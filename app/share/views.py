@@ -133,8 +133,10 @@ def insert():
 
         uploadedFileName = secure_filename(uploadedFile.filename)
 
-        uploadedFile.save(os.path.join(app.config['UPLOAD_FOLDER'],
-                          uploadedFileName))
+        uploaded_file_path = os.path.join(app.config['UPLOAD_FOLDER'],
+                                          uploadedFileName)
+
+        uploadedFile.save(uploaded_file_path)
 
         _local_vw_client.upload(model_run_uuid,
                                 os.path.join(app.config['UPLOAD_FOLDER'],
@@ -151,8 +153,8 @@ def insert():
                 start_datetime, end_datetime, model=model_name)
 
         # create VW metadata
-        watershed_metadata = metadata_from_file(input_file, parent_uuid,
-            model_run_uuid, description, watershed_name, state,
+        watershed_metadata = metadata_from_file(uploaded_file_path,
+            parent_uuid, model_run_uuid, description, watershed_name, state,
             start_datetime=start_datetime, end_datetime=end_datetime,
             model_name=model_name, fgdc_metadata=fgdc_metadata,
             taxonomy='geoimage', model_set_taxonomy='grid')
