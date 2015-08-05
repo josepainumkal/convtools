@@ -34,6 +34,7 @@ def resources():
 
     print form.validate_on_submit()
     if form.validate_on_submit():
+        _local_vw_client = default_vw_client()
         # initialize: post to virtual watershed
         common_kwargs = {
             'description': form.description.data,
@@ -55,7 +56,7 @@ def resources():
         UUID = str(uuid.uuid4())
 
         try:
-            result_of_vwpost = VW_CLIENT.initialize_modelrun(**vw_kwargs)
+            result_of_vwpost = _local_vw_client.initialize_modelrun(**vw_kwargs)
             UUID = result_of_vwpost
         except:
             pass
@@ -63,7 +64,7 @@ def resources():
         # get UUID and add full record to the 'resources' table in DB along with
         # user ID
         url = (form.url.data or
-               VW_CLIENT.dataset_search_url + '&model_run_uuid=' + UUID)
+               _local_vw_client.dataset_search_url + '&model_run_uuid=' + UUID)
 
         resource = Resource(user_id=current_user.id,
                             title=form.title.data,
