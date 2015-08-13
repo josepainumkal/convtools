@@ -165,6 +165,7 @@ def insert():
         time.sleep(1)
 
         rData = _local_vw_client.dataset_search(model_run_uuid = model_run_uuid)
+
         dataResults = rData.records
 
     model_run_record = \
