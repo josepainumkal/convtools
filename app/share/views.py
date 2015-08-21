@@ -34,6 +34,7 @@ def resources():
 
     print form.validate_on_submit()
     if form.validate_on_submit():
+        _local_vw_client = default_vw_client()
         # initialize: post to virtual watershed
         common_kwargs = {
             'description': form.description.data,
@@ -55,7 +56,7 @@ def resources():
         UUID = str(uuid.uuid4())
 
         try:
-            result_of_vwpost = VW_CLIENT.initialize_modelrun(**vw_kwargs)
+            result_of_vwpost = _local_vw_client.initialize_modelrun(**vw_kwargs)
             UUID = result_of_vwpost
         except:
             pass
@@ -63,7 +64,7 @@ def resources():
         # get UUID and add full record to the 'resources' table in DB along with
         # user ID
         url = (form.url.data or
-               VW_CLIENT.dataset_search_url + '&model_run_uuid=' + UUID)
+               _local_vw_client.dataset_search_url + '&model_run_uuid=' + UUID)
 
         resource = Resource(user_id=current_user.id,
                             title=form.title.data,
@@ -133,8 +134,10 @@ def insert():
 
         uploadedFileName = secure_filename(uploadedFile.filename)
 
-        uploadedFile.save(os.path.join(app.config['UPLOAD_FOLDER'],
-                          uploadedFileName))
+        uploaded_file_path = os.path.join(app.config['UPLOAD_FOLDER'],
+                                          uploadedFileName)
+
+        uploadedFile.save(uploaded_file_path)
 
         _local_vw_client.upload(model_run_uuid,
                                 os.path.join(app.config['UPLOAD_FOLDER'],
@@ -151,8 +154,8 @@ def insert():
                 start_datetime, end_datetime, model=model_name)
 
         # create VW metadata
-        watershed_metadata = metadata_from_file(input_file, parent_uuid,
-            model_run_uuid, description, watershed_name, state,
+        watershed_metadata = metadata_from_file(uploaded_file_path,
+            parent_uuid, model_run_uuid, description, watershed_name, state,
             start_datetime=start_datetime, end_datetime=end_datetime,
             model_name=model_name, fgdc_metadata=fgdc_metadata,
             taxonomy='geoimage', model_set_taxonomy='grid')
@@ -162,6 +165,7 @@ def insert():
         time.sleep(1)
 
         rData = _local_vw_client.dataset_search(model_run_uuid = model_run_uuid)
+
         dataResults = rData.records
 
     model_run_record = \
