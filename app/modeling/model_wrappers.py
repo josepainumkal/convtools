@@ -16,7 +16,6 @@ def vw_isnobal(input_dataset_uuid):
     """
     vwc = default_vw_client()
 
-    # TODO when vwp gets fixed, just use (dataset) uuid
     input_records = vwc.dataset_search(uuid=input_dataset_uuid).records
 
     assert len(input_records) == 1, \

@@ -29,7 +29,8 @@ def search():
     Returns: (str) HTML string of the model run panel
     """
     panels = []
-    search_fields = ['model_run_name', 'researcher_name', 'model_keywords', 'description']
+    search_fields = ['model_run_name', 'researcher_name', 'model_keywords',
+                     'description']
     search_results = []
     form = SearchForm(request.args)
     if request.args and not form.validate():
@@ -56,7 +57,7 @@ def search():
 
     # pass the list of parsed records to the template to generate results page
     return render_template('search.html', form=form, panels=panels)
-    #return render_template('search.html', form=form, panels=panels)
+
 
 def _make_panel(search_record):
     """
