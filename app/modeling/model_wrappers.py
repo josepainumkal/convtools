@@ -71,3 +71,20 @@ def vw_isnobal(input_dataset_uuid):
     shutil.rmtree(writedir)
 
     return (dataset_uuid, model_run_uuid)
+
+
+def vw_isu_gridding(start_datetime, end_datetime, uuid_=None):
+
+    # if start/end datetime are datetime objects, convert them to strings
+    start_datetime = start_datetime.strftime('%Y-%m-%d %H:%M:%S')
+    end_datetime = end_datetime.strftime('%Y-%m-%d %H:%M:%S')
+
+    # call gridding tool
+
+    # convert results to .nc
+
+    # push results to the virtual watershed
+
+    # if no UUID given, create a new one and use that
+
+    return None
