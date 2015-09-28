@@ -2,32 +2,93 @@ from flask import request, render_template, jsonify
 from flask import current_app as app
 from flask_login import login_required, current_user
 from werkzeug import secure_filename
+
+import datetime
+import os
+import random
+import string
+import util
+
 from . import modeling
 from .model_wrappers import vw_isnobal
+from .prms_util import (copyParameterSectionFromInputFile, readncFile,
+                        readtifFile)
+from .gridtoolwrap import end_2_end
 from ..main.views import _make_panel
 
 from wcwave_adaptors import default_vw_client
 from wcwave_adaptors import make_fgdc_metadata, metadata_from_file
 
-import os, osr, gdal, util, numpy
-import string
-import random
 
 VW_CLIENT = default_vw_client()
+
 
 def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
 
+
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1] in app.config['ALLOWED_EXTENSIONS']
+
 
 @modeling.route('/', methods=['GET'])
 def modeling_index():
     return render_template('modeling/index.html')
 
+
 @modeling.route('/makegrid', methods=['GET', 'POST'])
 def makegrid():
+
+    if request.method == 'POST':
+
+        start_hour = request.form['makegrid-start-hour']
+        end_hour = request.form['makegrid-end-hour']
+
+        st_int = int(start_hour)
+        if st_int <= 9:
+            start_hour = '0' + start_hour
+
+        end_int = int(start_hour)
+        if end_int <= 9:
+            end_hour = '0' + end_hour
+
+        start_datetime = \
+            request.form['makegrid-start-date'] + ' ' + \
+            ':'.join([start_hour, '00', '00'])
+
+        end_datetime = \
+            request.form['makegrid-end-date'] + ' ' + \
+            ':'.join([end_hour, '00', '00'])
+
+        # use request.form to fill out submit_job
+        kwargs = {
+            ISUGT_VARNAME_LOOKUP[k]: 'true'
+            for k in request.form.getlist('variables')
+        }
+        end_2_end(start_datetime, end_datetime, **kwargs)
+
+        os.rename('Output.zip',
+                  'isugt_output_jdraw_' +
+                  datetime.datetime.now().isoformat() + '.zip')
+
     return render_template('modeling/makegrid.html')
+
+
+ISUGT_VARNAME_LOOKUP = {
+    'Run all tools': 'run_all_tools',
+    'Air Temperature': 'air_temperature',
+    'Constants (roughness len, snow-water sat)': 'constants',
+    'Dew Point Temperature': 'dew_point_temperature',
+    'Precipitation Mass': 'precipitation_mass',
+    'Snow Depth': 'snow_depth',
+    'Snow Properties (temperature, density)': 'snow_properties',
+    'Soil Temperature': 'soil_temperature',
+    'Solar Radiation': 'solar_radiation',
+    'Thermal Radiation': 'thermal_radiation',
+    'Vapor Pressure': 'vapor_pressure',
+    'Wind Speed': 'wind_speed'
+}
+
 
 @modeling.route('/prms', methods=['GET', 'POST'])
 @login_required
@@ -40,6 +101,7 @@ def prms():
     new_mr_uuid = VW_CLIENT.initialize_modelrun(model_run_name=name, description='lehman creek', researcher_name=current_user.name, keywords='prms,example,nevada')
 
     return render_template('modeling/prms.html', model_run_uuid=new_mr_uuid)
+
 
 @modeling.route('/isnobal/<model_run_uuid>', methods=['GET', 'POST'])
 def select_isnobal_input(model_run_uuid):
@@ -95,6 +157,7 @@ def isnobal():
     return render_template('modeling/isnobal.html',
                            file_name=file_name,
                            panels=panels)
+
 
 @modeling.route('/upload', methods=['POST'])
 def upload():
@@ -162,256 +225,3 @@ def upload():
     else:
         return render_template("modeling/prms.html", Error_Message = "The product of the number of rows and columns do not match the number of parameter values")
 
-def copyParameterSectionFromInputFile(inputFileHandle):
-
-    temporaryFileWrite = open(os.path.join(app.config['UPLOAD_FOLDER'], "values.param"), 'w')
-    foundParameterSection = False
-    lines = inputFileHandle.readlines()
-    for line in lines:
-        if foundParameterSection or "Parameters" in line:
-            temporaryFileWrite.write(line)
-            foundParameterSection = True
-
-def readncFile(numberOfRows, numberOfColumns, epsgValue, latitude, longitude, xavg, yavg):
-
-    index = 0
-    monthIndex = 0
-    parameterNames = []
-    monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
-
-    fileHandle = open(os.path.join(app.config['UPLOAD_FOLDER'], "values.param"), 'r')
-    for line in fileHandle:
-        if "####" in line:
-            nameOfParameter = fileHandle.next().strip()
-            parameterNames.append(nameOfParameter)
-            numberOfDimensions = int(fileHandle.next())
-            for i in range(numberOfDimensions):
-                fileHandle.next()
-            numberOfValues = int(fileHandle.next())
-            typeOfValues = int(fileHandle.next())
-
-            if numberOfValues == 4704:
-                parameterNames.append(nameOfParameter)
-                parameterNames[index] = numpy.arange(4704).reshape(numberOfColumns, numberOfRows)
-                nameOfOutputFile = nameOfParameter+".nc"
-                storencValuesInArray(nameOfOutputFile, fileHandle, parameterNames, index, numberOfColumns, numberOfRows, epsgValue, latitude, longitude, xavg, yavg)
-
-            if numberOfDimensions == 2:
-                for i in range(12):
-                    parameterNames.append(nameOfParameter)
-                    parameterNames[index] = numpy.arange(4704).reshape(numberOfColumns, numberOfRows)
-                    nameOfOutputFile = nameOfParameter+"_"+monthNames[monthIndex]+".nc"
-                    storencValuesInArray(nameOfOutputFile, fileHandle, parameterNames, index, numberOfColumns, numberOfRows, epsgValue, latitude, longitude, xavg, yavg)
-                    monthIndex = monthIndex + 1
-                monthIndex = 0
-            index = index + 1
-
-def storencValuesInArray(nameOfOutputFile, fileHandle, parameterNames, index, numberOfColumns, numberOfRows, epsgValue, latitude, longitude, xavg, yavg):
-
-    listOfArrays = []
-    outputFormat = 'netcdf'
-
-    for j in range(numberOfColumns):
-        for k in range(numberOfRows):
-            value = float(fileHandle.next().strip())
-            parameterNames[index][j,k] = value
-    listOfArrays.append(parameterNames[index])
-
-    for elements in listOfArrays:
-        if numberOfColumns != len(elements):
-            print "Failure"
-        for rows in elements:
-            if numberOfRows != len(rows):
-                print "Failure"
-    writencRaster(nameOfOutputFile, listOfArrays, numberOfRows, numberOfColumns, xavg, yavg, latitude, longitude, epsgValue, driver = outputFormat)
-
-def writencRaster(nameOfOutputFile, data, numberOfRows, numberOfColumns, xavg, yavg, latitude, longitude, epsgValue, multipleFiles = False, driver = 'netcdf', datatype = gdal.GDT_Float32):
-
-    # Determining amount of bands to use based on number of items in data
-    numberOfBands = len(data)
-
-    # Determining whether multiple files need to be used or not.
-    multipleFiles = (numberOfBands > 1) and multipleFiles
-
-    print "EPSG", epsgValue
-    #print headers
-    # Register all gdal drivers with gdal
-    gdal.AllRegister()
-
-    # Grab the specific driver needed
-    # This could be used with other formats!
-    driver = gdal.GetDriverByName(driver)
-    print driver
-    try:
-        if not multipleFiles:
-            ds = driver.Create(nameOfOutputFile, numberOfRows, numberOfColumns, numberOfBands, datatype, [])
-        else:
-            ds = []
-            for i in range(0,numberOfBands):
-                ds.append(driver.Create(nameOfOutputFile+"."+str(i)+".nc", numberOfRows, numberOfColumns, 1, datatype, []))
-    except:
-        print "ERROR"
-
-    # Here I am assuming that north is up in this projection
-    if yavg > 0:
-        yavg *= -1
-    geoTransform = (latitude, xavg, 0, longitude, 0, yavg)
-    print geoTransform
-
-    if not multipleFiles:
-        ds.SetGeoTransform(geoTransform)
-    else:
-        for i in ds:
-            i.SetGeoTransform(geoTransform)
-
-    #Write out datatype
-    for i in xrange(0,numberOfBands):
-        if multipleFiles:
-            band = ds[i].GetRasterBand(i+1)
-        else:
-            band = ds.GetRasterBand(i+1)
-        band.WriteArray(numpy.array(data[i],dtype=numpy.float32),0,0)
-
-    # apply projection to data
-    if epsgValue != -1:
-        print "EPSG", epsgValue
-        try:
-            # First create a new spatial reference
-            sr = osr.SpatialReference()
-
-            # Second specify the EPSG map code to be used
-            if 6 == sr.ImportFromEPSG(epsgValue):
-                print "IGNORING EPSG VALUE TO SPECIFIED REASON"
-                return
-
-            # Third apply this projection to the dataset(s)
-            if not multipleFiles:
-                ds.SetProjection(sr.ExportToWkt())
-            else:
-                for i in ds:
-                    i.SetProjection(sr.ExportToWkt())
-            print sr
-        except:
-            print "IGNORING EPSG VALUE"
-
-def readtifFile(numberOfRows, numberOfColumns, epsgValue, latitude, longitude, xavg, yavg):
-
-    index = 0
-    monthIndex = 0
-    parameterNames = []
-    monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
-
-    fileHandle = open(os.path.join(app.config['UPLOAD_FOLDER'], "values.param"), 'r')
-    for line in fileHandle:
-        if "####" in line:
-            nameOfParameter = fileHandle.next().strip()
-            parameterNames.append(nameOfParameter)
-            numberOfDimensions = int(fileHandle.next())
-            for i in range(numberOfDimensions):
-                fileHandle.next()
-            numberOfValues = int(fileHandle.next())
-            typeOfValues = int(fileHandle.next())
-
-            if numberOfValues == 4704:
-                parameterNames.append(nameOfParameter)
-                parameterNames[index] = numpy.arange(4704).reshape(numberOfColumns, numberOfRows)
-                nameOfOutputFile = nameOfParameter+".tif"
-                storetifValuesInArray(nameOfOutputFile, fileHandle, parameterNames, index, numberOfColumns, numberOfRows, epsgValue, latitude, longitude, xavg, yavg)
-
-            if numberOfDimensions == 2:
-                for i in range(12):
-                    parameterNames.append(nameOfParameter)
-                    parameterNames[index] = numpy.arange(4704).reshape(numberOfColumns, numberOfRows)
-                    nameOfOutputFile = nameOfParameter+"_"+monthNames[monthIndex]+".tif"
-                    storetifValuesInArray(nameOfOutputFile, fileHandle, parameterNames, index, numberOfColumns, numberOfRows, epsgValue, latitude, longitude, xavg, yavg)
-                    monthIndex = monthIndex + 1
-                monthIndex = 0
-            index = index + 1
-
-def storetifValuesInArray(nameOfOutputFile, fileHandle, parameterNames, index, numberOfColumns, numberOfRows, epsgValue, latitude, longitude, xavg, yavg):
-
-    listOfArrays = []
-    outputFormat = 'gtiff'
-
-    for j in range(numberOfColumns):
-        for k in range(numberOfRows):
-            value = float(fileHandle.next().strip())
-            parameterNames[index][j,k] = value
-    listOfArrays.append(parameterNames[index])
-
-    for elements in listOfArrays:
-        if numberOfColumns != len(elements):
-            print "Failure"
-        for rows in elements:
-            if numberOfRows != len(rows):
-                print "Failure"
-    writetifRaster(nameOfOutputFile, listOfArrays, numberOfRows, numberOfColumns, xavg, yavg, latitude, longitude, epsgValue, driver = outputFormat)
-
-def writetifRaster(nameOfOutputFile, data, numberOfRows, numberOfColumns, xavg, yavg, latitude, longitude, epsgValue, multipleFiles = False, driver = 'gtiff', datatype = gdal.GDT_Float32):
-
-    # Determining amount of bands to use based on number of items in data
-    numberOfBands = len(data)
-
-    # Determining whether multiple files need to be used or not.
-    multipleFiles = (numberOfBands > 1) and multipleFiles
-
-    print "EPSG", epsgValue
-    #print headers
-    # Register all gdal drivers with gdal
-    gdal.AllRegister()
-
-    # Grab the specific driver needed
-    # This could be used with other formats!
-    driver = gdal.GetDriverByName(driver)
-    print driver
-    try:
-        if not multipleFiles:
-            ds = driver.Create(nameOfOutputFile, numberOfRows, numberOfColumns, numberOfBands, datatype, [])
-        else:
-            ds = []
-            for i in range(0,numberOfBands):
-                ds.append(driver.Create(nameOfOutputFile+"."+str(i)+".tif", numberOfRows, numberOfColumns, 1, datatype, []))
-    except:
-        print "ERROR"
-
-    # Here I am assuming that north is up in this projection
-    if yavg > 0:
-        yavg *= -1
-    geoTransform = (latitude, xavg, 0, longitude, 0, yavg)
-    print geoTransform
-
-    if not multipleFiles:
-        ds.SetGeoTransform(geoTransform)
-    else:
-        for i in ds:
-            i.SetGeoTransform(geoTransform)
-
-    #Write out datatype
-    for i in xrange(0,numberOfBands):
-        if multipleFiles:
-            band = ds[i].GetRasterBand(i+1)
-        else:
-            band = ds.GetRasterBand(i+1)
-        band.WriteArray(numpy.array(data[i],dtype=numpy.float32),0,0)
-
-    # apply projection to data
-    if epsgValue != -1:
-        print "EPSG", epsgValue
-        try:
-            # First create a new spatial reference
-            sr = osr.SpatialReference()
-
-            # Second specify the EPSG map code to be used
-            if 6 == sr.ImportFromEPSG(epsgValue):
-                print "IGNORING EPSG VALUE TO SPECIFIED REASON"
-                return
-
-            # Third apply this projection to the dataset(s)
-            if not multipleFiles:
-                ds.SetProjection(sr.ExportToWkt())
-            else:
-                for i in ds:
-                    i.SetProjection(sr.ExportToWkt())
-            print sr
-        except:
-            print "IGNORING EPSG VALUE"

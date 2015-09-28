@@ -3,14 +3,20 @@
 
 {% block head_ext %}
 <!-- cdn for modernizr, if you haven't included it already -->
-<script src="http://cdn.jsdelivr.net/webshim/1.12.4/extras/modernizr-custom.js"></script>
+<script src="//cdn.jsdelivr.net/webshim/1.12.4/extras/modernizr-custom.js"></script>
 <!-- polyfiller file to detect and load polyfills -->
-<script src="http://cdn.jsdelivr.net/webshim/1.12.4/polyfiller.js"></script>
+<script src="//cdn.jsdelivr.net/webshim/1.12.4/polyfiller.js"></script>
 <script>
   webshims.setOptions('waitReady', false);
   webshims.setOptions('forms-ext', {types: 'date'});
   webshims.polyfill('forms forms-ext');
 </script>
+<style>
+#makegrid-form-container { 
+  background-color: lightgray;
+  padding-bottom: 10px;
+}
+</style>
 {% endblock %}
 
 
@@ -36,9 +42,9 @@
               <select id="makegrid-watershed-select" 
                       class="selectpicker" data-width="auto" name="makegrid-watershed-select" 
                       form="mdform">
-                    <option value="Dry Creek">Dry Creek</option>
-                    <option value="Reynolds Creek">Reynolds Creek</option>
-                    <option value="Valles Caldera">Valles Caldera</option>
+                    <option value="Johnston Draw">Johnston Draw</option>
+                    <!--<option value="Reynolds Creek East">Reynolds Creek</option>-->
+                    <!--<option value="Valles Caldera">Valles Caldera</option>-->
               </select>
             </div>
             <div class="col-sm-5"></div>
@@ -49,7 +55,7 @@
           <div class="row">
             <div class="col-sm-5">
               Date: <input type="date" name="makegrid-start-date" id="makegrid-start-date" 
-                       placeholder="2010-10-01"/>
+                       value="2013-10-01"/>
             </div>
             <div class="col-sm-7">
               Hour: <select id="makegrid-start-hour" name="makegrid-start-hour">
@@ -65,30 +71,32 @@
           <div class="row">
             <div class="col-sm-5">
               Date: <input type="date" name="makegrid-end-date" id="makegrid-end-date" 
-                       placeholder="2011-10-01"/>
+                       value="2013-10-01"/>
             </div>
             <div class="col-sm-7">
               Hour: <select id="makegrid-end-hour" name="makegrid-end-hour">
-                {% for i in range(24) %}
+                <option value="0">0</option>
+                <option value="1" selected>1</option>
+                {% for i in range(2, 24) %}
                 <option value="{{ i }}">{{ i }}</option>
                 {% endfor %}
               </select>
             </div>
           </div>
 
-        <dt><h3>Specify Time Step</h3>
-        <dt>
-          <input type="radio" name="timestep" value="1 hour" checked>  1 hour
-          <br>
-          <input type="radio" name="timestep" value="3 hours">  3 hours
-          <br>
+        <!--<dt><h3>Specify Time Step</h3>-->
+        <!--<dt>-->
+          <!--<input type="radio" name="timestep" value="1 hour" checked>  1 hour-->
+          <!--<br>-->
+          <!--<input type="radio" name="timestep" value="3 hours">  3 hours-->
+          <!--<br>-->
 
-        <dt><h3>Specify Kriging Method</h3>
-        <dt>
-          <input type="radio" name="kriging" value="Empirical Bayesian" checked>  Empirical Bayesian (Slower but more accurate)
-          <br>
-          <input type="radio" name="kriging" value="Detrended">  Detrended
-          <br>
+        <!--<dt><h3>Specify Kriging Method</h3>-->
+        <!--<dt>-->
+          <!--<input type="radio" name="kriging" value="Empirical Bayesian" checked>  Empirical Bayesian (Slower but more accurate)-->
+          <!--<br>-->
+          <!--<input type="radio" name="kriging" value="Detrended">  Detrended-->
+          <!--<br>-->
 
         <dt><h3>Select variables of interest</h3>
         <div class="row">
