@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% set active_page = "modeling.index" %}
+
+{% block content %}
+<div class="container">
+
+  <h1>Modeling and Processing</h1>
+
+  <p>
+    Here you will be able to select a model, browse data that's ready
+    for that model, and run the model.
+  </p>
+  <p>
+    We will also enable services like creating grids from weather
+    station data and a DEM for a watershed. This page will proved 
+    access to tools for downloading customized PRISM data (custom projection, 
+    time frame, grid area, etc.).
+  </p>
+
+
+    <h2>Models</h1>
+
+      <div class="row">
+
+        <div class="col-md-4 col-sm-4 col-xs-12"> 
+          <a href="{{ url_for('.makegrid') }}" class="splash-opt">
+         <div class="thumbnail">
+          <h3 class="thumbnail-title">Grid Creation</h3>
+          <img id="grid-create-img" src="../static/images/weather_station_grid.png">
+          <p class="central-nav-blurb">Created gridded model forcings
+          from weather station data and a DEM
+          </p>
+         </div></a>
+
+       </div>
+
+
+        <div class="col-md-4 col-sm-4 col-xs-12"> 
+          <a href="{{ url_for('.prms') }}" class="splash-opt">
+           <div class="thumbnail">
+             
+            <h3 class="thumbnail-title">PRMS</h3>
+            <img class="central-nav-img" src="../static/images/prms_mows.png">
+            <p class="central-nav-blurb">
+              Precipitation-Runoff Modeling System: a deterministic, distributed-parameter,
+              physical process based modeling system.
+            </p>
+           </div></a>        
+        </div>
+
+        <div class="col-md-4 col-sm-4 col-xs-12"> 
+          <a href="{{ url_for('.isnobal') }}" class="splash-opt">
+         <div class="thumbnail">
+          <h3 class="thumbnail-title">iSNOBAL</h3>
+          <img class="central-nav-img" src="../static/images/usda.png">
+          <p class="central-nav-blurb">
+            Mass-energy balance model for climate effects on snowpack, precipitation,
+            and water inputs
+          </p>
+         </div></a>
+       </div>
+
+      </div>
+
+      </div>
+
+</div>
+{% endblock %}

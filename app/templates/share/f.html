@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% set active_page = "share.index" %}
+
+{% block content %}
+
+<div class="row">
+  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    {% if model_run_name %}
+    <h1>
+      View or add files to resource
+    </h1>
+    <h2 style="text-align:center">
+      <span>Resource Name:</span> <b>{{ model_run_name }}</b>
+    </h2>
+    <h2 style="text-align:center">
+      <span>Description:</span> <b>{{ model_run_desc }}</b>
+    </h2>
+    <h2 style="text-align:center">
+      <span>Model Run UUID:</span> <b>{{ model_run_uuid }}</b>
+    </h2>
+    {% else %}
+    <p>
+    Please return to {{ url_for('share.resources') }} and click the link
+    for the resource you'd like to add to.
+    </p>
+    {% endif %}
+  </div>
+</div>
+
+<br> </br>
+
+<h1>Upload new data</h1>
+<div class="container">
+  <form action="insert" method="post" enctype="multipart/form-data">
+  <div align = "center">
+
+    <table>
+        <tr><td>Upload file</td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td><input name = "file" type = "file" value = '' id = "file"></input></td></tr>
+        <tr><td>Select model</td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+          <td>
+            <select name = "model">
+              <option value="isnobal">iSNOBAL</option>
+              <option value="prms">PRMS</option>
+              <option value="HydroGeoSphere">CASiMiR</option>
+              <option value="HydroGeoSphere">DFLOW</option>
+              <option value="HydroGeoSphere">HydroGeoSphere</option>
+              <option value="reference">reference</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>Name of watershed</td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td>
+            <select name="watershed">
+              <option value="Valles Caldera">Valles Caldera</option>
+              <option value="Dry Creek">Dry Creek</option>
+              <option value="Reynolds Creek">Reynolds Creek</option>
+              <option value="Lehman Creek">Lehman Creek</option>
+            </select>
+          </td>
+        </tr>
+        <tr><td>Description of file</td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td><input name = "description" rows = "5" value = '' id = "description"></input></td></tr>
+        <tr><td> State </td> <td>&nbsp;&nbsp;&nbsp;&nbsp;</td> <td><select name = "state"><option value="Nevada">Nevada</option><option value="Idaho">Idaho</option><option value="New Mexico">New Mexico</option></select></td></input></td></tr>
+         <input name = "uuid" type = "hidden" value = {{ model_run_uuid }} id = "uuid"></input>
+    </table> 
+    <br/>
+    <div align = center><INPUT Type="submit" VALUE="Insert" ></div>
+    </div>
+  </form>
+
+<br/>
+
+<h1>List of data in this resource</h1>
+
+{% include "common/fileList.html" %}
+
+</body>
+
+{% endblock %}

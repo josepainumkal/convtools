@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% if model_run_name %}
+  <h2>Click below to run iSNOBAL with resource named</h1>
+
+  <h1 style="text-align:center"><b> {{ file_name }}</b></h1>
+
+  <!-- run isnobal button triggers modal with finalization instruct/confirm -->
+  <a type="button" class="btn btn-success isnobal-label" href="/modeling/isnobal/{{ model_run_uuid }}">
+    Run iSNOBAL
+  </a>
+
+{% else %}
+  <h2>Select a resource from the iSNOBAL resources below</h2>
+
+  {% if panels %}
+      <div class="bg-success">
+          <h3>Found {{ panels|length }} results</h3>
+      </div>
+
+      {% set start_row = true %}
+      {% for panel in panels %}
+          {% if start_row==true %}
+              <div class="row">
+              {% set start_row = false %}
+          {% endif %}
+      <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+          <div class="panel panel-primary">
+              <div class="panel-heading">
+                  <h3 class="panel-title">
+                    {{ panel.model_run_name }}  
+                  </h3>
+
+              </div>
+              <ul class="list-group fixed-height-list">
+
+                  <li class="list-group-item">
+                      <strong>Description:</strong> {{ panel.description }}
+                  </li>
+                  <li class="list-group-item">
+                      <strong>Keywords:</strong> {{ panel.keywords }}
+                  </li>
+                  <li class="list-group-item">
+                      <strong>Researcher:</strong> {{ panel.researcher_name }}
+                  </li>
+                  <li class="list-group-item">
+                    <a type="button" class="btn btn-success isnobal-label" 
+                       href="/modeling/isnobal/{{ panel.model_run_uuid }}">
+                      Run iSNOBAL
+                    </a>
+                  </li>
+              </ul>
+
+          </div>
+      </div>
+      {% if loop.index is divisibleby 3 %}
+          </div>
+          {% set start_row = true %}
+      {% endif %}
+      {% endfor %}
+
+  {% else %}
+      <div class="bg-warning">
+          <h3>No results found for the query</h3>
+      </div>
+  {% endif %}
+{% endif %}
+
+
+{% endblock %}

@@ -6,7 +6,7 @@ class SearchForm(Form):
     """
     Flask-WTF form for the search page
     """
-    model_run_name = StringField('Model Run Name')
+    model_run_name = StringField('')
     researcher_name = StringField('Researcher Name')
     keywords = StringField('Keyword')
     description = StringField('Description')

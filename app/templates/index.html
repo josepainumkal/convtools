@@ -4,14 +4,21 @@
 {% block content %}
 <div class="container">
 
-
     <h1>WC-WAVE Virtual Watershed Platform</h1>
-    <p>Hello and welcome to the WC-WAVE virtual watershed platform! 
-    Click one of the three options below to get
-    started. You can (eventually) browse data hosted by the virtual watershed, run
-    models, and manage your own data and metadata.</p>
+
+    <h3 style="padding:0 60px">For Modeling, Processing, and Data Management</h3>
+
+    </br>
+
+    <p>
+      Click one of the three options below to get
+      started. You can browse data hosted by the virtual watershed, 
+      run models, and manage your own data and metadata.
+    </p>
 
   <div id="splash-opts" class="row body" height="400">
+    <!-- begin three separate "splash opts" -->
+    <!-- #1 -->
     <div class="col-md-4 col-sm-6 col-xs-12"> 
       <a href="/search" class="splash-opt">
        <div class="thumbnail">
@@ -21,25 +28,33 @@
         <p class="central-nav-blurb">Look here for publicly available data published by colleagues</p>
        </div></a>        
     </div>
+
+    <!-- #2 -->
     <div class="col-md-4 col-sm-6 col-xs-12"> 
-      <a href="/processing" class="splash-opt">
+      <a href="/modeling" class="splash-opt">
        <div class="thumbnail">
         <h3 class="thumbnail-title">Modeling and Processing</h3>
         <img style="top:40px;width:260px" class="central-nav-img" src="/static/images/compute.png">
         <p style="top:70px" class="central-nav-blurb">Find the right data to use for running your models. Create gridded data from weather station data.</p>
        </div></a>
      </div>
+
+    <!-- #3 -->
     <div class="col-md-4 col-sm-6 col-xs-12"> 
+      <a href="/share" class="splash-opt">
         <div class="thumbnail">
           <h3 class="thumbnail-title">Manage your data</h3>
-          <a href="/share" class="splash-opt"><img class="central-nav-img" src="/static/images/folder.png"></a>        
+          <img class="central-nav-img" src="/static/images/folder.png">
           <p class="central-nav-blurb">Share or upload data. Include or update 
             metadata so your data is easily found. </p>
-        </div>
+        </div></a>
     </div>
+  <!-- end splash opts -->
   </div>
-  </div>
+<!-- end container -->
+</div>
 
+<!-- smaller font (non-containered) for funding info -->
 <div>
     <p>The WC-WAVE project is funded by the National Science Foundation's Experimental
     Program to Stimulate Competetive Research <a href=http://www.nsf.gov/od/iia/programs/epscor/index.jsp>(EPSCoR)</a> under three grants, one for each of the partner states, Idaho
@@ -52,10 +67,8 @@
     put together by the EPSCoR folks. See also <a href=http://westernconsortium.org/>
     westernconsortium.org</a> for even more info.
     </p>
-
-
-
 </div>
+
 <table style="margin:auto;border-top:1px solid #ebebeb;width:820px;padding-top:35px;height:220px;" border="0" cellpadding="0" cellspacing="0">
         <tbody><tr>
             <td valign="top"><br>

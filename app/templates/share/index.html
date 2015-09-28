@@ -64,7 +64,7 @@
       Your Currently Shared Resources
     </h3>
     <p>
-      Click "Add files to this resource" to populate this resource
+      Click "View and add files for this resource" to populate this resource
     </p>
     {% else %}
     <h3>
@@ -112,7 +112,7 @@
       </p>
       <p>
         <a href={{ url_for('share.files', model_run_uuid=r.uuid) }}>
-          Add files to this resource
+          View and add files for this resource
         </a>
       </p>
     </div>
@@ -145,7 +145,7 @@
           {% endif %}
           <li class="list-group-item">
             <a class="btn btn-success btn-block" href={{ url_for('share.files', model_run_uuid=r.uuid) }}>
-              Add files to this resource
+              View and add files for this resource
             </a>
           </li>
 
