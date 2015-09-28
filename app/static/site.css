@@ -4,17 +4,30 @@ body {
   font-family: 'Lato', 'sans-serif';
   padding-bottom:60px;
   padding-top:60px;
+  background: url(images/wcwave_group_front_cropped.jpg) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 
-.navbar-default .navbar-nav > li > a {
-  color: #166494;
+/*.navbar-default .navbar-nav > li > a {*/
+  /*[>color: #166494;<]*/
+/*}*/
+/*.navbar .navbar-brand {*/
+  /*padding: 10px;*/
+/*}*/
+/*.navbar .navbar-brand img {*/
+  /*width: 50px;*/
+/*}*/
+
+.navbar {
+   background-color: transparent;
+   background: transparent;
+   border-color: transparent;
 }
-.navbar .navbar-brand {
-  padding: 10px;
-}
-.navbar .navbar-brand img {
-  width: 50px;
-}
+
+.navbar li { color: #000 } 
 
 
 .name-holder{
