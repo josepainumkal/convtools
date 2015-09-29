@@ -1,6 +1,11 @@
 {% extends "base.html" %}
 {% set active_page = "modeling.makegrid" %}
 
+{% block link %}
+  {{ super() }}
+  <link href="/static/makegrid.css" rel="stylesheet">
+{% endblock %}
+
 {% block head_ext %}
 <!-- cdn for modernizr, if you haven't included it already -->
 <script src="//cdn.jsdelivr.net/webshim/1.12.4/extras/modernizr-custom.js"></script>
@@ -23,8 +28,8 @@
 
 {% block content %}
 <div class="content">
-  <h1>Create gridded data</h1>
-  <p>
+  <h1 style="color:white">Create gridded data</h1>
+  <p style="color:white">
     Select from the following options to create your customized gridded data. 
     Currently we are only producing grids for historical Reynolds Creek data from
     a combination of a Reynolds Creek DEM and a database of several decades of
