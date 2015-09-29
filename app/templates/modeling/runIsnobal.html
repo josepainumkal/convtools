@@ -1,10 +1,234 @@
 {% extends "base.html" %}
-{% set active_page = "modeling.index" %}
+
 
 {% block content %}
 
-<h1>Select the file you'd like to use as input to iSNOBAL</h1>
+<h2>Run Model</h2>
 
-{% include "common/fileList.html" %}
+<div class="row" id="modelruns-container" data-user-id="{{ current_user.id }}" >
+  
+</div>
+
+<script type="text/babel" charset="utf-8">
+  
+  var ModelRun = React.createClass({
+    getInitialState: function() {
+      var inputResources = $.grep(this.props.data.resources, function (element, index) {
+        return element.resource_type == 'input';
+      });
+      var runButton;
+      if (this.props.data.progress_state=='NOT_STARTED' && inputResources.length>0) {
+        //console.log(this.props.id);
+        runButton = <ReactBootstrap.Button onClick={this.onRunClick} className="run-btn" bsStyle="primary">Run Model</ReactBootstrap.Button>;
+      }
+      return {progressBars:null,progressButton:runButton,inputResources:inputResources};
+    },
+    getProgress: function(){
+      var query = {"filters":[{"name":"modelrun_id","op":"eq","val":this.props.data.id}],"order_by":[{"field":"created_at","direction":"asc"}]}
+      var progUrl = this.props.apiUrl+"modelprogress"+"?q="+JSON.stringify(query);
+      var intervalId = this.intervalId;
+      //console.log(progUrl);
+      $.ajax({
+        url: progUrl,
+        method:'GET',
+        dataType: 'json',
+        cache: false,
+        success: function(response) {
+          window.bakkas = response;
+          //console.log('intervalid:',intervalId);
+          //console.log('response:',response);
+          var progress_events = response['objects'];
+          
+          if(progress_events.length>0){
+            this.setState({progressButton:<ReactBootstrap.Button className="run-btn" bsStyle="success">
+                                            {progress_events[0].modelrun.progress_state}
+                                          </ReactBootstrap.Button>});          }
+          else{
+            this.setState({progressButton:
+                          <ReactBootstrap.Button className="run-btn" bsStyle="warning">
+                            QUEUED
+                          </ReactBootstrap.Button>}); 
+          }
+          
+          this.updateProgressBar(progress_events);
+          if(progress_events.length>0 && progress_events[0].modelrun.progress_state=='FINISHED'){
+            clearInterval(intervalId);
+          }
+
+        }.bind(this),
+        error: function(xhr, status, err) {
+          console.error(startUrl, status, err.toString());
+        }.bind(this)
+      });
+
+    },
+    updateProgressBar: function(data){
+      var progBars = []
+      //console.log('data inside update:',data);
+      if(data.length>0){
+        //console.log('in if:',data);
+        for(var i=0;i<data.length;i++){
+          var obj = data[i];
+          //console.log('obj prog:',obj.progress_value);
+          var progBar = <ModelProgress progressVal={Math.floor(obj.progress_value)} eventName={obj.event_name} eventDescription={obj.event_description} />;
+          progBars.push(progBar);
+          this.setState({progressBars:progBars});
+        }
+      }
+      
+    },
+
+    onRunClick: function (event) {
+      console.log('Run Button clicked');
+      var startUrl  =this.props.url+"/"+this.props.data.id+"/start";
+      //this.intervalId = setInterval(this.getProgress, 5000);
+      $.ajax({
+        url: startUrl,
+        method:'PUT',
+        dataType: 'json',
+        cache: false,
+        success: function(data) {
+          this.intervalId = setInterval(this.getProgress, 2000);
+
+        }.bind(this),
+        error: function(xhr, status, err) {
+          console.error(startUrl, status, err.toString());
+        }.bind(this)
+      });
+
+
+    },
+    render: function() {
+      return (
+        <div className="col-lg-12">
+          <ReactBootstrap.Panel header={this.props.data.id +" "+ this.props.data.title} className="modelrun"  bsStyle="primary">
+            <div className="col-lg-4">
+              <ReactBootstrap.ListGroup>
+                <ReactBootstrap.ListGroupItem> Title: {this.props.data.title} </ReactBootstrap.ListGroupItem>
+                <ReactBootstrap.ListGroupItem> Model: {this.props.data.model_name} </ReactBootstrap.ListGroupItem>
+                <ReactBootstrap.ListGroupItem> Status: {this.props.data.progress_state} </ReactBootstrap.ListGroupItem>
+                <ReactBootstrap.ListGroupItem> Resources: </ReactBootstrap.ListGroupItem>
+              </ReactBootstrap.ListGroup>
+              <ModelResourceList data={this.props.data.resources} />
+            </div>
+            <div ref="runBtn" className="col-lg-8 margin-bottom">
+              {this.state.progressButton}
+            </div>
+            <div className="col-lg-8" ref="progressbarcontainer">
+              {this.state.progressBars}
+            </div>
+          </ReactBootstrap.Panel>
+        </div>
+      );
+    }
+  });
+
+  var ModelResource = React.createClass({
+    render: function() {
+      return (
+        <ReactBootstrap.ListGroupItem> {this.props.data.resource_type} : 
+          <a href={this.props.data.resource_url} className="">{this.props.data.resource_name}</a>
+        </ReactBootstrap.ListGroupItem>
+      );
+    }
+  });
+
+  var ModelProgress = React.createClass({
+
+    render: function() {
+      return (
+        <div className='progress-event'>
+          <ReactBootstrap.ProgressBar now={this.props.progressVal} label="%(percent)s%" />
+          {this.props.eventDescription}
+        </div>
+      );
+    }
+  });
+  var ModelRunBox = React.createClass({
+    getInitialState: function() {
+      return {data: [],apiUrl:this.props.apiUrl};
+    },
+    componentDidMount: function() {
+      $.ajax({
+        url: this.props.url+"?q="+JSON.stringify(this.props.query),
+        dataType: 'json',
+        cache: false,
+        success: function(data) {
+          this.setState({
+            data: data['objects'],
+            url:this.props.url
+          });
+        }.bind(this),
+        error: function(xhr, status, err) {
+          console.error(this.props.url, status, err.toString());
+        }.bind(this)
+      });
+    },
+    render: function() {
+      return (
+        <div className="modlerunBox">
+          <h1>Model Runs</h1>
+          <ModelRunList apiUrl={this.state.apiUrl} url={this.state.url} data={this.state.data}  />
+        </div>
+      );
+    }
+  });
+
+  var ModelRunList = React.createClass({
+    render: function() {
+      var url = this.props.url;
+      var apiUrl = this.props.apiUrl;
+      var modelrunNodes = this.props.data.map(function (modelrun) {
+        
+        return (
+          <ModelRun apiUrl={apiUrl}  url={url} data={modelrun}>
+           
+          </ModelRun>
+        );
+      });
+      return (
+        <div className="modelrunList">
+          {modelrunNodes}
+        </div>
+      );
+    }
+  });  
+
+  var ModelResourceList = React.createClass({
+    render: function() {
+      var modelResourceNodes = this.props.data.map(function (modelresource) {
+        return (
+          <ModelResource data={modelresource}>
+          </ModelResource>
+        );
+      });
+      return (
+         <ReactBootstrap.ListGroup>
+          {modelResourceNodes}
+         </ReactBootstrap.ListGroup>
+      );
+    }
+  });  
+
+  var apiUrl = "http://vwadaptor.ddns.net:5000/api/"
+  var modelrunsQuery = {
+    "filters": [{
+      "name": "user_id",
+      "op": "eq",
+      "val": $('#modelruns-container').data('user-id')
+    }],
+    "order_by": [{
+      "field": "created_at",
+      "direction":"desc"
+    }]
+  };
+  var modelrunsUrl = apiUrl+"modelruns";
+  React.render(
+     <ModelRunBox apiUrl={apiUrl} url={modelrunsUrl} query={modelrunsQuery} />,
+    document.getElementById('modelruns-container')
+  );
+
+</script>
+
 
 {% endblock %}
