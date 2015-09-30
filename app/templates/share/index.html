@@ -1,4 +1,8 @@
 {% extends "base.html" %}
+{% block link %}
+  {{ super() }}
+  <link href="/static/f.css" rel="stylesheet">
+{% endblock %}
 {% block content %}
 {{ super() }}
 
