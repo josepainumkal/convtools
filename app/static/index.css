@@ -1,0 +1,13 @@
+body {
+  background: url(images/wcwave_group_front_cropped.jpg) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+} 
+
+a>h3#hover {
+  /*  */
+  text-decoration: none;  
+}
+

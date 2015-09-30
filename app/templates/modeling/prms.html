@@ -1,6 +1,17 @@
 {% extends "base.html" %}
 {% set active_page = "modeling.index" %}
 
+{% block head_ext %}
+<style>
+  body { color: white; }
+</style>
+{% endblock %}
+
+{% block link %}
+  {{ super() }}
+  <link href="/static/makegrid.css" rel="stylesheet">
+{% endblock %}
+
 {% block content %}
 <div class="container">
 

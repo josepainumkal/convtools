@@ -1,0 +1,10 @@
+div.thumbnail{
+    height: 375px;
+    border: 4pt black;
+    opacity: 1;
+}
+
+a.splash-opt .thumbnail {
+    opacity: .8;
+} 
+
