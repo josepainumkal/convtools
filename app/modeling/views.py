@@ -46,7 +46,9 @@ def isnobal_page():
 
     return render_template('modeling/runIsnobal.html')
 
-
+@modeling.route('/dashboard/', methods=['GET'])
+def modelling_dashboard():
+    return render_template('modeling/dashboard.html')
 
 @modeling.route('/isnobal/run', methods=['POST'])
 def run_isnobal():

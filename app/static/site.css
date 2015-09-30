@@ -205,3 +205,8 @@ span.badge>a {
   color: white;
   background-color: green;
 }
+
+#modelrunFormBtn{
+  margin-bottom: 20px;
+  float: right;
+}

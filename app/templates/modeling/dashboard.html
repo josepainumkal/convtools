@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block scripts %}
+    {{ super() }}
+     <link href="https://cdnjs.cloudflare.com/ajax/libs/metisMenu/2.1.0/metisMenu.min.css" rel="stylesheet">
+    <!-- Timeline CSS -->
+    <!-- <link href="../dist/css/timeline.css" rel="stylesheet"> -->
+    <link href="/static/dashboard/timeline.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <!-- <link href="../dist/css/sb-admin-2.css" rel="stylesheet"> -->
+    <link href="/static/dashboard/sb-admin-2.css" rel="stylesheet">
+    <!-- Morris Charts CSS -->
+    <!-- <link href="../bower_components/morrisjs/morris.css" rel="stylesheet"> -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/metisMenu/2.1.0/metisMenu.min.js"></script>
+
+    <!-- Morris Charts JavaScript -->
+    <!--<script src="../bower_components/raphael/raphael-min.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.4/raphael-min.js"></script>
+    <!--<script src="../bower_components/morrisjs/morris.min.js"></script>-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+{% endblock %}
+
+{% block content %}
+
+<div id="wrapper">
+    <div id="page-wrapper">        
+        <div class="row" id="modelruns-container" data-user-id="{{ current_user.id }}" >
+          
+        </div>
+
+    </div>
+    <!-- /#page-wrapper -->
+
+</div>
+
+<script type="text/babel" src="/static/dashboard/app.js"></script>
+
+
+    <!-- /#wrapper -->
+{% endblock %}
