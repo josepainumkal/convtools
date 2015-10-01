@@ -34,7 +34,34 @@
 </div>
 
 <script type="text/babel" src="/static/dashboard/app.js"></script>
+<script type="text/babel">
+  var userId= $('#modelruns-container').data('user-id')
+  var apiUrl = "{{VWMODEL_SERVER_URL}}"
+  var modelrunsQuery = {
+    "filters": [{
+      "name": "user_id",
+      "op": "eq",
+      "val": userId
+    }],
+    "order_by": [{
+      "field": "created_at",
+      "direction":"desc"
+    }]
+  };
+  var modelrunsUrl = apiUrl+"modelruns";
+  
+  var modelresourceUrl = "upload";
 
+  React.render(
+     <ModelRunBox apiUrl={apiUrl} 
+            url={modelrunsUrl} 
+            modelresourceUrl={modelresourceUrl} 
+            query={modelrunsQuery} 
+            userid={$('#modelruns-container').data('user-id')} />,
+    document.getElementById('modelruns-container')
+  );
+
+</script>
 
     <!-- /#wrapper -->
 {% endblock %}

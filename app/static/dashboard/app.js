@@ -2,7 +2,7 @@
     states_vars: {
             'NOT_STARTED': {
                 'class': 'default',
-                'iconClass': ''
+                'iconClass': '',
             },
             'QUEUED': {
                 'class': 'info',
@@ -24,6 +24,30 @@
     
   };
 
+  var DashboardBox = React.createClass({
+    
+    render:function(){
+      //var cx = React.addons.classSet;
+      var iconClasses = 'fa fa-4x '+this.props.iconClass;
+      var panelClasses = 'panel ' +this.props.panelClass;
+      return (
+        <div className={panelClasses}>
+          <div className="panel-heading">
+              <div className="row">
+                  <div className="col-xs-3">
+                      <i className={iconClasses}></i>
+                  </div>
+                  <div className="col-xs-9 text-right">
+                      <div className="huge">{this.props.count}</div>
+                      <div>{this.props.descripiton}</div>
+                  </div>
+              </div>
+          </div>
+        </div>
+      )
+    }
+  });
+
   var ModelRun = React.createClass({
     getInitialState: function() {
       var inputResources = $.grep(this.props.data.resources, function (element, index) {
@@ -36,14 +60,14 @@
         runButton = <ReactBootstrap.Button onClick={this.onRunClick} bsSize="large" className="run-btn" bsStyle="primary">Run Model</ReactBootstrap.Button>;
       }
 
-      if(this.props.data.progress_state=='RUNNING'){
-        var btnClass = this.getButtonClass('RUNNING');
+      if(this.props.data.progress_state=='RUNNING' || this.props.data.progress_state=='QUEUED'){
+        var btnClass = this.getButtonClass(this.props.data.progress_state);
         runButton = <ReactBootstrap.Button bsSize="large" className="run-btn" bsStyle={btnClass['class']}>
                                           <i className={btnClass['iconClass']}></i> 
                                           {this.props.data.progress_state}
                                         </ReactBootstrap.Button>; 
         //this.getProgress();
-        this.intervalId = setInterval(this.getProgress, 2000);
+        //this.intervalId = setInterval(this.getProgress, 2000);
       }
 
       return {id:this.props.data.id,progressBars:null,progressButton:runButton,inputResources:inputResources,resources:this.props.data.resources};
@@ -52,8 +76,14 @@
     
       return modelrunApi.states_vars[state];
     },
+    componentDidMount:function(){
+       if(this.props.data.progress_state=='RUNNING' || this.props.data.progress_state=='QUEUED'){
+        this.intervalId = setInterval(this.getProgress, 2000);
+       }
+      
+    },
     componentWillUpdate: function(nextProps,nextState){
-        console.log('updated',nextState);
+        //console.log('updated',nextState);
     },
     getProgress: function(){
       var progUrl = this.props.apiUrl+"modelruns/"+this.state.id;
@@ -75,12 +105,13 @@
           this.updateProgressBar(progress_events);
           if(modelrun.progress_state=='FINISHED'){
             clearInterval(intervalId);
-            this.updateResource(modelrun.id);
+            this.updateResource();
           }
           else if(modelrun.progress_state=='ERROR'){
             clearInterval(intervalId);
             //this.updateResource(progress_events[0].modelrun_id);
           }
+          this.props.onModelRunProgress();
 
         }.bind(this),
         error: function(xhr, status, err) {
@@ -89,8 +120,8 @@
       });
 
     },
-    updateResource: function(modelrunId){
-      var modelrunUrl = this.props.apiUrl+'modelruns/'+modelrunId;
+    updateResource: function(){
+      var modelrunUrl = this.props.apiUrl+'modelruns/'+this.state.id;
       $.ajax({
         url: modelrunUrl,
         method:'GET',
@@ -208,80 +239,17 @@
       );
     }
   });
-  var ModelRunBox = React.createClass({
-    getInitialState: function() {
-      return {data: [],apiUrl:this.props.apiUrl,url:this.props.url,query:this.props.query,modelresourceUrl:this.props.modelresourceUrl};
-    },
-    onModelRunCreate: function(){
-      this.getModelRuns(this.state.query);
-    },
-    getModelRuns:function(query){
-      $.ajax({
-        url: this.state.url+"?q="+JSON.stringify(query),
-        dataType: 'json',
-        cache: false,
-        success: function(data) {
-            console.log('success!');
-          this.setState({
-            data: data['objects']
-          });
-        }.bind(this),
-        error: function(xhr, status, err) {
-          console.error(this.props.url, status, err.toString());
-        }.bind(this)
-      });     
-    },
-    componentDidMount: function() {
-        this.getModelRuns(this.state.query);
-    },
-    
-    onFilter: function(event){
-      //console.log('changed to',event.target.value);
-      if(event.target.value != 'ALL'){
-        var q= jQuery.extend({}, this.state.query);
-        var baseFilter = q.filters[0];
-        q.filters=[baseFilter,{"name":"progress_state","op":"eq","val":event.target.value}];
-        this.getModelRuns(q);
-      }else{
-        this.getModelRuns(this.state.query);
-      }   
-
-    },
-    render: function() {
-      var filters = Object.keys(modelrunApi.states_vars);
-      var options=[<option value='ALL'>ALL</option>];
-      $.each(filters,function(idx,val){
-        options.push(<option value={val}>{val}</option>);
-      });
-      //console.log('rerendered');
-      return (
-        <div className="modlerunBox">
-            <div className="col-lg-12">
-                <h1 className="page-header">
-                    Your Model Runs
-                </h1>
-                <ModelRunForm onModelRunCreate={this.onModelRunCreate} userid={this.props.userid} apiUrl={this.state.apiUrl} modelrunUrl={this.state.url} modelresourceUrl={this.state.modelresourceUrl} />
-                {/* <ReactBootstrap.Input type="select" onChange={this.onFilter} label="">
-                   {options}
-                  </ReactBootstrap.Input> */}
-            </div>
-            <div className="modleruns">
-              <ModelRunList apiUrl={this.state.apiUrl} url={this.state.url} data={this.state.data}  />
-            </div>
-        </div>
-      );
-    }
-  });
 
   var ModelRunList = React.createClass({
 
     render: function() {
       var url = this.props.url;
       var apiUrl = this.props.apiUrl;
+      var onModelRunProgress = this.props.onModelRunProgress;
       var modelrunNodes = this.props.data.map(function (modelrun) {
         
         return (
-          <ModelRun apiUrl={apiUrl}  url={url} data={modelrun}>
+          <ModelRun onModelRunProgress={onModelRunProgress} apiUrl={apiUrl}  url={url} data={modelrun}>
            
           </ModelRun>
         );
@@ -289,6 +257,7 @@
       return (
         <div className="modelrunList">
           {modelrunNodes}
+          
         </div>
       );
     }
@@ -419,15 +388,17 @@
 
         return (  
           <div id="#new-model-run">
-            <ReactBootstrap.Button
-              id="modelrunFormBtn"
-              bsStyle="primary"
-              bsSize="large"
-              className="margin-bottom"
-              onClick={this.openModal}>
-              Create a New Model Run
-              
+            <div className="text-center margin-bottom">
+              <ReactBootstrap.Button
+                id="modelrunFormBtn"
+                bsStyle="primary"
+                bsSize="large"
+                className="margin-bottom"
+                onClick={this.openModal}>
+                Create a New Model Run
             </ReactBootstrap.Button>
+            </div>
+            
             <ReactBootstrap.Modal show={this.state.showModal} onHide={this.closeModal}>
               <ReactBootstrap.Modal.Header closeButton>
                 <ReactBootstrap.Modal.Title>Create new model run</ReactBootstrap.Modal.Title>
@@ -460,28 +431,157 @@
     }
   });  
 
-  var userId= $('#modelruns-container').data('user-id')
-  var apiUrl = "http://vwadaptor.ddns.net:5000/api/"
-  var modelrunsQuery = {
-    "filters": [{
-      "name": "user_id",
-      "op": "eq",
-      "val": userId
-    }],
-    "order_by": [{
-      "field": "created_at",
-      "direction":"desc"
-    }]
-  };
-  var modelrunsUrl = apiUrl+"modelruns";
-  
-  var modelresourceUrl = "upload";
+  var ModelRunBox = React.createClass({
+    getInitialState: function() {
+      var modelRunsByState={};
+      $.each(modelrunApi.states_vars,function(key,val){
+        modelRunsByState[key] = 0;
+      });
+      //console.log(modelRunsByState);
+      return {
+        data: [],apiUrl:this.props.apiUrl,url:this.props.url,
+        query:this.props.query,modelresourceUrl:this.props.modelresourceUrl,
+        pageNum:1,numPages:null,numModelRuns:null,modelRunsByState:modelRunsByState,userid:this.props.userid};
+    },
+    onModelRunCreate: function(){
+      this.getModelRuns(this.state.query);
+    },
+    getModelRuns:function(query,pageNum){
+      query = query || this.state.query;
+      pageNum = pageNum || 1;
+      var modelrunUrl = this.state.url+"?q="+JSON.stringify(this.state.query)+"&page="+pageNum;
+      console.log('modelrun url:',modelrunUrl);
+      $.ajax({
+        url: modelrunUrl,
+        dataType: 'json',
+        cache: false,
+        success: function(data) {
+            //console.log('success!',data['objects'].length);
+          this.setState({
+            data: data['objects'],
+            numPages:data.total_pages,
+            pageNum:data['page'],
+            numModelRuns:data['num_results']
+          });
+          this.getModelRunsCountByState();
+        }.bind(this),
+        error: function(xhr, status, err) {
+          console.error(this.props.url, status, err.toString());
+        }.bind(this)
+      });     
+    },
+    
+    getModelRunsCountByState:function(){
+      //$self = this;
+      // for(var state in this.state.modelRunsByState){
+      //     this.getModelRunCountByState(state);
+      // }
+      var url = this.state.apiUrl+"users/"+this.state.userid+"/countsbystates";
+      console.log(url);
+      $.ajax({
+        url: url,
+        dataType: 'json',
+        cache: false,
+        success: function(data) {
+            //console.log('success!',data['objects'].length);
+          //var modelRunsByState = this.state.modelRunsByState;
+          //modelRunsByState[state] = data['num_results'];
+          this.setState({
+            modelRunsByState:data
+          });
+        }.bind(this),
+        error: function(xhr, status, err) {
+          console.error(this.props.url, status, err.toString());
+        }.bind(this)
+      });   
 
-  React.render(
-     <ModelRunBox apiUrl={apiUrl} 
-            url={modelrunsUrl} 
-            modelresourceUrl={modelresourceUrl} 
-            query={modelrunsQuery} 
-            userid={$('#modelruns-container').data('user-id')} />,
-    document.getElementById('modelruns-container')
-  );
+
+    },
+    componentDidMount: function() {
+        this.getModelRuns();
+        
+
+    },
+    
+    onFilter: function(event){
+      //console.log('changed to',event.target.value);
+      if(event.target.value != 'ALL'){
+        var q= jQuery.extend({}, this.state.query);
+        var baseFilter = q.filters[0];
+        q.filters=[baseFilter,{"name":"progress_state","op":"eq","val":event.target.value}];
+        this.getModelRuns(q);
+      }else{
+        this.getModelRuns(this.state.query);
+      }   
+    },
+    OnPageSelect: function(event, selectedEvent){
+      if(selectedEvent.eventKey==this.state.pageNum){
+        return;
+      }
+      //console.log('yay!',selectedEvent.eventKey);
+      //this.setState({pageNum:selectedEvent.eventKey});
+      //console.log('pageNum',this.state.pageNum);
+      this.getModelRuns(null,selectedEvent.eventKey);
+    },
+    render: function() {
+      {/*var filters = Object.keys(modelrunApi.states_vars);
+      var options=[<option value='ALL'>ALL</option>];
+      $.each(filters,function(idx,val){
+        options.push(<option value={val}>{val}</option>);
+      });*/}
+      console.log(this.state.modelRunsByState);
+      var paginator;
+      if(this.state.numPages>1){
+        paginator = <div id="modelrunPaginator" className="text-center">
+                      <ReactBootstrap.Pagination
+                        items={this.state.numPages}
+                        maxButtons={this.state.numPages}
+                        activePage={this.state.pageNum}
+                        onSelect={this.OnPageSelect} />
+                    </div>
+      }
+      var modelrunForm = <ModelRunForm onModelRunCreate={this.onModelRunCreate} 
+                      userid={this.props.userid} apiUrl={this.state.apiUrl} 
+                      modelrunUrl={this.state.url} modelresourceUrl={this.state.modelresourceUrl} />
+      return (
+        <div className="modlerunBox">
+            <div className="col-lg-12">
+                <h1 className="page-header">
+                    Your Model Runs
+                </h1>
+                <div className='row'>
+                  <div className='col-lg-3'>
+                      <DashboardBox panelClass='panel-primary' iconClass='fa-tasks' 
+                        count={this.state.numModelRuns} descripiton='Total Model Runs' />
+                  </div>
+                  <div className='col-lg-3'>
+                      <DashboardBox panelClass='panel-yellow' iconClass='fa-refresh' 
+                        count={this.state.modelRunsByState['RUNNING']} descripiton='Currently Running' />
+                  </div>
+                  <div className='col-lg-3'>
+                      <DashboardBox panelClass='panel-red' iconClass='fa-exclamation-triangle' 
+                        count={this.state.modelRunsByState['ERROR']} descripiton='Failed Model Runs' />
+                  </div>
+                  <div className='col-lg-3'>
+                      <DashboardBox panelClass='panel-green' iconClass='fa-thumbs-o-up' 
+                        count={this.state.modelRunsByState['FINISHED']} descripiton='Successful Runs' />
+                  </div>
+                </div>
+                {modelrunForm}
+                {/* <ReactBootstrap.Input type="select" onChange={this.onFilter} label="">
+                   {options}
+                  </ReactBootstrap.Input> */}
+            </div>
+            <div className="modleruns">
+              {/*{paginator}*/}
+              <ModelRunList onModelRunProgress={this.getModelRunsCountByState} apiUrl={this.state.apiUrl} url={this.state.url} data={this.state.data}  />
+              {/*{paginator}*/}
+            </div>
+        </div>
+      );
+    }
+  });
+
+
+
+window.ModelRunBox = ModelRunBox;

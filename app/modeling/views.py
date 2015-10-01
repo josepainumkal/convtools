@@ -131,7 +131,8 @@ def select_isnobal_input(model_run_uuid):
 @modeling.route('/dashboard/', methods=['GET'])
 @login_required
 def modelling_dashboard():
-    return render_template('modeling/dashboard.html')
+
+    return render_template('modeling/dashboard.html',VWMODEL_SERVER_URL=app.config['VWMODEL_SERVER_URL'])
 
 @modeling.route('/isnobal/run', methods=['POST'])
 def run_isnobal():
