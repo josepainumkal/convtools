@@ -128,6 +128,11 @@ def select_isnobal_input(model_run_uuid):
                            records_list=records_list)
 
 
+@modeling.route('/dashboard/', methods=['GET'])
+@login_required
+def modelling_dashboard():
+    return render_template('modeling/dashboard.html')
+
 @modeling.route('/isnobal/run', methods=['POST'])
 def run_isnobal():
 
@@ -207,17 +212,17 @@ def upload():
             input_file = fname
             parent_uuid = new_mr_uuid
             description = 'Lehman Creek PRMS Data'
-        watershed_name = 'Lehman Creek'
-        state = 'Nevada'
-        start_datetime = '2010-01-01 00:00:00'
-        end_datetime = '2010-01-01 01:00:00'
-        model_name = 'prms'
+            watershed_name = 'Lehman Creek'
+            state = 'Nevada'
+            start_datetime = '2010-01-01 00:00:00'
+            end_datetime = '2010-01-01 01:00:00'
+            model_name = 'prms'
 
-        # create XML FGDC-standard metadata that gets included in VW metadata
-        fgdc_metadata = make_fgdc_metadata(input_file, None, new_mr_uuid, start_datetime, end_datetime, model=model_name)
+            # create XML FGDC-standard metadata that gets included in VW metadata
+            fgdc_metadata = make_fgdc_metadata(input_file, None, new_mr_uuid, start_datetime, end_datetime, model=model_name)
 
-        # create VW metadata
-        watershed_metadata = metadata_from_file(input_file, parent_uuid, new_mr_uuid, description, watershed_name, state, start_datetime=start_datetime, end_datetime=end_datetime, model_name=model_name, fgdc_metadata=fgdc_metadata)
+            # create VW metadata
+            watershed_metadata = metadata_from_file(input_file, parent_uuid, new_mr_uuid, description, watershed_name, state, start_datetime=start_datetime, end_datetime=end_datetime, model_name=model_name, fgdc_metadata=fgdc_metadata)
 
             response = VW_CLIENT.insert_metadata(watershed_metadata)
 

@@ -261,9 +261,9 @@
                     Your Model Runs
                 </h1>
                 <ModelRunForm onModelRunCreate={this.onModelRunCreate} userid={this.props.userid} apiUrl={this.state.apiUrl} modelrunUrl={this.state.url} modelresourceUrl={this.state.modelresourceUrl} />
-                <ReactBootstrap.Input type="select" onChange={this.onFilter} label="">
-                  {options}
-                </ReactBootstrap.Input>
+                {/* <ReactBootstrap.Input type="select" onChange={this.onFilter} label="">
+                   {options}
+                  </ReactBootstrap.Input> */}
             </div>
             <div className="modleruns">
               <ModelRunList apiUrl={this.state.apiUrl} url={this.state.url} data={this.state.data}  />
@@ -426,7 +426,7 @@
               className="margin-bottom"
               onClick={this.openModal}>
               Create a New Model Run
-              {this.props.modelresourceUrl}
+              
             </ReactBootstrap.Button>
             <ReactBootstrap.Modal show={this.state.showModal} onHide={this.closeModal}>
               <ReactBootstrap.Modal.Header closeButton>
