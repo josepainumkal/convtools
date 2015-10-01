@@ -117,15 +117,28 @@ def files(model_run_uuid):
 @login_required
 def insert():
 
-    if request.files['file'].filename == '' or request.form['watershed'] == '' or request.form['description'] == '' or request.form['state'] == '':
-        return render_template('share/f.html', InputErrorMessage = "Please upload required file and/or fill in all the fields")
+    if (request.files['file'].filename == ''
+        or request.form['watershed'] == ''
+            or request.form['description'] == ''):
+
+        return render_template('share/f.html',
+            InputErrorMessage="Please upload required file and/or fill in all the fields")
 
     uploadedFile = request.files['file']
     watershed_name = str(request.form['watershed'])
     model_name = str(request.form['model'])
     description = str(request.form['description'])
-    state = str(request.form['state'])
     model_run_uuid = str(request.form['uuid'])
+    model_set = str(request.form['model_set'])
+
+    if watershed_name in ['Dry Creek', 'Reynolds Creek']:
+        state = 'Idaho'
+
+    elif watershed_name == 'Valles Caldera':
+        state = 'New Mexico'
+
+    elif watershed_name == 'Lehman Creek':
+        state = 'Nevada'
 
     if uploadedFile:
         # FIXME a bit of a hack to fix timeout issues; can fix when fixed
@@ -158,7 +171,8 @@ def insert():
             parent_uuid, model_run_uuid, description, watershed_name, state,
             start_datetime=start_datetime, end_datetime=end_datetime,
             model_name=model_name, fgdc_metadata=fgdc_metadata,
-            taxonomy='geoimage', model_set_taxonomy='grid')
+            model_set=model_set, taxonomy='geoimage',
+            model_set_taxonomy='grid')
 
         _local_vw_client.insert_metadata(watershed_metadata)
 
@@ -177,10 +191,13 @@ def insert():
 
     model_run_name = model_run_record['Model Run Name']
 
+    datasets_res = VW_CLIENT.dataset_search(model_run_uuid=model_run_uuid)
+    records_list = datasets_res.records
+
     return render_template('share/f.html', model_run_name=model_run_name,
                            model_run_desc=model_run_desc,
-                           model_run_uuid = model_run_uuid,
-                           dataResults = dataResults)
+                           model_run_uuid=model_run_uuid,
+                           records_list=records_list)
     #return render_template('share/files.html', model_run_uuid = model_run_uuid, dataResults = dataResults, inputFileName = input_file)
 
 

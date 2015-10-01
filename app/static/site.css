@@ -6,8 +6,17 @@ body {
   padding-top:60px;
 }
 
+.navbar .navbar-default {
+  /*[>color: #166494;<]*/
+   background-color: transparent;
+   background: transparent;
+   border-color: transparent;
+}
 .navbar-default .navbar-nav > li > a {
-  color: #166494;
+  /*[>color: #166494;<]*/
+   background-color: transparent;
+   background: transparent;
+   border-color: transparent;
 }
 .navbar .navbar-brand {
   padding: 10px;
@@ -15,6 +24,14 @@ body {
 .navbar .navbar-brand img {
   width: 50px;
 }
+
+.navbar {
+   background-color: transparent;
+   background: transparent;
+   border-color: transparent;
+}
+
+.navbar li { color: #000 } 
 
 
 .name-holder{
@@ -61,26 +78,27 @@ body, p {
   margin: 20px 60px;
 }
 
-#splash-opts {
-  display: table;
-}
+/*#splash-opts {*/
+  /*display: table;*/
+/*}*/
 .thumbnail{
-    height: 375px;
+    height: 275px;
     border: 4pt black;
 }
 
-#splash-opts .panel {
-  float: none;
-  display: table-cell;
-  vertical-align: top;
-}
+/*#splash-opts .panel {*/
+  /*float: none;*/
+  /*display: table-cell;*/
+  /*vertical-align: top;*/
+/*}*/
 
 .central-nav-blurb {
-  top: 300px;
+  /*top: 180px;*/
 }
 
 .central-nav-img {
-  width: 220px;
+  /*width: 200px;*/
+  width: 70%;
   top: 20px;
   border-top: 100px;
   position: relative;
@@ -113,25 +131,25 @@ body, p {
 }
 
 a.splash-opt .thumbnail {
-  background-color: #216999; 
+  /*background-color: #216999; */
+  background-color: #1D0D0B;
+  opacity: .5;
   font-size: 14px;
-
   color: white;
-  
   text-decoration:none;
 }
 a .thumbnail h3 {
   font-size: 20px;
 }
 
-a .thumbnail h3:hover {
-  text-decoration: none;
-}
+/*a .thumbnail h3:hover {*/
+  /*text-decoration: none;*/
+/*}*/
 
-h3.thumbnail-title:hover {
-  font-size: 20px;
-  text-decoration: none;
-}
+/*h3.thumbnail-title:hover {*/
+  /*font-size: 20px;*/
+  /*text-decoration: none;*/
+/*}*/
 
 .borderless tbody tr td, .borderless tbody tr th, .borderless thead tr th {
     border: none !important;
@@ -141,13 +159,14 @@ div#splash-opts>a:hover{
     text-decoration:none; 
 }
 
-h3:hover {
+div#splash-opts>h3:hover {
     text-decoration: none;
 }
 a.splash-opt .thumbnail:hover {
-  color: black; 
-  text-decoration: none;
-  background: lightblue;
+  color: #AAA; 
+  /*text-decoration: none;*/
+  /*background: lightblue;*/
+  opacity: .8;
 }
 
 a.splash-opt {
@@ -189,6 +208,7 @@ a.splash-opt {
 
 div.container table tr td.file-list {
     vertical-align: middle;
+    width:90%;
 }
 
 span.badge {
