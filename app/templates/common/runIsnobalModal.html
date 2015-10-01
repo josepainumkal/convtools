@@ -30,6 +30,7 @@
 <script>
 function runModel(modelName, fileUuid)
 {
+  console.log('yo');
   var postData = {'model_name': modelName, 'dataset_uuid': fileUuid};
   
   $('#modal-body-' + fileUuid).empty();
