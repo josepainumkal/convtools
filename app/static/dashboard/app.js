@@ -293,7 +293,7 @@
     },
     closeModal:function(){
       if(!this.state.postingData){
-        this.setState({showModal:false});
+        this.setState({showModal:false,progressText:''});
       }
       
     },
@@ -322,8 +322,22 @@
         formData.append(key,val);
         console.log(formData);
       });
-      
+      //var _this = this;
       $.ajax({
+          xhr: function(){
+            var xhr = new window.XMLHttpRequest();
+            //Upload progress
+            xhr.upload.addEventListener("progress", function(evt){
+              if (evt.lengthComputable) {
+                var percentComplete = (evt.loaded / evt.total)*100;
+                //Do something with upload progress
+                //console.log(this,percentComplete);
+                this.setState({uploadProgress:Math.floor(percentComplete)});
+              }
+            }.bind(this), false);
+            return xhr;
+          }.bind(this),
+
           url:uploadUrl,
           type:'POST',
           contentType:false,
@@ -340,6 +354,7 @@
           error: function(xhr, status, err) {
             console.error(uploadUrl, status, err.toString());
             console.error(xhr.responseText);
+            this.setState({postingData:false,progressIconClass:'',progressText:xhr.responseText});
           }.bind(this)
         });
 
@@ -378,14 +393,20 @@
           }.bind(this),
           error: function(xhr, status, err) {
             console.error(this.props.modelrunUrl, status, err.toString(),xhr.responseText);
-            
+            this.setState({postingData:false,progressIconClass:'',progressText:xhr.responseText});
           }.bind(this)
         });
 
 
     },
     render: function() {
-
+        var uploadProgress;
+        if(this.state.postingData){
+          uploadProgress = <ReactBootstrap.ProgressBar 
+                                    active={true}
+                                    now={this.state.uploadProgress} 
+                                    label="%(percent)s%" />
+        }
         return (  
           <div id="#new-model-run">
             <div className="text-center margin-bottom">
@@ -417,7 +438,10 @@
                     <ReactBootstrap.Input bsStyle={this.state.validationErrors.file?this.state.validationErrors.file.styleClass:''} type="file" label="Input Resource" help="Select a netcdf file that complies with iSNOBAL" ref="file" />
                     <ReactBootstrap.ButtonInput type="reset" value="Reset" />
                     <ReactBootstrap.ButtonInput type="submit" value="Submit" className='btn-success' />
-                    <span><i className={this.state.progressIconClass}></i> {this.state.progressText}</span>
+                    <span>{this.state.progressText}</span>
+                    {uploadProgress}
+                    {/*<span><i className={this.state.progressIconClass}></i> {this.state.progressText}</span>*/}
+
                   </form>
                 </div>
               </ReactBootstrap.Modal.Body>
@@ -444,7 +468,8 @@
         pageNum:1,numPages:null,numModelRuns:null,modelRunsByState:modelRunsByState,userid:this.props.userid};
     },
     onModelRunCreate: function(){
-      this.getModelRuns(this.state.query);
+      //this.getModelRuns(this.state.query);
+      window.location.reload(true);
     },
     getModelRuns:function(query,pageNum){
       query = query || this.state.query;
