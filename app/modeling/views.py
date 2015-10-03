@@ -197,7 +197,7 @@ def select_isnobal_input(model_run_uuid):
 @login_required
 def modelling_dashboard():
 
-    return render_template('modeling/dashboard.html',VWMODEL_SERVER_URL=app.config['VWMODEL_SERVER_URL'])
+    return render_template('modeling/dashboard.html', VWMODEL_SERVER_URL=app.config['VWMODEL_SERVER_URL'])
 
 @modeling.route('/isnobal/run', methods=['POST'])
 def run_isnobal():
@@ -212,7 +212,7 @@ def run_isnobal():
                     'model_run_uuid': model_run_uuid})
 
 
-@modeling.route('/isnobal', methods=['GET'], defaults={'dataset_uuid': None})
+@modeling.route('/isnobal', methods=['GET'])
 @login_required
 def isnobal():
 
