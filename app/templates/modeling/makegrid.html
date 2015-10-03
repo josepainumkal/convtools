@@ -89,20 +89,6 @@
             </div>
           </div>
 
-        <!--<dt><h3>Specify Time Step</h3>-->
-        <!--<dt>-->
-          <!--<input type="radio" name="timestep" value="1 hour" checked>  1 hour-->
-          <!--<br>-->
-          <!--<input type="radio" name="timestep" value="3 hours">  3 hours-->
-          <!--<br>-->
-
-        <!--<dt><h3>Specify Kriging Method</h3>-->
-        <!--<dt>-->
-          <!--<input type="radio" name="kriging" value="Empirical Bayesian" checked>  Empirical Bayesian (Slower but more accurate)-->
-          <!--<br>-->
-          <!--<input type="radio" name="kriging" value="Detrended">  Detrended-->
-          <!--<br>-->
-
         <dt><h3>Select variables of interest</h3>
         <div class="row">
           <div class="col-sm-6">
@@ -127,8 +113,37 @@
         <dt>
           
       </dl>
+      <div class="col-md-12">
+        <h3>Model Run Name</h3>  
+        <input type="text" name="model_run_name" style="width:100%" required/>
+      </div>
+      <div class="col-md-12">
+        <h3>Description</h3>  
+        <input type="text" name="description" style="width:100%" required/>
+      </div>
+      <div class="col-md-12">
+        <h3>Comma-separated Keywords</h3>  
+        <input type="text" name="keywords" style="width:100%" required/>
+      </div>
+      <br>
+
+      <p>
+        Thank you for submitting your grid request. Expect each data hour to
+        take about 30-60 real seconds.  Then each day of data takes about
+        24x30-60 seconds, or 12 - 24 minutes.
+      </p>
+
           <input type="submit" value='Submit' id="makegrid-submit" class="btn btn-primary btn-lg md-button"/>
     </form>
+    {% if model_run_uuid %}
+      <h3>Instructions</h3>
+      <p>
+        Navigate to 
+        <a href="/share/files/{{ model_run_uuid }}">this model run's data management page</a> and check
+        back periodically to either download, visualize, or run a model
+        using your freshly gridded data.
+      </p>
+    {% endif %}
   </div>
 </div>
 {% endblock %}
