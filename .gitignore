@@ -11,3 +11,4 @@ downloads/
 tmp/
 app/visualization/
 .tmp
+app/static/bower_components

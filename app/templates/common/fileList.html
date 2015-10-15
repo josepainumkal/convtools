@@ -35,6 +35,14 @@
      {% endfor %}
     {% endif %}
 
+    <td class="file-list">
+      <!--<span class="badge">-->
+        <button type="button"
+                class="btn btn-default btn-sm badge" data-toggle="modal">
+          Visualize
+        </button>
+      <!--</span>-->
+    </td>
     {% if record['categories'][0]['modelname'] == 'isnobal' and
        record['name'][-2:] == 'nc' %}
       <td class="file-list">
