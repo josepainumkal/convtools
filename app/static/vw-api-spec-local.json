@@ -24,13 +24,14 @@
                 "metadata"
               ],
               "summary": "Provide a reduced set of fields to generate VW JSON and XML data all in one. Used to insert data and record to VWDM",
+              "description": "Our Python API (<a href='https://github.com/VirtualWatershed/vw-py'>vw-py</a>) provides functions to write full Virtual Watershed Data Management service metadata using only a few of the fields, either inferring the rest from the file or context. Through this route you can use the same functionality in a language-agnostic way.",
               "produces": ["application/json"],
               "responses": {
                 "200": {
                     "description": "Success"
                 },
                 "400": {
-                    "description": "Bad request, plus a report of which fields are bad or missing."
+                    "description": "Bad request. Returns report of which fields are bad or missing."
                 }
               }
           }
