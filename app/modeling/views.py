@@ -15,8 +15,8 @@ from .gridtoolwrap import end_2_end
 from ..main.views import _make_panel
 from ..models import Resource
 
-from wcwave_adaptors import (default_vw_client, create_isnobal_dataset,
-                             make_fgdc_metadata, metadata_from_file)
+from vwpy import (default_vw_client, create_isnobal_dataset,
+                  make_fgdc_metadata, metadata_from_file)
 
 
 VW_CLIENT = default_vw_client()

@@ -7,16 +7,21 @@ from .forms import ResourceForm
 from .. import db
 from ..models import Resource
 
-from wcwave_adaptors import default_vw_client
-from wcwave_adaptors import make_fgdc_metadata, metadata_from_file
+from vwpy import default_vw_client, make_fgdc_metadata, metadata_from_file
 
-import os, osr, gdal, util, numpy
+import os
+import osr
+import gdal
+import numpy
 import time
 
 VW_CLIENT = default_vw_client()
 
+
 def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1] in app.config['ALLOWED_EXTENSIONS']
+    return ('.' in filename and filename.rsplit('.', 1)[1]
+            in app.config['ALLOWED_EXTENSIONS'])
+
 
 @share.route('/', methods=['GET', 'POST'])
 @login_required
@@ -84,6 +89,7 @@ def resources():
     # add it to the list above (i.e. reload the page)
     return render_template('share/index.html', form=form)
 
+
 @share.route('/files/<model_run_uuid>')
 @login_required
 def files(model_run_uuid):
@@ -110,6 +116,7 @@ def files(model_run_uuid):
                            model_run_desc=model_run_desc,
                            model_run_uuid=model_run_uuid,
                            records_list=records_list)
+
 
 @share.route('/files/insert', methods=['POST'])
 @login_required
@@ -196,6 +203,7 @@ def insert():
                            model_run_desc=model_run_desc,
                            model_run_uuid=model_run_uuid,
                            records_list=records_list)
+
     #return render_template('share/files.html', model_run_uuid = model_run_uuid, dataResults = dataResults, inputFileName = input_file)
 
 

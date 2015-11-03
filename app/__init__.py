@@ -10,8 +10,6 @@ from config import config
 
 from vwpy import default_vw_client
 
-import vwpy
-
 moment = Moment()
 db = SQLAlchemy()
 

@@ -26,6 +26,17 @@
               "summary": "Provide a reduced set of fields to generate VW JSON and XML data all in one. Used to insert data and record to VWDM",
               "description": "Our Python API (<a href='https://github.com/VirtualWatershed/vw-py'>vw-py</a>) provides functions to write full Virtual Watershed Data Management service metadata using only a few of the fields, either inferring the rest from the file or context. Through this route you can use the same functionality in a language-agnostic way.",
               "produces": ["application/json"],
+              "parameters": [
+                  {
+                      "name": "input_file",
+                      "in": "body",
+                      "description": "JSON string with required fields. All fields below are in fact required except for parent_model_run_uuid.  If this is not given, the given model_run_uuid becomes the parent_model_run_uuid as well; that is, it is its own parent.",
+                      "required": true,
+                      "type": "string",
+                      "default": 
+"{\"input_file\": \"example.nc\", \"model_name\": \"isnobal\", \"model_set\": \"inputs\", \"parent_model_run_uuid\": \"a94cbfe3-8e41-4de0-89b2-b67b43e5c3b9\", \"model_run_uuid\": \"33fd4a47-74c7-4dff-9a82-be30bc852833\", \"start_datetime\": \"2010-10-01T00:00:00\", \"end_datetime\": \"2011-09-30T23:00:00\", \"description\": \"ISNOBAL model run investigating climate effects in WY 2011 in Reynolds Creek\", \"watershed_name\": \"Reynolds Creek\", \"state\": \"Idaho\"}"
+                  }
+              ],
               "responses": {
                 "200": {
                     "description": "Success"
