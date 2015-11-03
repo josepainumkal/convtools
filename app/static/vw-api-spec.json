@@ -1,0 +1,39 @@
+{
+  "swagger": "2.0",
+  "info": {
+      "description": "Virtual Watershed API Documentation",
+      "version": "0.1",
+      "title": "VW REST API",
+      "contact": {
+          "email": "maturner01@gmail.com"
+      }
+  },
+  "schemes": ["https"],
+  "tags": [
+      {
+          "name": "metadata",
+          "description": "Methods for creating metadata to pass to the Virtual Watershed data management platform"
+      }
+  ],
+  "host": "vw.northwestknowledge.net",
+  "basePath": "/api",
+  "paths": {
+      "/metadata/build": {
+          "post": {
+              "tags": [
+                "metadata"
+              ],
+              "summary": "Provide a reduced set of fields to generate VW JSON and XML data all in one. Used to insert data and record to VWDM",
+              "produces": ["application/json"],
+              "responses": {
+                "200": {
+                    "description": "Success"
+                },
+                "400": {
+                    "description": "Bad request, plus a report of which fields are bad or missing."
+                }
+              }
+          }
+      }
+  }
+} 

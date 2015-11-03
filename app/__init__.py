@@ -41,4 +41,7 @@ def create_app(config_name):
     from .modeling import modeling as modeling_blueprint
     app.register_blueprint(modeling_blueprint, url_prefix='/modeling')
 
+    from .api import api as api_blueprint
+    app.register_blueprint(api_blueprint, url_prefix='/api')
+
     return app

@@ -1,9 +1,10 @@
 {
   "name": "vwplatform",
-  "version": "0.0.0",
-  "homepage": "https://github.com/mtpain/vwplatform",
+  "version": "0.1.1",
+  "homepage": "https://github.com/VirtualWatershed/vw-webapp",
   "authors": [
-    "Matthew Turner <maturner01@gmail.com>"
+    "Matthew Turner <maturner01@gmail.com>",
+    "Moinul Hossain Rifat <moinul.cse@gmail.com>"
   ],
   "description": "",
   "main": "",
