@@ -1,0 +1,34 @@
+{
+  "name": "vw-webapp",
+  "version": "0.1.0",
+  "description": "Web front end for the Virtual Watershed",
+  "main": "app/static/index.js",
+  "directories": {
+    "test": "app/static/js/angular/test"
+  },
+  "scripts": {
+    "test": "python manage.py runserver --port=3333 & node node_modules/karma/bin/karma start app/static/js/angular/test/karma.conf.js && kill -9 `lsof -i:3333 | tail -n1 | cut -f2 -d' '`"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/VirtualWatershed/vw-webapp.git"
+  },
+  "author": "Matthew Turner",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/VirtualWatershed/vw-webapp/issues"
+  },
+  "homepage": "https://github.com/VirtualWatershed/vw-webapp",
+  "devDependencies": {
+    "jasmine-core": "^2.3.4",
+    "karma": "^0.13.15",
+    "karma-chrome-launcher": "^0.2.1",
+    "karma-firefox-launcher": "^0.1.6",
+    "karma-ie-launcher": "^0.2.0",
+    "karma-jasmine": "^0.3.6",
+    "karma-safari-launcher": "^0.1.1"
+  },
+  "dependencies": {
+    "bower": "^1.6.5"
+  }
+}
