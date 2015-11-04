@@ -112,7 +112,7 @@ def files(model_run_uuid):
     datasets_res = VW_CLIENT.dataset_search(model_run_uuid=model_run_uuid)
     records_list = datasets_res.records
 
-    return render_template('share/f.html', model_run_name=model_run_name,
+    return render_template('share/datasets.html', model_run_name=model_run_name,
                            model_run_desc=model_run_desc,
                            model_run_uuid=model_run_uuid,
                            records_list=records_list)

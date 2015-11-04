@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<html ng-app="datasetShareApp">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -18,18 +18,15 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react-bootstrap/0.25.2/react-bootstrap.js"></script>
     
-    <script src="/static/holder.min.js"></script>
-    <script src="/static/jquery.rest.min.js"></script>
-    
     <script src="/static/site.js"></script>
-     <script src="/static/modelrun.js"></script>
+    <script src="/static/modelrun.js"></script>
     {% endblock %}
 
     {% block head_ext %}
     {% endblock %}
 
   </head>
-  <body>
+  <body ng-controller="DatasetShareCtrl">
 
   {% set navigation_bar = [('/', 'main.index', 'Home'),
                            ('/search', 'main.search', 'Search'),
@@ -52,7 +49,7 @@
             <span class="icon-bar"></span>
           </button> 
           <a href="/"><img height="45"
-            src="/static/images/wcwave_logo.jpg"> </a>
+            src="/static/images/wcwave_logo.jpg"></a>
           
         </div>
 

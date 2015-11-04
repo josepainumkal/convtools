@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% set active_page = "share.index" %}
+
+{% block link %}
+  {{ super() }}
+  <link href="/static/css/datasets.css" rel="stylesheet">
+{% endblock %}
+
+{% block head_ext %}
+<style>
+  input, select { 
+    width: 100%;
+  }
+</style>
+
+
+<script>
+  var mrUUID = "{{ model_run_uuid }}";
+</script>
+<script src="/static/bower_components/angular/angular.min.js"></script>
+<script src="/static/js/angular/controllers.js"></script>
+
+{% endblock %}
+
+{% block content %}
+
+<!--<div ng-app="datasetShareApp">-->
+  <!--<div ng-controller="DatasetShareCtrl">-->
+
+    {% raw %}
+
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <h1>
+          View or add files to resource
+        </h1>
+        <h2 style="text-align:center">
+          <span>Resource Name:</span> <b>{{modelRunName}}</b>
+        </h2>
+        <h2 style="text-align:center">
+          <span>Description:</span> <b>{{modelRunDescription}}</b>
+        </h2>
+        <h2 style="text-align:center">
+          <span>Model Run UUID:</span> <b>{{modelRunUUID}}</b>
+        </h2>
+      </div>
+    </div>
+    
+    <br> </br>
+    
+    <h1>Upload new data</h1>
+    <div class="container">
+      <div style="background:#888;padding:0 0 15px;" class="col-md-8 col-md-offset-2">
+      <form action="insert" method="post" enctype="multipart/form-data">
+    
+        <div class="col-md-12">
+          <h4>Select file to upload </h4>
+          <input name="file" type="file" value="" id="file"></input>
+        </div>
+    
+        <div class="col-md-12">
+          <h4>Model</h4>
+          <select name="model" id="model">
+            <option value="isnobal">iSNOBAL</option>
+            <option value="prms">PRMS</option>
+            <option value="HydroGeoSphere">CASiMiR</option>
+            <option value="HydroGeoSphere">DFLOW</option>
+            <option value="HydroGeoSphere">HydroGeoSphere</option>
+            <option value="reference">reference</option>
+          </select>
+        </div>
+    
+        <div class="col-md-12">
+          <h4>Watershed</h4>
+          <select name="watershed" id="watershed">
+            <option value="Valles Caldera">Valles Caldera</option>
+            <option value="Dry Creek">Dry Creek</option>
+            <option value="Reynolds Creek">Reynolds Creek</option>
+            <option value="Lehman Creek">Lehman Creek</option>
+          </select>
+        </div>
+    
+        <div class="col-md-12">
+          <h4>Description</h4>
+          <input name="description" rows="5" value="" id="description"></input>
+        </div>
+
+        <div class="col-md-12">
+          <h4>Model Set (inputs, outputs, or reference)</h4>
+          <select id="model_set" name="model_set">
+            <option value="inputs">inputs</option>
+            <option value="outputs">outputs</option>
+            <option value="reference">reference</option>
+          </select>
+        </div>
+        <br>
+        <div class="col-md-12">
+          <input style="margin-top:20px;" class="btn btn-primary" style="width:100%" type="submit" value="Insert"/>
+        </div>
+      {% endraw %}
+       <input style="width:100%" name="uuid" type="hidden" 
+              value={{ modelRunUUID }} id="uuid"></input>
+      </form>
+      </div>
+    </div>
+    
+    <h1>List of data in this resource</h1>
+    
+    <div style="background:lightgrey">
+      {% include "common/fileList.html" %}
+    </div>
+    
+    </div>
+    <!--</div>-->
+    
+  <!--</div>-->
+{% endblock %}

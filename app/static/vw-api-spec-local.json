@@ -28,7 +28,7 @@
               "produces": ["application/json"],
               "parameters": [
                   {
-                      "name": "input_file",
+                      "name": "kwargs",
                       "in": "body",
                       "description": "JSON string with required fields. All fields below are in fact required except for parent_model_run_uuid.  If this is not given, the given model_run_uuid becomes the parent_model_run_uuid as well; that is, it is its own parent.",
                       "required": true,
