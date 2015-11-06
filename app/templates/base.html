@@ -5,15 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     {% block link %}
     <link href="/static/site.css" rel="stylesheet">
-<link href='//fonts.googleapis.com/css?family=Audiowide|Antic+Slab' rel='stylesheet' type='text/css'>
-    <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
-    <link href="//netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href='//fonts.googleapis.com/css?family=Audiowide|Antic+Slab' 
+          rel='stylesheet' type='text/css'>
+    <link href="/static/bower_components/bootstrap/dist/css/bootstrap.min.css" 
+          rel="stylesheet">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" 
+          rel="stylesheet">
     {% endblock %}
+
     <title>Virtual Watershed Platform</title>
 
     {% block scripts %}
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="/static/bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="/static/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="https://fb.me/react-0.13.3.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react-bootstrap/0.25.2/react-bootstrap.js"></script>

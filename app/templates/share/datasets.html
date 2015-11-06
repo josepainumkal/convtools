@@ -11,6 +11,30 @@
   input, select { 
     width: 100%;
   }
+  .thumb {
+    width: 24px;
+    height: 24px;
+    float: none;
+    position: relative;
+    top: 7px;
+}
+
+form .progress {
+    line-height: 15px;
+}
+}
+
+.progress {
+    display: inline-block;
+    width: 100px;
+    border: 3px groove #CCC;
+}
+
+.progress div {
+    font-size: smaller;
+    background: orange;
+    width: 0;
+}
 </style>
 
 
@@ -18,6 +42,7 @@
   var mrUUID = "{{ model_run_uuid }}";
 </script>
 <script src="/static/bower_components/angular/angular.min.js"></script>
+<script src="/static/bower_components/ng-file-upload/ng-file-upload.min.js"></script>
 <script src="/static/js/angular/controllers.js"></script>
 
 {% endblock %}
@@ -47,7 +72,40 @@
     </div>
     
     <br> </br>
+
+    <h1>Sample using ng-file-upload</h1>
     
+    <form name="myForm">
+      <fieldset>
+        <legend>Upload on form submit</legend>
+        Username:
+        <input type="text" name="userName" ng-model="username" size="31" required="">
+        <i ng-show="myForm.userName.$error.required">*required</i>
+        <br> Photo:
+        <input type="file" ngf-select="" ng-model="picFile" name="file" 
+               accept="image/*" ngf-max-size="2MB" required="">
+        <i ng-show="myForm.file.$error.required">*required</i>
+        <br>
+        <i ng-show="myForm.file.$error.maxSize">
+          File too large picFile.size / 1000000|number:1 MB: max 2M
+        </i>
+        <img class="thumb" src="" 
+             alt="" ng-show="myForm.file.$valid" ngf-thumbnail="picFile">
+        <button ng-click="picFile = null" ng-show="picFile">Remove</button>
+        <br>
+        
+        <button ng-disabled="!myForm.$valid" ng-click="uploadPic(picFile)">Submit</button>
+        <span class="progress" ng-show="picFile.progress >= 0">
+          <div style="width:{{picFile.progress}}%" ng-bind="picFile.progress + '%'">
+          </div>
+        </span>
+
+        <span ng-show="picFile.result">Upload Successful</span>
+        <span class="err" ng-show="errorMsg">{{errorMsg}}</span>
+      </fieldset>
+    </form>
+
+
     <h1>Upload new data</h1>
     <div class="container">
       <div style="background:#888;padding:0 0 15px;" class="col-md-8 col-md-offset-2">
