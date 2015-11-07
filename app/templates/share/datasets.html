@@ -197,6 +197,11 @@ form .progress {
       </form>
       </div>
     </div>
+
+    <button ng-click="testFetchGstorMetadata()" 
+            class="btn btn-primary" type="button">
+      Test Fetching Gstor Metadata</button>
+        <pre>{{metadataResult|json}}</pre>
     
     <h1>List of data in this resource</h1>
     {% endraw %}

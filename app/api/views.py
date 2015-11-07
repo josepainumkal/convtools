@@ -32,7 +32,6 @@ def api_metadata():
         model_run_uuid = ''
         start_datetime = ''
         end_datetime = ''
-        model_name = ''
         description = ''
         watershed_name = ''
         state = ''
@@ -158,10 +157,12 @@ def api_metadata():
             return jsonify(json.loads(watershed_metadata))
 
 
-RE = re.compile(r'^[12][0-9]{3}-[01][0-9]-[0-3][0-9]T\d{2}:\d{2}:\d{2}')
 def _is_iso8601(d):
     """
     Checks if string datetime, d, is ISO 8601 formatted (with or without
     time zone).
     """
-    return RE.search(d)
+    return RE.search(d) is not None
+
+RE = re.compile(
+    r'^[12][0-9]{3}-[01][0-9]-[0-3][0-9]T\d{2}:\d{2}:\d{2}\.\d{3}Z')
