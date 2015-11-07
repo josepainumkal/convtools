@@ -1,7 +1,7 @@
 @import url(http://fonts.googleapis.com/css?family=Lato:400,700);
 
 body {
-  font-family: 'Lato', 'sans-serif';
+  /*font-family: 'Lato', 'sans-serif';*/
   padding-bottom:60px;
   padding-top:60px;
 }
@@ -40,7 +40,7 @@ body {
 }
 
 .container{
-  font-size:1.15em;
+  font-size:1.05em;
 }
 
 .centered{
@@ -58,9 +58,9 @@ body {
 
 html, body {
   /*margin-left: -15px;*/
-  padding: 10px;
+  /*padding: 10px;*/
   border-width:0;
-  font-family: Allerta, sans-serif;
+  /*font-family: Allerta, sans-serif;*/
 }
 
 div#main {

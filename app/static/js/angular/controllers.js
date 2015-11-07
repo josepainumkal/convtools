@@ -1,10 +1,28 @@
-var datasetShareApp = angular.module('datasetShareApp', ['ngFileUpload']);
+var datasetShareApp = angular.module('datasetShareApp', ['ngFileUpload', 'ui.date']);
 
 datasetShareApp.controller('DatasetShareCtrl', ['$scope', '$log', 'Upload', '$timeout',
   function ($scope, $log, Upload, $timeout) {
     $scope.modelRunName = "Yo mama";
     $scope.modelRunDescription = "Some good dro data";
+
     $scope.modelRunUUID = mrUUID;
+    
+    // set date options and initialize start/end dates
+    $scope.dateOptions = {
+        changeYear: true,
+        changeMonth: true,
+        yearRange: '1900:+10'
+    };
+
+    $scope.dates = {
+      start: new Date(2010, 0, 1),
+      end: new Date(2011, 8, 30)
+    };
+
+    // create time picker vars
+    $scope.hours = [];
+    for (var i = 0; i < 24; i++)
+      $scope.hours.push(i);
 
     $scope.uploadPic = function(file) 
     {

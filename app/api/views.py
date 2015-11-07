@@ -12,9 +12,11 @@ from . import api
 
 from vwpy import metadata_from_file, make_fgdc_metadata
 
+
 @api.route('/')
 def root():
     return render_template('api/index.html')
+
 
 @api.route('/metadata/build', methods=['GET', 'POST'])
 def api_metadata():
@@ -109,21 +111,15 @@ def api_metadata():
                             ' "Lehman Creek", or "Valles Caldera"'
                     }
                 )
+            elif watershed_name in ['Reynolds Creek', 'Dry Creek']:
+                state = 'Idaho'
+            elif watershed_name == 'Lehman Creek':
+                state = 'Nevada'
+            else:
+                state = 'New Mexico'
+
         else:
             bad_vars.update({'watershed_name': 'required, not found'})
-
-        if 'state' in data:
-            state = data['state']
-            if state not in ['Idaho', 'New Mexico', 'Nevada']:
-                bad_vars.update(
-                    {
-                        'state':
-                            'must be one of "Idaho", "New Mexico", or '
-                            '"Nevada"'
-                    }
-                )
-        else:
-            bad_vars.update({'state': 'required, not found'})
 
         if 'model_set' in data:
             model_set = data['model_set']
