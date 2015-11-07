@@ -10,7 +10,7 @@ from uuid import uuid4
 
 from . import modeling
 from .. import db
-from .model_wrappers import vw_isnobal
+
 from .gridtoolwrap import end_2_end
 from ..main.views import _make_panel
 from ..models import Resource
