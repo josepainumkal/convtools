@@ -3,11 +3,16 @@ var datasetShareApp = angular.module('datasetShareApp', ['ngFileUpload', 'ui.dat
 datasetShareApp.controller('DatasetShareCtrl', 
   ['$scope', '$log', 'Upload', '$timeout', '$http',
   function ($scope, $log, Upload, $timeout, $http) {
-    $scope.modelRunName = "Yo mama";
-    $scope.modelRunDescription = "Some good dro data";
 
+    // these are set in templates/share/datasets.html in head_ext block
+    $scope.modelRunName = mrName;
+    $scope.modelRunDescription = mrDesc;
     $scope.modelRunUUID = mrUUID;
-    
+
+    //var $scope.inputFile, $scope.modelName, $scope.modelRunUUID, 
+      //$scope.startDateTime, $scope.endDateTime, $scope.description, 
+      //$scope.watershedName, $scope.modelSet;
+
     // set date options and initialize start/end dates
     $scope.dateOptions = {
         changeYear: true,
@@ -27,6 +32,7 @@ datasetShareApp.controller('DatasetShareCtrl',
 
     $scope.uploadPic = function(file) 
     {
+      $log.log(file.name);
       file.upload = Upload.upload({
           url: 'https://angular-file-upload-cors-srv.appspot.com/upload',
           data: {
@@ -67,28 +73,31 @@ datasetShareApp.controller('DatasetShareCtrl',
      * @returns {string} JSON string of properly formatted gstor-ready
      *  metadata for the inputFile
      */
-    $scope.fetchGstorMetadata = function(inputFile, 
-                                         modelName, 
-                                         modelRunUUID, 
-                                         startDateTime,
-                                         endDateTime,
-                                         description,
-                                         watershedName,
-                                         modelSet)
+    //$scope.fetchGstorMetadata = function(inputFile, 
+                                         //modelName, 
+                                         //modelRunUUID, 
+                                         //startDateTime,
+                                         //endDateTime,
+                                         //description,
+                                         //watershedName,
+                                         //modelSet)
+    $scope.fetchGstorMetadata = function(file)
     {
+      $log.log(file);
+      file = file;
       $http({
           method: "POST",
           url: "/api/metadata/build",
         data: 
         {  
-          input_file: inputFile,
-          model_name: modelName,
-          model_run_uuid: modelRunUUID,
-          start_datetime: startDateTime.toISOString(),
-          end_datetime: endDateTime.toISOString(),
-          description: description,
-          watershed_name: watershedName,
-          model_set: modelSet
+          input_file: file.name, //"yo.txt", //$scope.file.name,
+          model_name: $scope.modelName,
+          model_run_uuid: $scope.modelRunUUID,
+          start_datetime: $scope.dates.start.toISOString(),
+          end_datetime: $scope.dates.end.toISOString(),
+          description: $scope.description,
+          watershed_name: $scope.watershedName,
+          model_set: $scope.modelSet
         }
       }).then( 
         function (response) {
