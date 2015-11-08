@@ -1,5 +1,8 @@
 var datasetShareApp = 
-  angular.module('datasetShareApp', ['ngFileUpload', 'ui.date']);
+  angular.module('datasetShareApp', ['ngFileUpload', 'ui.date'])
+         .config( ['$httpProvider', function ($httpProvider) {
+            $httpProvider.defaults.withCredentials = true;
+         }]);
 
 datasetShareApp.controller('DatasetShareCtrl', 
   ['$scope', '$log', 'Upload', '$timeout', '$http',
@@ -62,6 +65,7 @@ datasetShareApp.controller('DatasetShareCtrl',
      * @returns {string} JSON string of properly formatted gstor-ready
      *  metadata for the inputFile
      */
+    $scope.uploadStatus = "None yet";
     $scope.pushStatus = "None yet";
 
     $scope.pushToGstor = function(file)
@@ -83,12 +87,13 @@ datasetShareApp.controller('DatasetShareCtrl',
       file.upload.then(function (response) {
         $timeout(function () {
             file.result = response.data;
+            $scope.uploadStatus = response.data;
           });
         }, function (error) {
           if (error.status > 0)
           {
             $scope.errorMsg = error.status + ': ' + error.data;
-            $scope.pushStatus = error.status + ': ' + error.data;
+            $scope.uploadStatus = error.status + ': ' + error.data;
           }
         }, function (evt) {
           file.progress = 
@@ -127,7 +132,7 @@ datasetShareApp.controller('DatasetShareCtrl',
           ).then( function(response) {
             $scope.pushStatus = response.data;
           }, function(error) {
-            $scope.pushStatus = error.data;
+            $scope.pushStatus = 'in metadata insert:\n' + error.data;
           }
           );
         },

@@ -44,6 +44,7 @@ form .progress {
   var mrName = "{{ model_run_name }}";
   var mrDesc = "{{ model_run_desc }}";
   var mrUUID = "{{ model_run_uuid }}";
+  var authToken = "{{ auth_token }}";
 </script>
 <script type="text/javascript" src="/static/bower_components/jquery/dist/jquery.min.js"></script>
 <script type="text/javascript" src="/static/bower_components/jquery-ui/jquery-ui.min.js"></script>
@@ -210,10 +211,14 @@ form .progress {
       </div>
     </div>
 
-    <button ng-click="fetchGstorMetadata()" 
+    <button ng-click="testGstorLogin()" 
             class="btn btn-primary" type="button">
-      Test Fetching Gstor Metadata</button>
+      Test Logging in to Gstor</button>
         
+        <h1>Auth Result</h1>
+        <pre>{{authResult}}</pre>
+        <h1>Upload Status</h1>
+        <pre>{{uploadStatus}}</pre>
         <h1>Push Status</h1>
         <pre>{{pushStatus}}</pre>
         <h1>Metadata Result</h1>

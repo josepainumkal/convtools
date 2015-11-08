@@ -89,6 +89,8 @@ def files(model_run_uuid):
 
     vwc = default_vw_client()
 
+    auth_token = vwc.auth_token
+
     model_run_record = \
         vwc.modelrun_search(model_run_id=model_run_uuid).records[0]
 
@@ -106,6 +108,7 @@ def files(model_run_uuid):
                                              model_run_name=model_run_name,
                                              model_run_desc=model_run_desc,
                                              model_run_uuid=model_run_uuid,
+                                             auth_token=auth_token,
                                              records_list=records_list))
 
     vwp_token = vwc.sesh.cookies.get_dict()['vwp']
