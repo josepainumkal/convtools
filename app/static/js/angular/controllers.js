@@ -1,4 +1,5 @@
-var datasetShareApp = angular.module('datasetShareApp', ['ngFileUpload', 'ui.date']);
+var datasetShareApp = 
+  angular.module('datasetShareApp', ['ngFileUpload', 'ui.date']);
 
 datasetShareApp.controller('DatasetShareCtrl', 
   ['$scope', '$log', 'Upload', '$timeout', '$http',
@@ -57,34 +58,46 @@ datasetShareApp.controller('DatasetShareCtrl',
 
     /**
      * Fetches full gstor metadata from the server. 
-     * @param {string} inputFile - name of the input file
-     * @param {string} modelName - hydrological model name; one of 'isnobal',
-     *  'prms', or 'HydroGeoSphere'; capitalization enforced
-     * @param {string} modelRunUUID - unique model run identifier recieved from
-     *  gstor
-     * @param {Date} startDatetime - temporal start of the dataset being pushed
-     * @param {Date} endDatetime - temporal end of the dataset being pushed
-     * @param {string} description - desc. of the dataset being pushed
-     * @param {string} watershedName - name of the watershed where the data
-     *  comes from. One of 'Reynolds Creek', 'Dry Creek', 'Valles Caldera',
-     *  or 'Lehman Creek' with capitalization enforced.
-     * @param {string} modelSet - gstor speak for 'inputs', 'outputs', or 
-     *  'reference'
+     * @param {string} file - file object for upload
      * @returns {string} JSON string of properly formatted gstor-ready
      *  metadata for the inputFile
      */
-    //$scope.fetchGstorMetadata = function(inputFile, 
-                                         //modelName, 
-                                         //modelRunUUID, 
-                                         //startDateTime,
-                                         //endDateTime,
-                                         //description,
-                                         //watershedName,
-                                         //modelSet)
-    $scope.fetchGstorMetadata = function(file)
+    $scope.pushStatus = "None yet";
+
+    $scope.pushToGstor = function(file)
     {
-      $log.log(file);
-      file = file;
+      baseUrl = 'https://vwp-dev.unm.edu/apps/vwp';
+
+      // first upload the file to the virtual watershed
+      file.upload = Upload.upload({
+          url: baseUrl + '/data',
+          data: {
+            file: file, 
+            model_run_uuid: $scope.modelRunUUID,
+          },
+          // credentials are in 'vwp' cookie put to browser by Flask
+          withCredentials: true
+      });
+
+      // handle file.upload promise
+      file.upload.then(function (response) {
+        $timeout(function () {
+            file.result = response.data;
+          });
+        }, function (error) {
+          if (error.status > 0)
+          {
+            $scope.errorMsg = error.status + ': ' + error.data;
+            $scope.pushStatus = error.status + ': ' + error.data;
+          }
+        }, function (evt) {
+          file.progress = 
+            Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
+        }
+      );
+
+
+      // now build and insert metadata for uploaded file
       $http({
           method: "POST",
           url: "/api/metadata/build",
@@ -100,8 +113,23 @@ datasetShareApp.controller('DatasetShareCtrl',
           model_set: $scope.modelSet
         }
       }).then( 
+        // if success, run another POST to insert to virtual watershed
         function (response) {
+
           $scope.metadataResult = response.data;
+
+          $http({
+              url: baseUrl + '/datasets',
+              method: "POST",
+              data: response.data,
+              withCredentials: true
+            }
+          ).then( function(response) {
+            $scope.pushStatus = response.data;
+          }, function(error) {
+            $scope.pushStatus = error.data;
+          }
+          );
         },
         function (error) {
           $scope.metadataResult = error.data;

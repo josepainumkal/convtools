@@ -80,39 +80,39 @@ form .progress {
     
     <br> </br>
 
-    <h1>Sample using ng-file-upload</h1>
+    <!--<h1>Sample using ng-file-upload</h1>-->
     
-    <form name="myForm">
-      <fieldset>
-        <legend>Upload on form submit</legend>
-        Username:
-        <input type="text" name="userName" ng-model="username" size="31" required="">
-        <i ng-show="myForm.userName.$error.required">*required</i>
-        <br> Photo:
-        <input type="file" ngf-select="" ng-model="picFile" name="file" 
-               accept="image/*" ngf-max-size="2MB" required="">
-        <i ng-show="myForm.file.$error.required">*required</i>
-        <br>
-        <i ng-show="myForm.file.$error.maxSize">
-          File too large picFile.size / 1000000|number:1 MB: max 2M
-        </i>
-        <img class="thumb" src="" 
-             alt="" ng-show="myForm.file.$valid" ngf-thumbnail="picFile">
-        <button ng-click="picFile = null" ng-show="picFile">Remove</button>
-        <br>
+    <!--<form name="myForm">-->
+      <!--<fieldset>-->
+        <!--<legend>Upload on form submit</legend>-->
+        <!--Username:-->
+        <!--<input type="text" name="userName" ng-model="username" size="31" required="">-->
+        <!--<i ng-show="myForm.userName.$error.required">*required</i>-->
+        <!--<br> Photo:-->
+        <!--<input type="file" ngf-select="" ng-model="picFile" name="file" -->
+               <!--accept="image/*" ngf-max-size="2MB" required="">-->
+        <!--<i ng-show="myForm.file.$error.required">*required</i>-->
+        <!--<br>-->
+        <!--<i ng-show="myForm.file.$error.maxSize">-->
+          <!--File too large picFile.size / 1000000|number:1 MB: max 2M-->
+        <!--</i>-->
+        <!--<img class="thumb" src="" -->
+             <!--alt="" ng-show="myForm.file.$valid" ngf-thumbnail="picFile">-->
+        <!--<button ng-click="picFile = null" ng-show="picFile">Remove</button>-->
+        <!--<br>-->
         
-        <button ng-disabled="!myForm.$valid" ng-click="uploadPic(picFile)">
-          Submit
-        </button>
-        <span class="progress" ng-show="picFile.progress >= 0">
-          <div style="width:{{picFile.progress}}%" ng-bind="picFile.progress + '%'">
-          </div>
-        </span>
+        <!--<button ng-disabled="!myForm.$valid" ng-click="uploadPic(picFile)">-->
+          <!--Submit-->
+        <!--</button>-->
+        <!--<span class="progress" ng-show="picFile.progress >= 0">-->
+          <!--<div style="width:{{picFile.progress}}%" ng-bind="picFile.progress + '%'">-->
+          <!--</div>-->
+        <!--</span>-->
 
-        <span ng-show="picFile.result">Upload Successful</span>
-        <span class="err" ng-show="errorMsg">{{errorMsg}}</span>
-      </fieldset>
-    </form>
+        <!--<span ng-show="picFile.result">Upload Successful</span>-->
+        <!--<span class="err" ng-show="errorMsg">{{errorMsg}}</span>-->
+      <!--</fieldset>-->
+    <!--</form>-->
 
 
     <h1>Upload new data</h1>
@@ -125,13 +125,12 @@ form .progress {
         <div class="col-md-6 col-md-offset-3">
           <h4>Select file to upload</h4>
           <input name="file" type="file" id="file" ngf-select="" 
-                ng-model="file" 
-              ></input>
+                ng-model="file" required/>
         </div>
     
         <div class="col-md-6 col-md-offset-3">
           <h4>Model</h4>
-          <select name="model" id="model" ng-model="modelName">
+          <select name="model" id="model" ng-model="modelName" required>
             <option value="" disabled selected>
               What model was the data originally for?
             </option>
@@ -146,7 +145,8 @@ form .progress {
     
         <div class="col-md-6 col-md-offset-3">
           <h4>Watershed</h4>
-          <select name="watershed" id="watershed" ng-model="watershedName">
+          <select name="watershed" id="watershed" ng-model="watershedName" 
+              required>
             <option value="" disabled selected>Select your watershed...</option>
             <option value="Valles Caldera">Valles Caldera</option>
             <option value="Dry Creek">Dry Creek</option>
@@ -159,7 +159,7 @@ form .progress {
           <h4>Description</h4>
           <input type="text" name="description" 
                  ng-model="description" id="description"
-                 />
+                 required/>
         </div>
         <!--<div class="col-md-12">-->
             <!--<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" -->
@@ -188,7 +188,7 @@ form .progress {
 
         <div class="col-md-6 col-md-offset-2">
           <h4>Model Set (inputs, outputs, or reference)</h4>
-          <select id="model_set" name="model_set" ng-model="modelSet">
+          <select id="model_set" name="model_set" ng-model="modelSet" required>
             <option value="" disabled selected>
               Are your data inputs, outputs, or "reference" data?
             </option>
@@ -199,10 +199,10 @@ form .progress {
         </div>
         <br>
         <div class="col-md-10 col-md-offset-1">
-<!-- ng-disabled="uploadForm.$invalid" -->
-          <button 
+
+          <button ng-disabled="uploadForm.$invalid"  
               style="font-size:1.2em;margin-top:20px;width:100%" class="btn btn-primary"
-              ng-click="fetchGstorMetadata(file)">
+              ng-click="pushToGstor(file)">
               Upload
           </button>
         </div>
@@ -213,6 +213,10 @@ form .progress {
     <button ng-click="fetchGstorMetadata()" 
             class="btn btn-primary" type="button">
       Test Fetching Gstor Metadata</button>
+        
+        <h1>Push Status</h1>
+        <pre>{{pushStatus}}</pre>
+        <h1>Metadata Result</h1>
         <pre>{{metadataResult|json}}</pre>
     
     <h1>List of data in this resource</h1>
