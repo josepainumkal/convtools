@@ -1,0 +1,3 @@
+[submodule "vwpy"]
+	path = vwpy
+	url = git@github.com:VirtualWatershed/vw-py.git
