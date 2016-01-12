@@ -9,8 +9,8 @@ from .forms import ResourceForm
 from .. import db
 from ..models import Resource
 
-from wcwave_adaptors import default_vw_client
-from wcwave_adaptors import make_fgdc_metadata, metadata_from_file
+from vwpy import default_vw_client
+from vwpy import make_fgdc_metadata, metadata_from_file
 
 import os, osr, gdal, util, numpy
 import time
