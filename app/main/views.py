@@ -1,6 +1,17 @@
+"""
+'Main' views: index.html, other documentation
+
+app/main/views.py
+
+Author: Matthew Turner
+Date: 20 January 2016
+"""
+import markdown
+import os
+
 from collections import defaultdict
 
-from flask import render_template, session, request, flash
+from flask import render_template, session, request, flash, Markup
 
 from . import main
 from .forms import SearchForm
@@ -10,13 +21,21 @@ from .. import vw_client
 
 @main.route('/')
 def index():
-    "About page"
+    """"
+    Splash page reads index.md
+
+    """
+    user_name = None
     if 'email' in session:
         user_name = session['email']
-    else:
-        user_name = None
 
-    return render_template("index.html", user_name=user_name)
+    content = open(
+        os.path.join(os.getcwd(), 'app', 'static', 'docs', 'index.md')
+    ).read()
+
+    content = Markup(markdown.markdown(content))
+
+    return render_template("base.html", **locals())
 
 
 @main.route('/search', methods=['GET', 'POST'])

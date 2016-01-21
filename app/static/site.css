@@ -3,7 +3,8 @@
 body {
   font-family: 'Lato', 'sans-serif';
   padding-bottom:60px;
-  padding-top:60px;
+  padding-top:50px;
+  margin-bottom: 80px;
 }
 
 .navbar .navbar-default {
@@ -12,17 +13,16 @@ body {
    background: transparent;
    border-color: transparent;
 }
+
 .navbar-default .navbar-nav > li > a {
   /*[>color: #166494;<]*/
    background-color: transparent;
    background: transparent;
    border-color: transparent;
 }
-.navbar .navbar-brand {
-  padding: 10px;
-}
+
 .navbar .navbar-brand img {
-  width: 50px;
+  /*width: 50px;*/
 }
 
 .navbar {
@@ -31,7 +31,7 @@ body {
    border-color: transparent;
 }
 
-.navbar li { color: #000 } 
+.navbar li { color: #000 }
 
 
 .name-holder{
@@ -39,8 +39,9 @@ body {
   /*color: #002E62;*/
 }
 
-.container{
-  font-size:1.15em;
+div.container{
+  /*font-size:1.15em;*/
+  width: 75%;
 }
 
 .centered{
@@ -64,13 +65,13 @@ html, body {
 }
 
 div#main {
-  font-family: 'Antic Slab', serif;
+  /*font-family: 'Antic Slab', serif;*/
   margin-top: 50px;
 }
 
 #navbar {
   /*font-family: 'Audiowide', cursive;*/
-  font-family: 'Antic Slab', cursive;
+  /*font-family: 'Antic Slab', cursive;*/
 }
 
 
@@ -156,14 +157,14 @@ a .thumbnail h3 {
 }
 
 div#splash-opts>a:hover{
-    text-decoration:none; 
+    text-decoration:none;
 }
 
 div#splash-opts>h3:hover {
     text-decoration: none;
 }
 a.splash-opt .thumbnail:hover {
-  color: #AAA; 
+  color: #AAA;
   /*text-decoration: none;*/
   /*background: lightblue;*/
   opacity: .8;
@@ -173,7 +174,7 @@ a.splash-opt {
   text-decoration: none;
 }
 .thumbnail:link  {
-  color: black; 
+  color: black;
   text-decoration: none;
 }
 
@@ -194,7 +195,7 @@ a.splash-opt {
 #makegrid-form-container {
   margin: 0 auto;
   width: 75%;
-} 
+}
 
 #makegrid-submit {
   margin: 0 auto;
@@ -226,7 +227,33 @@ span.badge>a {
   background-color: green;
 }
 
-/*#modelrunFormBtn{
-  margin-bottom: 20px;
-  float: right;
-}*/
+
+footer {
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+    height: 20px;
+    background-color: #3E3F3A;
+    color: white;
+}
+
+#jumbotron {
+    /* */
+    /*background-color: #A8A495;*/
+    background-color: #82B6D6;
+    /*margin-top: 20px;*/
+}
+
+div.custom-carousel-title {
+    padding-top: 10px;
+    padding-bottom: 14em;
+}
+
+div.tool-type-thumbnail {
+    background-color: #ccc;
+    margin: 0 10pt;
+}
+
+/*div.panel {*/
+    /*background-color: #ccc;*/
+/*}*/
