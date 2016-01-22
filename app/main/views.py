@@ -35,7 +35,27 @@ def index():
 
     content = Markup(markdown.markdown(content))
 
-    return render_template("base.html", **locals())
+    contributor_cards = [{
+        'component': 'ci',
+        'name': 'Matthew Turner',
+        'institute': 'University of Idaho',
+        'department': 'Northwest Knowledge Network',
+        'role': 'Staff Software Developer',
+        'photo': '/static/images/headshots/matt-turner.jpg',
+        'blurb': 'Matt feels lucky to be part of this excellent project. His background in science and programming enables him to both understand the needs of the researchers and the computational technologies and techniques that can get the job done.'
+        },
+        {
+        'component': 'watersheds',
+        'name': 'Sarah Miller',
+        'institute': 'New Mexico Institute of Mining and Technology',
+        'department': 'Earth and Environmental Science',
+        'role': 'Graduate Student',
+        'photo': '/static/images/headshots/sarah-miller.jpg',
+        'blurb': 'Sarah has had a bad ass career and currently works for the Army Corps of Engineers while getting her degree at the same time.'
+        }
+    ]
+
+    return render_template("index-info.html", **locals())
 
 
 @main.route('/search', methods=['GET', 'POST'])

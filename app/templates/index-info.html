@@ -1,3 +1,11 @@
+{% extends "base.html" %}
+{% set active_page = "index" %}
+{% block link %}
+    {{ super() }}
+    <!-- <link href="/static/index.css" rel="stylesheet"> -->
+{% endblock %}
+{% block content %}
+
 <h2>The <span style="font-size:1.2em;">Virtual Watershed</span></h2>
 
 <p style="text-align:right;">is a "catchment" for
@@ -51,18 +59,16 @@ and software developers.</p>
         <span class="who-number">3 states:</span>
 </div>
 
-<h3>Watershed Scientists</h3>
+<h3 class="personnel">Watershed Scientists</h3>
 
-{% for card in contributor_cards %}
-    <div class="media">
-  <div class="media-left">
-    <a href="#">
-      <img class="media-object" src={{card['photo']}} alt="...">
-    </a>
-  </div>
-  <div class="media-body">
-    <h4 class="media-heading">{{card['name']}}</h4>
-    <b>Institute
-  </div>
-</div>
-{% endfor %}
+    {% for card in contributor_cards if card.component == 'watersheds' %}
+        {% include "includes/card.html" %}
+    {% endfor %}
+
+<h3 class="personnel">Software developers</h3>
+
+    {% for card in contributor_cards if card.component == 'ci' %}
+        {% include "includes/card.html" %}
+    {% endfor %}
+
+{% endblock %}

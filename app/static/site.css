@@ -7,6 +7,11 @@ body {
   margin-bottom: 80px;
 }
 
+h2 {
+    padding-top: 15px;
+    text-decoration: underline;
+}
+
 .navbar .navbar-default {
   /*[>color: #166494;<]*/
    background-color: transparent;
@@ -55,6 +60,20 @@ div.container{
 
 .page-header{
   border-bottom: 1px solid #eee;
+}
+
+div#abstract-blurb {
+    text-align: justify;
+    margin: 0 10% 5% 5%;
+}
+
+.watershed-header {
+    text-align: right;
+}
+
+.state-header {
+    color: #bbb;
+    text-align: right;
 }
 
 html, body {
@@ -254,6 +273,21 @@ div.tool-type-thumbnail {
     margin: 0 10pt;
 }
 
+div#who-we-are {
+    margin: 0 0;
+    text-align: justify;
+    font-size: 1.2em;
+}
+
+.who-number {
+    font-size: 1.3em;
+    font-weight: bold;
+}
+
+.personnel {
+    text-align: right;
+    font-weight: bold;
+}
 /*div.panel {*/
     /*background-color: #ccc;*/
 /*}*/
