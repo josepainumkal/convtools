@@ -86,6 +86,7 @@ html, body {
 div#main {
   /*font-family: 'Antic Slab', serif;*/
   margin-top: 50px;
+  margin-bottom: 50px;
 }
 
 #navbar {
@@ -161,15 +162,6 @@ a.splash-opt .thumbnail {
 a .thumbnail h3 {
   font-size: 20px;
 }
-
-/*a .thumbnail h3:hover {*/
-  /*text-decoration: none;*/
-/*}*/
-
-/*h3.thumbnail-title:hover {*/
-  /*font-size: 20px;*/
-  /*text-decoration: none;*/
-/*}*/
 
 .borderless tbody tr td, .borderless tbody tr th, .borderless thead tr th {
     border: none !important;
@@ -252,6 +244,7 @@ footer {
     bottom: 0px;
     width: 100%;
     height: 20px;
+    padding: 20 0px;
     background-color: #3E3F3A;
     color: white;
 }
@@ -284,10 +277,18 @@ div#who-we-are {
     font-weight: bold;
 }
 
-.personnel {
+.personnel-component-header {
     text-align: right;
     font-weight: bold;
 }
+
+.contributor-card {
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 5px;
+    padding: 10px;
+}
+
 /*div.panel {*/
     /*background-color: #ccc;*/
 /*}*/

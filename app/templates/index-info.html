@@ -59,13 +59,15 @@ and software developers.</p>
         <span class="who-number">3 states:</span>
 </div>
 
-<h3 class="personnel">Watershed Scientists</h3>
+<h3 class="personnel-component-header">Watershed scientists</h3>
 
     {% for card in contributor_cards if card.component == 'watersheds' %}
         {% include "includes/card.html" %}
     {% endfor %}
 
-<h3 class="personnel">Software developers</h3>
+<br>
+
+<h3 class="personnel-component-header">Software developers</h3>
 
     {% for card in contributor_cards if card.component == 'ci' %}
         {% include "includes/card.html" %}
