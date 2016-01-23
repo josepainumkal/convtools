@@ -1,0 +1,128 @@
+[
+    {
+        "component": "ci",
+        "name": "Matthew Turner",
+        "institute": "University of Idaho",
+        "department": "Northwest Knowledge Network",
+        "role": "Staff Software Developer",
+        "photo": "/static/images/headshots/matt-turner.jpg",
+        "blurb": "Matt feels lucky to be part of this excellent project. His background in science and programming enables him to both understand the needs of the researchers and the computational technologies and techniques that can get the job done."
+    },
+    {
+        "component": "watersheds",
+        "name": "Sarah Miller",
+        "institute": "New Mexico Institute of Mining and Technology",
+        "department": "Earth and Environmental Science",
+        "role": "PhD Student",
+        "photo": "/static/images/headshots/sarah-miller.jpg",
+        "blurb": "Sarah has had a bad ass career and currently works for the Army Corps of Engineers while getting her degree at the same time."
+    },
+    {
+        "component": "ci",
+        "name": "John Erickson",
+        "institute": "University of New Mexico",
+        "department": "Earth Data Analysis Center (EDAC)",
+        "role": "Staff Software Developer",
+        "photo": "/static/images/headshots/default.gif",
+        "blurb": "John works on the data management backend API and the PRMS adaptors. He also contributes to the visualization efforts."
+    },
+    {
+        "component": "ci",
+        "name": "Tucker Chapman",
+        "institute": "Idaho State University",
+        "department": "Geosciences",
+        "role": "Masters Student",
+        "photo": "/static/images/headshots/default.gif",
+        "blurb": "Tucker is a Masters student advised by Donna Delparte. He is the lead developer of the gridding tool, including performance testing, its REST API, and its ArcGIS package."
+    },
+    {
+        "component": "ci",
+        "name": "Lucas Sheneman",
+        "institute": "University of Idaho",
+        "department": "Northwest Knowledge Network (NKN)",
+        "role": "CI-Data Leadership Team",
+        "photo": "/static/images/headshots/lucas-sheneman.jpg",
+        "blurb": "Luke brings his expertise in networks, storage, and programming to the CI-Data leadership team, where he guides the data programmers to build smart, effective, open-source systems. Luke is also the team leader at the Northwest Knowledge Network."
+    },
+    {
+        "component": "ci",
+        "name": "John Savickas",
+        "institute": "University of New Mexico",
+        "department": "Earth Data Analysis Center (EDAC)",
+        "role": "CI-Data Leadership Team",
+        "photo": "/static/images/headshots/default.gif",
+        "blurb": "John brings a decades-long career in software development and leading software teams to help our small staff of programmers accomplish the big tasks it has been given. He has been developing high-end interactive desktop and web applications for the past 18 years with companies like Honeywell, Polar USA, Lovelace Healthcare Systems and numerous others. He is currently working on the New Mexico EPSCoR projects managing the cyber infrastructure development team."
+    },
+    {
+        "component": "watersheds",
+        "name": "Mark Stone",
+        "institute": "University of New Mexico",
+        "department": "Civil Engineering",
+        "role": "Professor",
+        "photo": "/static/images/headshots/mark-stone.jpg",
+        "blurb": "At UNM, Mark Stone's team is focused on improving the balance between human society and the natural environment through research, teaching and service. Our research is focused on the interfaces between water resources engineering, aquatic ecology, fluvial geomorphology, and the social sciences. For the WC-WAVE project, Dr. Stone advises Angela Gregory who is working with Sarah Miller and her advisor Dan Cadol to use virtual watershed infrastructure to couple D-FLOW to CASiMiR."
+    },
+    {
+        "component": "watersheds",
+        "name": "Daniel Cadol",
+        "institute": "New Mexico Institute of Mining and Technology",
+        "department": "Earth & Environmental Sciences",
+        "role": "Professor",
+        "photo": "/static/images/headshots/daniel-cadol.jpg",
+        "blurb": "John brings a decades-long career in software development and leading software teams to help our small staff of programmers accomplish the big tasks it has been given."
+    },
+    {
+        "component": "watersheds",
+        "name": "Michael Wine",
+        "institute": "New Mexico Institute of Mining and Technology",
+        "department": "Earth & Environmental Sciences",
+        "role": "PhD Student",
+        "photo": "/static/images/headshots/michael-wine.jpg",
+        "blurb": "Michael's research interests include integrating GIS, remote sensing, and three-dimensional surface water groundwater modeling to better quantify the hydrologic cycle of mountainous areas in the desert southwest, especially under the influence of anthropogenic climate change."
+    },
+    {
+        "component": "watersheds",
+        "name": "Clarissa Enslin",
+        "institute": "Idaho State University",
+        "department": "Geosciences",
+        "role": "Masters Student",
+        "photo": "/static/images/headshots/clarissa-enslin.jpg",
+        "blurb": "Clarissa is currently modeling the energy-and mass balance as well as various snow conditions in the rain-to-snow transition zone. Prior work to modeling involved extensive QAQC procedures on hydrometerological data to drive the snow model called ISNOBAL."
+    },
+    {
+        "component": "watersheds",
+        "name": "Sarah Godsey",
+        "institute": "Idaho State University",
+        "department": "Geosciences",
+        "role": "Professor",
+        "photo": "/static/images/headshots/sarah-godsey.jpg",
+        "blurb": "Sarah is leading the effort along with her graduate student Clarissa Enslin to use Virtual Watershed products in modeling snow hydrology in the well-instumented Reynolds Creek watersheds in collaboration with colleagues at the ARS and Boise State."
+    },
+    {
+        "component": "ci",
+        "name": "Joel Johansen",
+        "institute": "Idaho State University",
+        "department": "Geosciences",
+        "role": "Masters Student",
+        "photo": "/static/images/headshots/joel-johansen.jpg",
+        "blurb": "Sarah is leading the effort along with her graduate student Clarissa Enslin to use Virtual Watershed products in modeling snow hydrology in the well-instumented Reynolds Creek watersheds in collaboration with colleagues at the ARS and Boise State."
+    },
+    {
+        "component": "watersheds",
+        "name": "Sarah Godsey",
+        "institute": "Idaho State University",
+        "department": "Earth Data Analysis Center (EDAC)",
+        "role": "Professor",
+        "photo": "/static/images/headshots/sarah-godsey.jpg",
+        "blurb": "Sarah is leading the effort along with her graduate student Clarissa Enslin to use Virtual Watershed products in modeling snow hydrology in the well-instumented Reynolds Creek watersheds in collaboration with colleagues at the ARS and Boise State."
+    },
+    {
+        "component": "watersheds",
+        "name": "Sarah Godsey",
+        "institute": "Idaho State University",
+        "department": "Earth Data Analysis Center (EDAC)",
+        "role": "Professor",
+        "photo": "/static/images/headshots/sarah-godsey.jpg",
+        "blurb": "Sarah is leading the effort along with her graduate student Clarissa Enslin to use Virtual Watershed products in modeling snow hydrology in the well-instumented Reynolds Creek watersheds in collaboration with colleagues at the ARS and Boise State."
+    }
+]
