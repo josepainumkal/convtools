@@ -5,11 +5,16 @@ body {
   padding-bottom:60px;
   padding-top:50px;
   margin-bottom: 80px;
+  background-color: #F2F1EF !important;
 }
 
 h2 {
     padding-top: 15px;
     text-decoration: underline;
+}
+
+p.watershed-state-blurb {
+    text-align: justify;
 }
 
 .navbar .navbar-default {

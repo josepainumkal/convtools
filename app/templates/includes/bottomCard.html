@@ -1,0 +1,14 @@
+<div class="media contributor-card">
+    <div class="media-body" style="padding-left: 15px;">
+        <h4 class="media-heading">{{card.name}}</h4>
+        <p><b>Institute:</b> {{card.institute}}</p>
+        <p><b>Department:</b> {{card.department}}</p>
+        <p><b>Role:</b> {{card.role}}</p>
+        <p>{{ card.blurb }}</p>
+    </div>
+    <div class="media-right">
+        <a href="#">
+          <img width=200 class="media-object" src={{card['photo']}} alt="...">
+        </a>
+    </div>
+</div>

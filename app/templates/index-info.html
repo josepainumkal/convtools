@@ -15,44 +15,101 @@ and software developers.</p>
 <br>
 
 <div id="abstract-blurb">
-    <p>
-        Our tools solve problems that our watershed scientists face today.
+    <p style="text-center: justify">
+        Together, we scientists and developers are answering new questions that our watershed scientists study today.
     </p>
-    <p>
+    <br>
+    <p style="text-center: justify">
         We are working to collect these tools to form the foundation for the
         next generation of hydrological data management and modeling.
     </p>
-    <p>
+    <br>
+    <p style="text-center: justify">
         Read more <a href="#who-we-are">about us</a> below
     </p>
 </div>
 
-<h2>Watersheds and Projects </h2>
-
+<h2>Watersheds and projects </h2>
+<br>
 <div class="row">
     <div class="col-xs-12 col-md-4">
         <h4 class="watershed-header">Valles Caldera and Jemez River Canyon</h4>
         <h5 class="state-header">New Mexico: UNM and NM Tech</h5>
+        <p class="watershed-state-blurb">
+            This group is working on integrating the
+            <a href="http://oss.deltares.nl/web/delft3d/d-flow-flexible-mesh">D-FLOW</a>
+            model, which predicts the destructive force of flooding,
+            with the CASiMiR model, which predicts ecological succession based
+            on the destructive force of flooding. Angela Gregory is leading
+            the D-FLOW modeling effort, Sarah Miller is leading the CASiMiR
+            modeling effort, and Matt Turner is building adaptors between
+            CASiMiR running on Sarah's desktop and D-FLOW run by Angela 
+            on the University of New Mexico's 
+            <a href="href">Center for Advanced Research Computing (CARC)</a> 
+            resources.
+        </p>
+
+        <p class="watershed-state-blurb">
+            Dan Cadol's research group at NM Tech is building an open-source, 
+            multi-platform version of the
+            CASiMiR model, which is now limited to interacting with its
+            user interface on Windows. This will allow us to offer the model
+            through the REST API and web app, or a Python API.
+        </p>
+
     </div>
 
     <div class="col-xs-12 col-md-4">
         <h4 class="watershed-header">Lehman Creek</h4>
         <h5 class="state-header">Nevada: UNR and UNLV</h5>
+        <p class="watershed-state-blurb">
+            UNLV PhD student Chao Chen, under the direction of Sajjad Ahmad,
+            is driving development of interactive PRMS modeling software
+            where the user can interactively or programmatically manipulate
+            PRMS parameterizations. This will allow PRMS modellers to 
+            discover the best parameterizations for their watershed.
+        </p>
+        <p class="watershed-state-blurb">
+            Dr. Fred Harris' students Chase Carthen and Nolan Burfield, 
+            with the help of Dr. John Anderson and his research group, and
+            John Erickson at EDAC, are making Ahmad and Chao's vision a 
+            reality.
+        </p>
     </div>
     <div class="col-xs-12 col-md-4">
         <h4 class="watershed-header">Dry Creek and Reynolds Creek</h4>
         <h5 class="state-header">Idaho: ISU, BSU, and UI</h5>
+        <p class="watershed-state-blurb">
+            Dr. Sarah Godsey and her student Clarissa Enslin at ISU are developing
+            new QA/QC'd climate data from the Reynolds Mountain East as well
+            as guiding and testing the development of an online modeling system
+            and testing the use of a novel gridding tool.
+        </p>
+        <p class="watershed-state-blurb">
+            That gridding tool is being developed by their colleagues at ISU
+            under the guidance of Dr. Donna Delparte. Her current student, 
+            Tucker Chapman, is now the lead developer on the tool. He continues
+            work started by Dr. Delparte's former Masters student, Joel
+            Johansen. It currently provides statistically-gridded Reynold's 
+            Mountain climate data, which is not only a useful scientific tool,
+            it's an exceptional form of compression: with only a few hundred
+            megabytes of climate data, they could provide terabytes of 
+            gridded data! The statistical gridding tool is available via 
+            either a REST or Python API.
+        </p>
     </div>
 </div>
 
 <a name="who-we-are"></a>
 
-<h2>Who we Are</h2>
+<br>
+
+<h2>Who we are</h2>
 
 <div id="who-we-are">
-        <span class="who-number">13 Watershed scientists</span> working with
+        <span class="who-number">10 Watershed scientists</span> working with
         <!-- <br> -->
-        <span class="who-number">10 Software developers</span> across
+        <span class="who-number">12 Software developers</span> across
         <!-- <br> -->
         <span class="who-number">4 watersheds</span> in
         <!-- <br> -->
@@ -62,15 +119,15 @@ and software developers.</p>
 <h3 class="personnel-component-header">Watershed scientists</h3>
 
     {% for card in contributor_cards if card.component == 'watersheds' %}
-        {% include "includes/card.html" %}
+        {% include "includes/topCard.html" %}
     {% endfor %}
 
 <br>
 
-<h3 class="personnel-component-header">Software developers</h3>
+<h3 class="personnel-component-header" style="text-align: left;">Software developers</h3>
 
     {% for card in contributor_cards if card.component == 'ci' %}
-        {% include "includes/card.html" %}
+        {% include "includes/bottomCard.html" %}
     {% endfor %}
 
 {% endblock %}

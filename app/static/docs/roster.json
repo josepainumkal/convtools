@@ -104,25 +104,25 @@
         "institute": "Idaho State University",
         "department": "Geosciences",
         "role": "Masters Student",
-        "photo": "/static/images/headshots/joel-johansen.jpg",
+        "photo": "/static/images/headshots/default.gif",
         "blurb": "Sarah is leading the effort along with her graduate student Clarissa Enslin to use Virtual Watershed products in modeling snow hydrology in the well-instumented Reynolds Creek watersheds in collaboration with colleagues at the ARS and Boise State."
     },
     {
         "component": "watersheds",
-        "name": "Sarah Godsey",
-        "institute": "Idaho State University",
-        "department": "Earth Data Analysis Center (EDAC)",
-        "role": "Professor",
-        "photo": "/static/images/headshots/sarah-godsey.jpg",
-        "blurb": "Sarah is leading the effort along with her graduate student Clarissa Enslin to use Virtual Watershed products in modeling snow hydrology in the well-instumented Reynolds Creek watersheds in collaboration with colleagues at the ARS and Boise State."
+        "name": "Chao Chen",
+        "institute": "University of Nevada, Las Vegas",
+        "department": "Civil and Environmental Engineering",
+        "role": "PhD Student",
+        "photo": "/static/images/headshots/chao-chen.jpg",
+        "blurb": "Chao is designing a system that will allow a user to modify PRMS parameters and run multiple PRMS scenarios for use in her research. The CI-Data and -Vis teams are building a system according to her designs."
     },
     {
         "component": "watersheds",
-        "name": "Sarah Godsey",
-        "institute": "Idaho State University",
-        "department": "Earth Data Analysis Center (EDAC)",
+        "name": "Sajjad Ahmad",
+        "institute": "University of Nevada, Las Vegas",
+        "department": "Civil and Environmental Engineering",
         "role": "Professor",
-        "photo": "/static/images/headshots/sarah-godsey.jpg",
-        "blurb": "Sarah is leading the effort along with her graduate student Clarissa Enslin to use Virtual Watershed products in modeling snow hydrology in the well-instumented Reynolds Creek watersheds in collaboration with colleagues at the ARS and Boise State."
+        "photo": "/static/images/headshots/sajjad-ahmad.jpg",
+        "blurb": "Sajjad Ahmad's work is focused on application of systems approach to understand and manage complex water and environmental systems. Goal is to provide decision support to policy makers for sustainable management of resources. He advises Chao Chen's work using PRMS and directing the scientific reason for integrating PRMS into the Virtual Watershed ecosystem."
     }
 ]
