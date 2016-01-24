@@ -4,7 +4,7 @@
         <p><b>Institute:</b> {{card.institute}}</p>
         <p><b>Department:</b> {{card.department}}</p>
         <p><b>Role:</b> {{card.role}}</p>
-        <p>{{ card.blurb }}</p>
+        <p>{{ card.blurb|safe }}</p>
     </div>
     <div class="media-right">
         <a href="#">
