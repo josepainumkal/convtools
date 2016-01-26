@@ -73,6 +73,15 @@
     },
     {
         "component": "ci",
+        "name": "Nolan Burfield",
+        "institute": "University of Nevada, Reno",
+        "department": "Computer Science and Engineering",
+        "role": "Masters Student",
+        "photo": "/static/images/headshots/nolan-burfield.jpg",
+        "blurb": "Nolan joined the project in mid-2015 and contributes to the development of new visualizations and adaptors for the visualization system."
+    },
+    {
+        "component": "ci",
         "name": "Dr. Donna Delparte",
         "institute": "Idaho State University",
         "department": "Geosciences",
@@ -205,14 +214,5 @@
         "role": "PhD Student",
         "photo": "/static/images/headshots/angela-gregory.jpg",
         "blurb": "Angela leads the development of D-FLOW for coupling with the CASiMiR model. She is interested in informing water resource management decisions through hydraulic modeling, hydrologic modeling, statistical applications and applied field sciences. My areas of interest include wildfire impacts on hydrologic processes, forest hydrology, ecohydrology, fluvial geomorphology, and sediment transport."
-    },
-    {
-        "component": "ci",
-        "name": "Nolan Burfield",
-        "institute": "University of Nevada, Reno",
-        "department": "Computer Science and Engineering",
-        "role": "Masters Student",
-        "photo": "/static/images/headshots/nolan-burfield.jpg",
-        "blurb": "Nolan joined the project in mid-2015 and contributes to the development of new visualizations and adaptors for the visualization system."
     }
 ]
