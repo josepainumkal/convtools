@@ -37,15 +37,6 @@
     },
     {
         "component": "ci",
-        "name": "Matthew Turner",
-        "institute": "University of Idaho",
-        "department": "Northwest Knowledge Network",
-        "role": "Lead Software Developer",
-        "photo": "/static/images/headshots/matt-turner.jpg",
-        "blurb": "Matt's background is in mathematics and physics with an M.S. in Applied Physics. Before joining the Northwest Knowledge Network and the Virtual Watershed project, he worked as a data engineer at an economic modeling firm. His current research interests include web applications, data and metadata management, and scientific applications of programming. He leads the development of the modeling adaptors and the Virtual Wateshed website, working closely with watershed scientists to try to make sure we're building useful software products."
-    },
-    {
-        "component": "ci",
         "name": "Dr. Sergiu Dascalu",
         "institute": "University of Nevada, Reno",
         "department": "Computer Science and Engineering",
@@ -124,6 +115,15 @@
         "role": "Staff Software Developer",
         "photo": "/static/images/headshots/default.gif",
         "blurb": "John works on the data management backend API and the PRMS adaptors. He also contributes to the visualization efforts."
+    },
+    {
+        "component": "ci",
+        "name": "Matthew Turner",
+        "institute": "University of Idaho",
+        "department": "Northwest Knowledge Network",
+        "role": "Lead Software Developer",
+        "photo": "/static/images/headshots/matt-turner.jpg",
+        "blurb": "Matt's background is in mathematics and physics with an M.S. in Applied Physics. Before joining the Northwest Knowledge Network and the Virtual Watershed project, he worked as a data engineer at an economic modeling firm. His current research interests include web applications, data and metadata management, and scientific applications of programming. He leads the development of the modeling adaptors and the Virtual Wateshed website, working closely with watershed scientists to try to make sure we're building useful software products."
     },
     {
         "component": "watersheds",
