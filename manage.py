@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+import logging
 import os
 
 from flask_script import Manager, Shell
@@ -14,6 +15,11 @@ app = create_app(config_opt)
 
 manager = Manager(app)
 migrate = Migrate(app, db)
+
+if not app.debug:
+    stream_handler = logging.StreamHandler()
+    stream_handler.setLevel(logging.INFO)
+    app.logger.addHandler(stream_handler)
 
 def make_shell_context():
     return dict(app=app, db=db, User=User)

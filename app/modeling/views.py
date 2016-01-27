@@ -1,23 +1,21 @@
-from flask import request, render_template, jsonify
-from flask import current_app as app
-from flask_login import login_required, current_user
-from werkzeug import secure_filename
-
 import datetime
 import os
 import random
 import string
-import util
+
+from flask import request, render_template, jsonify
+from flask import current_app as app
+from flask_login import login_required, current_user
+from uuid import uuid4
 
 from . import modeling
+from .. import db
 from .model_wrappers import vw_isnobal
-from .prms_util import (copyParameterSectionFromInputFile, readncFile,
-                        readtifFile)
 from .gridtoolwrap import end_2_end
 from ..main.views import _make_panel
+from ..models import Resource
 
-from wcwave_adaptors import default_vw_client
-from wcwave_adaptors import make_fgdc_metadata, metadata_from_file
+from vwpy import (default_vw_client, make_fgdc_metadata, metadata_from_file)
 
 
 VW_CLIENT = default_vw_client()
@@ -41,35 +39,114 @@ def makegrid():
 
     if request.method == 'POST':
 
-        start_hour = request.form['makegrid-start-hour']
-        end_hour = request.form['makegrid-end-hour']
+        try:
+            formdata = request.form
+            start_hour = formdata['makegrid-start-hour']
+            end_hour = formdata['makegrid-end-hour']
 
-        st_int = int(start_hour)
-        if st_int <= 9:
-            start_hour = '0' + start_hour
+            st_int = int(start_hour)
+            if st_int <= 9:
+                start_hour = '0' + start_hour
 
-        end_int = int(start_hour)
-        if end_int <= 9:
-            end_hour = '0' + end_hour
+            end_int = int(start_hour)
+            if end_int <= 9:
+                end_hour = '0' + end_hour
 
-        start_datetime = \
-            request.form['makegrid-start-date'] + ' ' + \
-            ':'.join([start_hour, '00', '00'])
+            start_datetime = \
+                formdata['makegrid-start-date'] + ' ' + \
+                ':'.join([start_hour, '00', '00'])
 
-        end_datetime = \
-            request.form['makegrid-end-date'] + ' ' + \
-            ':'.join([end_hour, '00', '00'])
+            end_datetime = \
+                formdata['makegrid-end-date'] + ' ' + \
+                ':'.join([end_hour, '00', '00'])
 
-        # use request.form to fill out submit_job
-        kwargs = {
-            ISUGT_VARNAME_LOOKUP[k]: 'true'
-            for k in request.form.getlist('variables')
-        }
-        end_2_end(start_datetime, end_datetime, **kwargs)
+            # use formdata to fill out submit_job
+            kwargs = {
+                ISUGT_VARNAME_LOOKUP[k]: 'true'
+                for k in formdata.getlist('variables')
+            }
+            end_2_end(start_datetime, end_datetime, **kwargs)
 
-        os.rename('Output.zip',
-                  'isugt_output_jdraw_' +
-                  datetime.datetime.now().isoformat() + '.zip')
+            out_path = 'isugt_output_jdraw_' + \
+                datetime.datetime.now().isoformat() + '.zip'
+
+            os.rename('Output.zip', out_path)
+
+            if not os.path.exists('.tmp'):
+                os.mkdir('.tmp')
+
+            nc_out_path = os.path.join('.tmp', str(uuid4()) + '.nc')
+
+            create_isnobal_dataset(out_path, nc_out=nc_out_path)
+
+            # init new model run with extra info from form
+            vwc = default_vw_client()
+
+            print "wrote unzipped tifs to " + out_path
+            print "wrote netcdf to " + nc_out_path
+
+            print "getting a uuid for model run named " + \
+                formdata['model_run_name'] + ", user " + current_user.name
+
+            uu = vwc.initialize_modelrun(
+                model_run_name=formdata['model_run_name'],
+                description=formdata['description'],
+                researcher_name=current_user.name,
+                keywords=formdata['keywords']
+            )
+
+            print "got a uuid for this model run, it's " + uu
+
+            res = vwc.upload(uu, nc_out_path)
+
+            print "uploaded successfully"
+
+            fgdc_metadata = make_fgdc_metadata(
+                nc_out_path, None, uu, start_datetime, end_datetime,
+                model='isnobal')
+
+            watershed_md = metadata_from_file(
+                nc_out_path, uu, uu, formdata['description'], 'Reynolds Creek',
+                'Idaho', model_name='isnobal', fgdc_metadata=fgdc_metadata,
+                model_set='inputs', taxonomy='geoimage',
+                model_set_taxonomy='grid'
+            )
+
+            print "generated metadata"
+
+            res = vwc.insert_metadata(watershed_md)
+
+            print "inserted metadata"
+
+            # update web app resource database
+            url = \
+                vwc.dataset_search_url + '&model_run_uuid=' + uu
+
+            new_resource = Resource(user_id=current_user.id,
+                                    title=formdata['description'],
+                                    uuid=uu,
+                                    url=url,
+                                    description=formdata['description'],
+                                    keywords=formdata['keywords'])
+
+            db.session.add(new_resource)
+            try:
+                db.session.commit()
+                return render_template('modeling/makegrid.html',
+                                       model_run_uuid=uu)
+
+            except:
+                return render_template(
+                    '500.html', message="Could not save new resource to local"
+                    " database"
+                    )
+
+        except Exception as e:
+            return render_template(
+                '500.html',
+                message="Error running gridding service! System message: \n" +
+                e.message
+            )
 
     return render_template('modeling/makegrid.html')
 
@@ -88,19 +165,6 @@ ISUGT_VARNAME_LOOKUP = {
     'Vapor Pressure': 'vapor_pressure',
     'Wind Speed': 'wind_speed'
 }
-
-
-@modeling.route('/prms', methods=['GET', 'POST'])
-@login_required
-def prms():
-
-    # create a new model_run_name
-    name = id_generator()
-
-    # create a new model_run_uuid
-    new_mr_uuid = VW_CLIENT.initialize_modelrun(model_run_name=name, description='lehman creek', researcher_name=current_user.name, keywords='prms,example,nevada')
-
-    return render_template('modeling/prms.html', model_run_uuid=new_mr_uuid)
 
 
 @modeling.route('/isnobal/<model_run_uuid>', methods=['GET', 'POST'])
@@ -128,18 +192,26 @@ def select_isnobal_input(model_run_uuid):
                            records_list=records_list)
 
 
+@modeling.route('/dashboard/', methods=['GET'])
+@login_required
+def modelling_dashboard():
+
+    return render_template('modeling/dashboard.html', VWMODEL_SERVER_URL=app.config['VWMODEL_SERVER_URL'])
+
 @modeling.route('/isnobal/run', methods=['POST'])
 def run_isnobal():
 
+    print "getting dataset uuid"
     dataset_uuid = request.values['dataset_uuid']
 
+    print "running isnobal"
     output_uuid, model_run_uuid = vw_isnobal(dataset_uuid)
 
     return jsonify({'output_uuid': output_uuid,
                     'model_run_uuid': model_run_uuid})
 
 
-@modeling.route('/isnobal', methods=['GET'], defaults={'dataset_uuid': None})
+@modeling.route('/isnobal', methods=['GET'])
 @login_required
 def isnobal():
 
@@ -157,71 +229,3 @@ def isnobal():
     return render_template('modeling/isnobal.html',
                            file_name=file_name,
                            panels=panels)
-
-
-@modeling.route('/upload', methods=['POST'])
-def upload():
-
-    if not os.path.exists(app.config['UPLOAD_FOLDER']):
-        os.makedirs(app.config['UPLOAD_FOLDER'])
-
-    if request.files['input-file'].filename == '' or request.files['hru-file'].filename == '' or request.form['row'] == '' or request.form['column'] == '' or request.form['epsg'] == '':
-        return render_template('modeling/prms.html', InputErrorMessage = "Please upload required files and/or fill in all the fields")
-
-    numberOfRows = int(request.form['row'])
-    numberOfColumns = int(request.form['column'])
-    epsgValue = int(request.form['epsg'])
-    inputFile = request.files['input-file']
-    hruFile = request.files['hru-file']
-    new_mr_uuid = str(request.form['uuid'])
-
-    if inputFile:
-        inputFileName = secure_filename(inputFile.filename)
-        inputFile.save(os.path.join(app.config['UPLOAD_FOLDER'], inputFileName))
-
-    if hruFile:
-        hruFileName = secure_filename(hruFile.filename)
-        hruFile.save(os.path.join(app.config['UPLOAD_FOLDER'], hruFileName))
-
-    with open(os.path.join(app.config['UPLOAD_FOLDER'], hruFileName)) as f:
-        numberOfLines = len(f.readlines())
-
-    product = numberOfRows * numberOfColumns
-
-    if product == numberOfLines:
-        hruFileHandle = open(os.path.join(app.config['UPLOAD_FOLDER'], hruFileName), 'r')
-        values = util.findAverageResolution(hruFileHandle, numberOfRows, numberOfColumns)
-
-        inputFileHandle = open(os.path.join(app.config['UPLOAD_FOLDER'], inputFileName), 'r')
-        copyParameterSectionFromInputFile(inputFileHandle)
-        readncFile(numberOfRows, numberOfColumns, epsgValue, values[0], values[1], values[2], values[3])
-        readtifFile(numberOfRows, numberOfColumns, epsgValue, values[0], values[1], values[2], values[3])
-        util.generateMetaData()
-        util.moveFilesToANewDirectory()
-
-        dirList = os.listdir(app.config['DOWNLOAD_FOLDER'])
-        for fname in dirList:
-            print "uploading " + fname
-            res = VW_CLIENT.upload(new_mr_uuid, os.path.join(app.config['DOWNLOAD_FOLDER'], fname))
-
-            input_file = fname
-            parent_uuid = new_mr_uuid
-            description = 'Lehman Creek PRMS Data'
-	    watershed_name = 'Lehman Creek'
-	    state = 'Nevada'
-	    start_datetime = '2010-01-01 00:00:00'
-	    end_datetime = '2010-01-01 01:00:00'
-	    model_name = 'prms'
-
-	    # create XML FGDC-standard metadata that gets included in VW metadata
-	    fgdc_metadata = make_fgdc_metadata(input_file, None, new_mr_uuid, start_datetime, end_datetime, model=model_name)
-
-	    # create VW metadata
-	    watershed_metadata = metadata_from_file(input_file, parent_uuid, new_mr_uuid, description, watershed_name, state, start_datetime=start_datetime, end_datetime=end_datetime, model_name=model_name, fgdc_metadata=fgdc_metadata)
-
-            response = VW_CLIENT.insert_metadata(watershed_metadata)
-
-        return render_template("modeling/prms.html", Success_Message = "Successfully inserted NetCDF and GeoTIFF files in Virtual Watershed")
-    else:
-        return render_template("modeling/prms.html", Error_Message = "The product of the number of rows and columns do not match the number of parameter values")
-

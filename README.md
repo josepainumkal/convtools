@@ -12,7 +12,7 @@ operational. These include
 
 This documentation is mainly for developers, but it's also 
 for anyone who wants to test the Virtual Watershed Platform or run a VWP
-locally.
+locally. 
 
 # Quickstart
 

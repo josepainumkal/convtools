@@ -7,7 +7,7 @@ import netCDF4 as netCDF4
 
 from datetime import datetime
 
-from wcwave_adaptors import default_vw_client, isnobal, metadata_from_file
+from vwpy import default_vw_client, isnobal, metadata_from_file
 
 
 def vw_isnobal(input_dataset_uuid):
