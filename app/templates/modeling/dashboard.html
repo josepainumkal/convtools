@@ -23,9 +23,9 @@
 {% block content %}
 
 <div id="wrapper">
-    <div id="page-wrapper">        
+    <div id="page-wrapper">
         <div class="row" id="modelruns-container" data-user-id="{{ current_user.id }}" >
-          
+
         </div>
 
     </div>
@@ -33,7 +33,14 @@
 
 </div>
 
+<script type="text/babel" src="/static/dashboard/components/modelrun.js"></script>
+<script type="text/babel" src="/static/dashboard/components/modelresource.js"></script>
+<script type="text/babel" src="/static/dashboard/components/modelprogress.js"></script>
+<script type="text/babel" src="/static/dashboard/components/modelrunform.js"></script>
+<script type="text/babel" src="/static/dashboard/components/dashboardbox.js"></script>
+
 <script type="text/babel" src="/static/dashboard/app.js"></script>
+
 <script type="text/babel">
   var userId= $('#modelruns-container').data('user-id')
   var apiUrl = "{{VWMODEL_SERVER_URL}}"
@@ -49,17 +56,32 @@
     }]
   };
   var modelrunsUrl = apiUrl+"modelruns";
-  
+
   var modelresourceUrl = "upload";
 
-  React.render(
-     <ModelRunBox apiUrl={apiUrl} 
-            url={modelrunsUrl} 
-            modelresourceUrl={modelresourceUrl} 
-            query={modelrunsQuery} 
-            userid={$('#modelruns-container').data('user-id')} />,
-    document.getElementById('modelruns-container')
-  );
+  var schemas;
+  $.ajax({
+      url:apiUrl,
+      type:'GET',
+      contentType:false,
+      processData: false,
+      cache: false,
+      success: function(data) {
+        React.render(
+           <ModelRunBox title='Model Runs' apiUrl={apiUrl}
+                  url={modelrunsUrl}
+                  modelresourceUrl={modelresourceUrl}
+                  query={modelrunsQuery}
+                  userid={$('#modelruns-container').data('user-id')}
+                  schemas={data['models']} />,
+          document.getElementById('modelruns-container')
+        );
+      },
+      error: function(xhr, status, err) {
+        console.error(status, err.toString());
+      }
+  });
+
 
 </script>
 
