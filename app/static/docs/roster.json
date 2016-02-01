@@ -37,6 +37,15 @@
     },
     {
         "component": "ci",
+        "name": "Dr. Donna Delparte",
+        "institute": "Idaho State University",
+        "department": "Geosciences",
+        "role": "Professor",
+        "photo": "/static/images/headshots/donna-delparte.jpg",
+        "blurb": "Dr. Delparte has an extensive background in the applications of GIS and remote sensing to the fields of geosciences, resource management and conservation/environmental planning. Dr. Delparte's current research focus relates to visualization, 3D modeling and analysis. In the Virtual Watershed project, Dr. Delparte's research group is creating a REST API for a novel statistical gridding tool along with WCS and WMS web services, and a built-in visualization."
+    },
+    {
+        "component": "ci",
         "name": "Dr. Sergiu Dascalu",
         "institute": "University of Nevada, Reno",
         "department": "Computer Science and Engineering",
@@ -79,15 +88,6 @@
         "role": "Masters Student",
         "photo": "/static/images/headshots/nolan-burfield.jpg",
         "blurb": "Nolan joined the project in mid-2015 and contributes to the development of new visualizations and adaptors for the visualization system."
-    },
-    {
-        "component": "ci",
-        "name": "Dr. Donna Delparte",
-        "institute": "Idaho State University",
-        "department": "Geosciences",
-        "role": "Professor",
-        "photo": "/static/images/headshots/donna-delparte.jpg",
-        "blurb": "Dr. Delparte has an extensive background in the applications of GIS and remote sensing to the fields of geosciences, resource management and conservation/environmental planning. Dr. Delparte's current research focus relates to visualization, 3D modeling and analysis. In the Virtual Watershed project, Dr. Delparte's research group is creating a REST API for a novel statistical gridding tool along with WCS and WMS web services, and a built-in visualization."
     },
     {
         "component": "ci",
