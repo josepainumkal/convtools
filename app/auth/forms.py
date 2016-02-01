@@ -55,7 +55,8 @@ class RedirectForm(Form):
 
     def redirect(self, endpoint='index', **values):
         if is_safe_url(self.next.data):
-            return redirect(self.next.data[1:])
+            # in production 'next' is, e.g., '%2Fshare%2F', which causes probs
+            return redirect(self.next.data.replace('%2F', '/'))
 
         target = get_redirect_target()
         return redirect(target or url_for(endpoint, **values))
