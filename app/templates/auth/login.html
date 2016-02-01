@@ -8,6 +8,7 @@
       <div class="well">
           <form id="loginForm" method="POST" action="/auth/login">
               {{ form.csrf_token }}
+              {{ form.next }}
               <div class="form-group {% if form.errors.email %} has-error {% endif %}">
                   <label for="email" class="control-label">{{form.email.label}}</label>
                   <input type="text" class="form-control" id="email" name="email" placeholder="example@gmail.com">
