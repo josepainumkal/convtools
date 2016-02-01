@@ -55,7 +55,7 @@ class RedirectForm(Form):
 
     def redirect(self, endpoint='index', **values):
         if is_safe_url(self.next.data):
-            return redirect(self.next.data)
+            return redirect(self.next.data[1:])
 
         target = get_redirect_target()
         return redirect(target or url_for(endpoint, **values))
