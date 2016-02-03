@@ -3,57 +3,42 @@
 
 {% block link %}
   {{ super() }}
-  <link href="/static/modeling_index.css" rel="stylesheet">
-  <link href="/static/makegrid.css" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
-<div class="container">
 
-  <h1>Modeling and Processing</h1>
+<h1>Modeling</h1>
 
-  <p>
-    Here you will be able to select a model, browse data that's ready
-    for that model, and run the model.
-  </p>
-  <p>
-    We will also enable services like creating grids from weather
-    station data and a DEM for a watershed. This page will proved 
-    access to tools for downloading customized PRISM data (custom projection, 
-    time frame, grid area, etc.).
-  </p>
+<p>
+
+</p>
 
 
-    <h2>Models</h1>
+<h2>Models</h2>
 
-      <div class="row">
+<p>
+    Welcome to the Virtual Watershed's modeling platform. If you've been here
+    before you may want to continue along to the 
+    <a href="/modeling/dashboard">modeling dashboard</a>. If not, please read
+    on to learn how to use the Virtual Watershed online modeling system.
+</p>
 
-        <div class="col-md-6 col-sm-6 col-xs-12"> 
-          <a href="{{ url_for('.makegrid') }}" class="splash-opt">
-         <div class="thumbnail">
-          <h3 class="thumbnail-title">Grid Creation</h3>
-          <img id="grid-create-img" src="../static/images/weather_station_grid.png">
-          <p class="central-nav-blurb">Created gridded model forcings
-          from weather station data and a DEM
-          </p>
-         </div></a>
+<p>
+    This system is built on a number of tools developed by WC-WAVE developers.
+    The main interface is part of this o
+    <a href="https://github.com/VirtualWatershed">Virtual Watershed webapp</a> 
+    and the modeling service is Moinul Hossain's 
+    <a href="https://github.com/itsrifat/vwadaptor">vwadaptor</a> project.
+    We currently support only two models to be run through the Dashboard.
+    You can also generate gridded data for certain watersheds with the 
+    a[href=/modeling/makegrid]{Gridding Tool page}, which was made by 
+    Dr. Donna Delparte's lab. Tucker Chapman is currently the lead developer
+    of the project that was initiated by Joel Johansen.
+</p>
 
-       </div>
-        <div class="col-md-6 col-sm-6 col-xs-12"> 
-          <a href="{{ url_for('.isnobal') }}" class="splash-opt">
-         <div class="thumbnail">
-          <h3 class="thumbnail-title">iSNOBAL</h3>
-          <img class="central-nav-img" src="../static/images/usda.png">
-          <p class="central-nav-blurb">
-            Mass-energy balance model for climate effects on snowpack, precipitation,
-            and water inputs
-          </p>
-         </div></a>
-       </div>
+<p>
+    To get started using this system you will need to provide data. Currently
+    we only have instructions ready for iSNOBAL.
+</p>
 
-      </div>
-
-      </div>
-
-</div>
 {% endblock %}
