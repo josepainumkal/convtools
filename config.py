@@ -32,8 +32,9 @@ class DevelopmentConfig(Config):
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = \
         'sqlite:///' + os.path.join(basedir, 'data-dev.sqlite')
-    # VWMODEL_SERVER_URL = "http://vwadaptor.ddns.net:5000/api/"
-    VWMODEL_SERVER_URL = "http://vwmodels.nkn.uidaho.edu/api/"
+    # comment/uncomment based on which server you're using
+    VWMODEL_SERVER_URL = "http://vwadaptor.ddns.net:5000/api/"
+    # VWMODEL_SERVER_URL = "http://vwmodels.nkn.uidaho.edu/api/"
 
 
 class TestingConfig(Config):
