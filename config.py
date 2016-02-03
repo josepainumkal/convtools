@@ -48,6 +48,7 @@ class ProductionConfig(Config):
         'sqlite:///' + os.path.join(basedir, 'data.sqlite')
 
     VWMODEL_SERVER_URL = "https://www.virtualwatershed.org/modelserver/api/"
+    #VWMODEL_SERVER_URL = "https://www.virtualwatershed.org/modelserver2/api/"
     #VWMODEL_SERVER_URL = "http://vwmodels.nkn.uidaho.edu/api/"
 
 config = {
