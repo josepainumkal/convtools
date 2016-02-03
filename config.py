@@ -47,7 +47,8 @@ class ProductionConfig(Config):
     SQLALCHEMY_DATABASE_URI = \
         'sqlite:///' + os.path.join(basedir, 'data.sqlite')
 
-    VWMODEL_SERVER_URL = "https://virtualwatershed.org/modelserver/api/"
+    VWMODEL_SERVER_URL = "https://www.virtualwatershed.org/modelserver/api/"
+    #VWMODEL_SERVER_URL = "http://vwmodels.nkn.uidaho.edu/api/"
 
 config = {
     'development': DevelopmentConfig,
