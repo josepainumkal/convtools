@@ -66,6 +66,7 @@ div.container{
 }
 
 div#abstract-blurb {
+    font-size: 1.1em;
     text-align: justify;
     margin: 0 10% 5% 5%;
 }
@@ -290,6 +291,11 @@ div#who-we-are {
     border-style: solid;
     border-radius: 5px;
     padding: 10px;
+}
+
+img.watershed-header {
+    width: 100%;
+    padding-bottom: 10px;
 }
 
 /*div.panel {*/
