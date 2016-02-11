@@ -1,19 +1,21 @@
-# import uuid as uuid
+import os
+import time
 
 from flask import render_template, flash, redirect, url_for, request
 from flask_login import login_required, current_user
 from flask import current_app as app
+from flask_socketio import emit
 from werkzeug import secure_filename
+
 from . import share
 from .forms import ResourceForm
-from .. import db
+from .. import db, socketio
 from ..models import Resource
 
 from vwpy import default_vw_client
 from vwpy import make_fgdc_metadata, metadata_from_file
 
-import util, numpy
-import time
+import util
 
 VW_CLIENT = default_vw_client()
 
@@ -32,8 +34,8 @@ def resources():
     # Display form for sharing a data resource
     form = ResourceForm()
 
-    print form.validate_on_submit()
     if form.validate_on_submit():
+
         _local_vw_client = default_vw_client()
         # initialize: post to virtual watershed
         common_kwargs = {
@@ -47,7 +49,6 @@ def resources():
         vw_kwargs = {}
         vw_kwargs.update(common_kwargs)
         vw_kwargs.update(extra_vw_kwargs)
-        print vw_kwargs
 
         # in VW language, the database focuses on 'model_runs'.
         # however, modelers don't just want to share data associated with a
@@ -103,28 +104,37 @@ def files(model_run_uuid):
     model_run_name = model_run_record['Model Run Name']
 
     "View of file submission for as yet unselected resource to add to"
-    model_run_uuid = model_run_uuid
+    # model_run_uuid = model_run_uuid
 
     datasets_res = VW_CLIENT.dataset_search(model_run_uuid=model_run_uuid)
     records_list = datasets_res.records
 
-    return render_template('share/f.html', model_run_name=model_run_name,
+    return render_template('share/files.html', model_run_name=model_run_name,
                            model_run_desc=model_run_desc,
                            model_run_uuid=model_run_uuid,
                            records_list=records_list)
+
+@socketio.on('upload progress query', namespace='/socket')
+def upload_query(message):
+    emit('my response', {'data': message['data']})
+
+@share.route('/socket-test', methods=['GET'])
+def socket_test():
+
+    return render_template('share/socket_test.html')
 
 @share.route('/files/insert', methods=['POST'])
 @login_required
 def insert():
 
-    if (request.files['file'].filename == ''
-        or request.form['watershed'] == ''
-            or request.form['description'] == ''):
+    # if (request.files['file'].filename == ''
+        # or request.form['watershed'] == ''
+            # or request.form['description'] == ''):
 
-        return render_template('share/f.html',
-            InputErrorMessage="Please upload required file and/or fill in all the fields")
+        # return render_template('share/files.html',
+            # InputErrorMessage="Please upload required file and/or fill in all the fields")
 
-    uploadedFile = request.files['file']
+    uploaded_file = request.files['file']
     watershed_name = str(request.form['watershed'])
     model_name = str(request.form['model'])
     description = str(request.form['description'])
@@ -140,23 +150,22 @@ def insert():
     elif watershed_name == 'Lehman Creek':
         state = 'Nevada'
 
-    if uploadedFile:
-        # FIXME a bit of a hack to fix timeout issues; can fix when fixed
-        # on VW HTTP
+    if uploaded_file:
+
         _local_vw_client = default_vw_client()
 
-        uploadedFileName = secure_filename(uploadedFile.filename)
+        uploaded_file_name = secure_filename(uploaded_file.filename)
 
         uploaded_file_path = os.path.join(app.config['UPLOAD_FOLDER'],
-                                          uploadedFileName)
+                                          uploaded_file_name)
 
-        uploadedFile.save(uploaded_file_path)
+        uploaded_file.save(uploaded_file_path)
 
         _local_vw_client.upload(model_run_uuid,
                                 os.path.join(app.config['UPLOAD_FOLDER'],
-                                uploadedFileName))
+                                uploaded_file_name))
 
-        input_file = uploadedFileName
+        input_file = uploaded_file_name
         parent_uuid = model_run_uuid
         start_datetime = '2010-01-01 00:00:00'
         end_datetime = '2010-01-01 01:00:00'
@@ -178,10 +187,6 @@ def insert():
 
         time.sleep(1)
 
-        rData = _local_vw_client.dataset_search(model_run_uuid=model_run_uuid)
-
-        dataResults = rData.records
-
     model_run_record = \
         VW_CLIENT.modelrun_search(model_run_id=model_run_uuid).records[0]
 
@@ -194,74 +199,7 @@ def insert():
     datasets_res = VW_CLIENT.dataset_search(model_run_uuid=model_run_uuid)
     records_list = datasets_res.records
 
-    return render_template('share/f.html', model_run_name=model_run_name,
+    return render_template('share/files.html', model_run_name=model_run_name,
                            model_run_desc=model_run_desc,
                            model_run_uuid=model_run_uuid,
                            records_list=records_list)
-    #return render_template('share/files.html', model_run_uuid = model_run_uuid, dataResults = dataResults, inputFileName = input_file)
-
-
-@share.route('/files/upload', methods=['POST'])
-@login_required
-def upload():
-
-    if request.files['hru-file'].filename == '' or request.form['row'] == '' or request.form['column'] == '' or request.form['epsg'] == '':
-        return render_template('share/files.html', InputErrorMessage = "Please upload required files and/or fill in all the fields")
-
-    numberOfRows = int(request.form['row'])
-    numberOfColumns = int(request.form['column'])
-    epsgValue = int(request.form['epsg'])
-    inputFileName = str(request.form['input'])
-    hruFile = request.files['hru-file']
-    new_mr_uuid = str(request.form['uuid'])
-
-    if hruFile:
-        hruFileName = secure_filename(hruFile.filename)
-        hruFile.save(os.path.join(app.config['UPLOAD_FOLDER'], hruFileName))
-
-    with open(os.path.join(app.config['UPLOAD_FOLDER'], hruFileName)) as f:
-        numberOfLines = len(f.readlines())
-
-    product = numberOfRows * numberOfColumns
-
-    if product == numberOfLines:
-        hruFileHandle = open(os.path.join(app.config['UPLOAD_FOLDER'], hruFileName), 'r')
-        values = util.findAverageResolution(hruFileHandle, numberOfRows, numberOfColumns)
-
-        inputFileHandle = open(os.path.join(app.config['UPLOAD_FOLDER'], inputFileName), 'r')
-        copyParameterSectionFromInputFile(inputFileHandle)
-
-        readncFile(numberOfRows, numberOfColumns, epsgValue, values[0], values[1], values[2], values[3])
-        readtifFile(numberOfRows, numberOfColumns, epsgValue, values[0], values[1], values[2], values[3])
-        util.generateMetaData()
-        util.moveFilesToANewDirectory()
-
-        dirList = os.listdir(app.config['DOWNLOAD_FOLDER'])
-        for fname in dirList:
-            print "uploading " + fname
-            res = VW_CLIENT.upload(new_mr_uuid, os.path.join(app.config['DOWNLOAD_FOLDER'], fname))
-
-            input_file = fname
-            parent_uuid = new_mr_uuid
-            description = 'Lehman Creek PRMS Data'
-            watershed_name = 'Lehman Creek'
-            state = 'Nevada'
-            start_datetime = '2010-01-01 00:00:00'
-            end_datetime = '2010-01-01 01:00:00'
-            model_name = 'prms'
-
-            # create XML FGDC-standard metadata that gets included in VW metadata
-            fgdc_metadata = make_fgdc_metadata(input_file, None, new_mr_uuid,
-                start_datetime, end_datetime, model=model_name)
-
-            # create VW metadata
-            watershed_metadata = metadata_from_file(input_file, parent_uuid,
-                    new_mr_uuid, description, watershed_name, state,
-                    start_datetime=start_datetime, end_datetime=end_datetime,
-                    model_name=model_name, fgdc_metadata=fgdc_metadata)
-
-            response = VW_CLIENT.insert_metadata(watershed_metadata)
-
-        return render_template("share/files.html", Success_Message = "Successfully Inserted into the Virtual Watershed")
-    else:
-        return render_template("share/files.html", Error_Message = "The product of the number of rows and columns do not match the number of parameter values")

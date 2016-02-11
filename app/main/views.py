@@ -7,7 +7,6 @@ Author: Matthew Turner
 Date: 20 January 2016
 """
 import json
-import markdown
 import os
 
 from collections import defaultdict

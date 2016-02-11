@@ -6,7 +6,7 @@ import unittest
 
 from xray import open_dataset
 
-from wcwave_adaptors import default_vw_client, metadata_from_file
+from vwpy import default_vw_client, metadata_from_file
 
 from app.modeling.model_wrappers import vw_isnobal
 

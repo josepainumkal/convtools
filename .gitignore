@@ -14,3 +14,4 @@ app/visualization/
 app/static/bower_components
 node_modules
 deployment-config.json
+*.tmp
