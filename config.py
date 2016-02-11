@@ -48,7 +48,7 @@ class ProductionConfig(Config):
 
     VWMODEL_SERVER_URL = "https://www.virtualwatershed.org/modelserver/api/"
     #VWMODEL_SERVER_URL = "https://www.virtualwatershed.org/modelserver2/api/"
-    #VWMODEL_SERVER_URL = "http://vwmodels.nkn.uidaho.edu/api/"
+    #VWMODEL_SERVER_URL = "https://vwmodels.nkn.uidaho.edu/api/"
 
 config = {
     'development': DevelopmentConfig,

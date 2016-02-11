@@ -12,7 +12,7 @@ import os
 
 from collections import defaultdict
 
-from flask import render_template, session, request, flash, Markup
+from flask import redirect, render_template, session, request, flash, Markup
 
 from . import main
 from .forms import SearchForm
@@ -82,6 +82,14 @@ def search():
 
     # pass the list of parsed records to the template to generate results page
     return render_template('search.html', form=form, panels=panels)
+
+@main.route('/docs/vwpy', methods=['GET'])
+def vwpydoc():
+    return redirect('/static/docs/vwpy/index.html')
+
+@main.route('/docs', methods=['GET'])
+def docredir():
+    return redirect('/static/docs/vwpy/index.html')
 
 
 def _make_panel(search_record):
