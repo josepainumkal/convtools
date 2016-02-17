@@ -33,8 +33,6 @@ def index():
         os.path.join(os.getcwd(), 'app', 'static', 'docs', 'index.md')
     ).read()
 
-    content = Markup(markdown.markdown(content))
-
     cc_file = open(
         os.path.join(os.getcwd(), 'app', 'static', 'docs', 'roster.json')
     )

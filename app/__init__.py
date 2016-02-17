@@ -6,14 +6,12 @@ from flask import Flask
 from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
-from flask_socketio import SocketIO
 from config import config
 
 from vwpy import default_vw_client
 
 moment = Moment()
 db = SQLAlchemy()
-socketio = SocketIO()
 
 login_manager = LoginManager()
 login_manager.session_protection = 'strong'
@@ -30,7 +28,6 @@ def create_app(config_name):
     moment.init_app(app)
     db.init_app(app)
     login_manager.init_app(app)
-    socketio.init_app(app)
 
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
@@ -43,5 +40,8 @@ def create_app(config_name):
 
     from .modeling import modeling as modeling_blueprint
     app.register_blueprint(modeling_blueprint, url_prefix='/modeling')
+
+    from .api import api as api_blueprint
+    app.register_blueprint(api_blueprint, url_prefix='/api')
 
     return app
