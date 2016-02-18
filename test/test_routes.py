@@ -46,19 +46,22 @@ class DataShareTestCase(unittest.TestCase):
         # for testing purposes set parent to itself to make it the root node
         self.parent_uuid = self.mr_uuid
 
-        test_filename = 'vwpy/vwpy/test/data/flat_sample.nc'
+        # test_filename = 'vwpy/vwpy/test/data/flat_sample.nc'
+        test_filename = 'test/data/test1.txt'
         start_datetime = '2010-10-01 00:00:00'
         end_datetime = '2010-10-01 01:00:00'
         self.vwc.upload(self.mr_uuid, test_filename)
 
-        fgdc_md = make_fgdc_metadata(test_filename, self.config,
-                self.mr_uuid, start_datetime, end_datetime)
+        fgdc_md = make_fgdc_metadata(
+            test_filename, self.config, self.mr_uuid, start_datetime,
+            end_datetime
+        )
 
         wmd_from_file = metadata_from_file(
             test_filename, self.parent_uuid, self.mr_uuid,
             'testing file list; file #1 starting at 12am', 'Dry Creek',
             'Idaho', start_datetime=start_datetime, end_datetime=end_datetime,
-            fgdc_metadata=fgdc_md, model_set_type='grid', file_ext='bin',
+            fgdc_metadata=fgdc_md, model_set_type='grid',
             taxonomy='geoimage', model_set_taxonomy='grid',
             model_name='isnobal', epsg=4326, orig_epsg=26911
         )
@@ -69,7 +72,8 @@ class DataShareTestCase(unittest.TestCase):
         time.sleep(1)
 
         # now insert the second file so we have at least two to test our lists
-        test_filename = 'vwpy/vwpy/test/data/ref_in.nc'
+        # test_filename = 'vwpy/vwpy/test/data/ref_in.nc'
+        test_filename = 'test/data/test2.asc'
         start_datetime = '2010-10-01 09:00:00'
         end_datetime = '2010-10-01 10:00:00'
         self.vwc.upload(self.mr_uuid, test_filename)
@@ -100,16 +104,22 @@ class DataShareTestCase(unittest.TestCase):
         res = self.client.get('/api/modelruns/' + self.mr_uuid + '/files')
 
         res_json = json.loads(res.data)
-        files = res_json['files']
+        files = res_json['data']
 
         names = [f['name'] for f in files]
 
-        assert names == ['flat_sample.nc', 'ref_in.nc']
+        assert names == ['test1.txt', 'test2.asc'], names
 
         urls = [f['url'] for f in files]
+
         # download URLS be like
         # http://vwp-dev.unm.edu/apps/vwp/datasets/efa3905e-a50f-4158-add5-7fb9d0433d49/flat_input.nc.original.nc
-        base_dl_url = \
-            'http://vwp-dev.unm.edu/apps/vwp/datasets/' + self.mr_uuid + '/'
+        base_dl_url = 'http://vwp-dev.unm.edu/apps/vwp/datasets/'
 
-        assert urls == [base_dl_url + name + '.original.nc' for n in names]
+        expected_urls = [
+                         base_dl_url + files[idx]['uuid'] + '/' +
+                         name + '.original.' + ['txt', 'ascii'][idx]
+                         for idx, name in enumerate(names)
+                        ]
+
+        assert urls == expected_urls, urls
