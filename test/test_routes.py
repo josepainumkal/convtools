@@ -104,7 +104,7 @@ class DataShareTestCase(unittest.TestCase):
         res = self.client.get('/api/modelruns/' + self.mr_uuid + '/files')
 
         res_json = json.loads(res.data)
-        files = res_json['data']
+        files = res_json['files']
 
         names = [f['name'] for f in files]
 

@@ -31,4 +31,4 @@ def list_mr_files(model_run_uuid):
                 for rec in records
             ]
 
-    return jsonify({'data': files})
+    return jsonify({'files': files})
