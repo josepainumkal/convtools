@@ -12,6 +12,7 @@
     width: 100%;
   }
 </style>
+<script type="text/babel" src="/static/js/share.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -99,9 +100,20 @@
 
 <h1>List of data in this resource</h1>
 
-<div style="background:lightgrey">
-  {% include "common/fileList.html" %}
-</div>
+<div id="react-resource-list"></div>
+
+<script type="text/babel">
+var mr_uuid = '{{model_run_uuid}}';
+console.log(ReactDOM);
+{% if model_run_uuid %}
+ReactDOM.render(
+    <FileBox baseUrl='/api/modelruns/'
+             pollInterval={1000}
+             modelrunUUID={mr_uuid}/>,
+    document.getElementById('react-resource-list')
+);
+{% endif %}
+</script>
 
 </div>
 </body>
