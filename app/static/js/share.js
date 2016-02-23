@@ -1,11 +1,44 @@
 /**
+ * Form for inserting new files and their metadata
+ */
+var InsertForm = React.createClass({
+
+    getInitialState: function() {
+        return {
+            file: null,
+            model: '',
+            watershed: '',
+            description: '',
+            model_set: ''
+        };
+    },
+
+    handleSubmit: function(e) {
+        e.preventDefault();
+        var file = this.state.file;
+    },
+
+    render: function() {
+        return (
+            <form onSubmit={this.handleSubmit} encType="multipart/form-data">
+                <input type="file" onChange={this.handleFile} />
+                <input type="text" />
+                <input type="text" />
+                <input type="text" />
+                <input type="text" />
+            </form>
+        );
+    }
+
+});
+
+/**
  * Box that contains the file list
  */
-var FileBox = React.createClass({
+var FileListBox = React.createClass({
 
     loadFilesFromServer: function() {
         $.ajax({
-            //url: '/api/modelruns/c79b1d3a-4ddf-4d19-8ed6-068a86d2de7d/files',
             url: this.props.baseUrl + this.props.modelrunUUID + '/files',
             dataType: 'json',
             cache: false,
@@ -33,7 +66,7 @@ var FileBox = React.createClass({
     render: function() {
         return (
             <div className="fileBox">
-                <h1>Files</h1>
+                <h1>Attached Files</h1>
                 <FileList data={this.state.data} />
             </div>
         )
@@ -61,8 +94,7 @@ var FileList = React.createClass({
             );
         });
 
-        return (
-
+        var fileList =
             <div className="fileList">
                 <table className="table table-striped">
                     <thead>
@@ -77,9 +109,15 @@ var FileList = React.createClass({
                     </tbody>
                 </table>
             </div>
+
+        return (
+            <div className="fileList">
+                {fileList}
+            </div>
         );
     }
 });
 
 
-window.FileBox = FileBox;
+window.FileListBox = FileListBox;
+window.InsertForm = InsertForm;

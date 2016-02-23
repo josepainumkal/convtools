@@ -3,7 +3,7 @@
 
 {% block link %}
   {{ super() }}
-  <link href="/static/f.css" rel="stylesheet">
+  <!--<link href="/static/f.css" rel="stylesheet">-->
 {% endblock %}
 
 {% block head_ext %}
@@ -48,73 +48,81 @@ td.download-link {
 <br> </br>
 
 <h1>Upload new data</h1>
-<div class="container">
-  <div style="background:#888;padding:0 0 15px;" class="col-md-8 col-md-offset-2">
-  <form action="insert" method="post" enctype="multipart/form-data">
+<!--<div class="row">-->
 
-    <div class="col-md-12">
-      <h4>Select file to upload </h4>
-      <input name="file" type="file" value="" id="file"></input>
-    </div>
+  <!--<div style="background:#888;padding:0 0 15px;" class="col-md-6">-->
+  <!--<form action="insert" method="post" enctype="multipart/form-data">-->
 
-    <div class="col-md-12">
-      <h4>Model</h4>
-      <select name="model" id="model">
-        <option value="isnobal">iSNOBAL</option>
-        <option value="prms">PRMS</option>
-        <option value="HydroGeoSphere">CASiMiR</option>
-        <option value="HydroGeoSphere">DFLOW</option>
-        <option value="HydroGeoSphere">HydroGeoSphere</option>
-        <option value="reference">reference</option>
-      </select>
-    </div>
+    <!--<div class="col-md-12">-->
+      <!--<h4>Select file to upload </h4>-->
+      <!--<input name="file" type="file" value="" id="file"></input>-->
+    <!--</div>-->
 
-    <div class="col-md-12">
-      <h4>Watershed</h4>
-      <select name="watershed" id="watershed">
-        <option value="Valles Caldera">Valles Caldera</option>
-        <option value="Dry Creek">Dry Creek</option>
-        <option value="Reynolds Creek">Reynolds Creek</option>
-        <option value="Lehman Creek">Lehman Creek</option>
-      </select>
-    </div>
+    <!--<div class="col-md-12">-->
+      <!--<h4>Model</h4>-->
+      <!--<select name="model" id="model">-->
+        <!--<option value="isnobal">iSNOBAL</option>-->
+        <!--<option value="prms">PRMS</option>-->
+        <!--<option value="HydroGeoSphere">CASiMiR</option>-->
+        <!--<option value="HydroGeoSphere">DFLOW</option>-->
+        <!--<option value="HydroGeoSphere">HydroGeoSphere</option>-->
+        <!--<option value="reference">reference</option>-->
+      <!--</select>-->
+    <!--</div>-->
 
-    <div class="col-md-12">
-      <h4>Description</h4>
-      <input name="description" rows="5" value="" id="description"></input>
-    </div>
+    <!--<div class="col-md-12">-->
+      <!--<h4>Watershed</h4>-->
+      <!--<select name="watershed" id="watershed">-->
+        <!--<option value="Valles Caldera">Valles Caldera</option>-->
+        <!--<option value="Dry Creek">Dry Creek</option>-->
+        <!--<option value="Reynolds Creek">Reynolds Creek</option>-->
+        <!--<option value="Lehman Creek">Lehman Creek</option>-->
+      <!--</select>-->
+    <!--</div>-->
 
-    <div class="col-md-12">
-      <h4>Model Set (inputs, outputs, or reference)</h4>
-      <select id="model_set" name="model_set">
-        <option value="inputs">inputs</option>
-        <option value="outputs">outputs</option>
-        <option value="reference">reference</option>
-      </select>
+    <!--<div class="col-md-12">-->
+      <!--<h4>Description</h4>-->
+      <!--<input name="description" rows="5" value="" id="description"></input>-->
+    <!--</div>-->
+
+    <!--<div class="col-md-12">-->
+      <!--<h4>Model Set (inputs, outputs, or reference)</h4>-->
+      <!--<select id="model_set" name="model_set">-->
+        <!--<option value="inputs">inputs</option>-->
+        <!--<option value="outputs">outputs</option>-->
+        <!--<option value="reference">reference</option>-->
+      <!--</select>-->
+    <!--</div>-->
+    <!--<br>-->
+    <!--<div class="col-md-12">-->
+      <!--<input style="margin-top:20px;" class="btn btn-primary" style="width:100%" type="submit" value="Insert"/>-->
+    <!--</div>-->
+   <!--<input style="width:100%" name="uuid" type="hidden" -->
+          <!--value={{ model_run_uuid }} id="uuid"></input>-->
+  <!--</form>-->
+  <!--</div>-->
+
+    <div class="col-lg-6 col-md-6 col-sm-12 col-sm-12">
+        <div id="react-file-form"></div>
     </div>
-    <br>
-    <div class="col-md-12">
-      <input style="margin-top:20px;" class="btn btn-primary" style="width:100%" type="submit" value="Insert"/>
+    <div class="col-lg-6 col-md-6 col-sm-12 col-sm-12">
+        <div id="react-file-list"></div>
     </div>
-   <input style="width:100%" name="uuid" type="hidden" 
-          value={{ model_run_uuid }} id="uuid"></input>
-  </form>
-  </div>
 </div>
-
-<h1>List of data in this resource</h1>
-
-<div id="react-resource-list"></div>
 
 <script type="text/babel">
 var mr_uuid = '{{model_run_uuid}}';
 console.log(ReactDOM);
 {% if model_run_uuid %}
 ReactDOM.render(
-    <FileBox baseUrl='/api/modelruns/'
+    <InsertForm />,
+    document.getElementById('react-file-form')
+);
+ReactDOM.render(
+    <FileListBox baseUrl='/api/modelruns/'
              pollInterval={1000}
              modelrunUUID={mr_uuid}/>,
-    document.getElementById('react-resource-list')
+    document.getElementById('react-file-list')
 );
 {% endif %}
 </script>
