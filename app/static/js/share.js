@@ -1,36 +1,10 @@
 /**
- * Form for inserting new files and their metadata
- */
-var InsertForm = React.createClass({
+ Module for the file upload and insert page of the vw-webapp
 
-    getInitialState: function() {
-        return {
-            file: null,
-            model: '',
-            watershed: '',
-            description: '',
-            model_set: ''
-        };
-    },
+ Author: Matthew A. Turner
+ Date: Feb 23, 2016
+**/
 
-    handleSubmit: function(e) {
-        e.preventDefault();
-        var file = this.state.file;
-    },
-
-    render: function() {
-        return (
-            <form onSubmit={this.handleSubmit} encType="multipart/form-data">
-                <input type="file" onChange={this.handleFile} />
-                <input type="text" />
-                <input type="text" />
-                <input type="text" />
-                <input type="text" />
-            </form>
-        );
-    }
-
-});
 
 /**
  * Box that contains the file list
@@ -44,7 +18,6 @@ var FileListBox = React.createClass({
             cache: false,
             success: function(data) {
                 this.setState({data: data});
-                console.log(data);
             }.bind(this),
             error: function(xhr, status, err) {
                 console.error(this.props.url, status, err.toString());
@@ -80,7 +53,6 @@ var FileListBox = React.createClass({
 var FileList = React.createClass({
 
     render: function() {
-        console.log(this.props.data.files);
         var tableRows = this.props.data.files.map(function(file) {
 
             return (
@@ -120,4 +92,53 @@ var FileList = React.createClass({
 
 
 window.FileListBox = FileListBox;
-window.InsertForm = InsertForm;
+
+/**
+    Handle Form Submit; React would be overkill, but I do want to prevent
+    page reloads for better UX.
+**/
+$('form').submit(function(e) {
+    e.preventDefault();
+
+    //console.log($('form').serializeJSON());
+
+    var formData = new FormData();
+    var form = $('form').serializeArray();
+
+    var modelrunUUID;
+    for (var i = 0; i < form.length; i++)
+    {
+        if (form[i].name === 'modelrunUUID')
+        {
+            modelrunUUID = form[i].value;
+        }
+        formData.append(form[i].name, form[i].value);
+    }
+
+    formData.append('uploadedFile', $('#uploadedFile')[0].files[0]);
+
+    var uploadUrl = '/api/modelruns/' + modelrunUUID + '/files';
+
+    var values = $(this).serialize();
+    $.ajax({
+        method: 'post',
+        url: uploadUrl,
+        data: formData,
+        processData: false,
+        contentType: false
+    })
+    .done( function() {
+        $('#upload-success-message').slideUp(function() {
+            setTimeout(function() {
+                $('#upload-success-message').slideDown();
+            }, 4000)
+        });
+    })
+    .fail(function() {
+        $('#upload-fail-message').slideUp(function() {
+            setTimeout(function() {
+                $('#upload-fail-message').slideDown();
+            }, 4000)
+        });
+    })
+});
