@@ -17,11 +17,15 @@ class Config:
 
     VWPLATFORM_MAIL_SUBJECT_PREFIX = '[VWPLATFORM]'
     VWPLATFORM_MAIL_SENDER = 'Matthew Turner \
-        <vwplatform-admin@northwestknowledge.net'
+        <vwplatform-admin@northwestknowledge.net>'
     VWPLATFORM_ADMIN = os.environ.get('VWPLATFORM_ADMIN') or 'Admin'
 
-    UPLOAD_FOLDER = "uploads"
-    DOWNLOAD_FOLDER = "downloads"
+    UPLOAD_FOLDER = 'uploads'
+    DOWNLOAD_FOLDER = 'downloads'
+
+    GSTORE_USERNAME = os.getenv('GSTORE_USERNAME', '')
+    GSTORE_PASSWORD = os.getenv('GSTORE_PASSWORD', '')
+    GSTORE_HOST = os.getenv('GSTORE_HOST', 'https://vwp-dev.unm.edu')
 
     @staticmethod
     def init_app(app):
@@ -33,7 +37,12 @@ class DevelopmentConfig(Config):
     SQLALCHEMY_DATABASE_URI = \
         'sqlite:///' + os.path.join(basedir, 'data-dev.sqlite')
     # comment/uncomment based on which server you're using
-    VWMODEL_SERVER_URL = "https://www.virtualwatershed.org/modelserver/api/"
+
+    MODEL_HOST =\
+        os.getenv('MODEL_HOST', default='http://192.168.99.100:5000/api')
+
+    AUTH_HOST =\
+        os.getenv('AUTH_HOST', default='http://192.168.99.100:5005/api')
 
 
 class TestingConfig(Config):
@@ -47,9 +56,6 @@ class ProductionConfig(Config):
         'sqlite:///' + os.path.join(basedir, 'data.sqlite')
 
     VWMODEL_SERVER_URL = "https://modelserver.virtualwatershed.org/api/"
-    #VWMODEL_SERVER_URL = "https://www.virtualwatershed.org/modelserver/api/"
-    #VWMODEL_SERVER_URL = "https://www.virtualwatershed.org/modelserver2/api/"
-    #VWMODEL_SERVER_URL = "https://vwmodels.nkn.uidaho.edu/api/"
 
 config = {
     'development': DevelopmentConfig,

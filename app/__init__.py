@@ -8,7 +8,6 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from config import config
 
-from vwpy import default_vw_client
 
 moment = Moment()
 db = SQLAlchemy()
@@ -16,8 +15,6 @@ db = SQLAlchemy()
 login_manager = LoginManager()
 login_manager.session_protection = 'strong'
 login_manager.login_view = 'auth.login'
-
-vw_client = default_vw_client()
 
 
 def create_app(config_name):

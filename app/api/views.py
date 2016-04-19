@@ -13,7 +13,9 @@ from flask import current_app as app
 from werkzeug import secure_filename
 
 from . import api
-from vwpy import default_vw_client, make_fgdc_metadata, metadata_from_file
+from gstore_adapter.client import (
+    VWClient, make_fgdc_metadata, metadata_from_file
+)
 
 
 @api.route('/modelruns/<model_run_uuid>/files', methods=['GET', 'POST'])
@@ -21,7 +23,9 @@ from vwpy import default_vw_client, make_fgdc_metadata, metadata_from_file
 def list_mr_files(model_run_uuid):
 
     # create a local VWClient; avoid any timeout
-    VW_CLIENT = default_vw_client()
+    VW_CLIENT = VWClient(app.config['GSTORE_HOST'],
+                         app.config['GSTORE_USERNAME'],
+                         app.config['GSTORE_PASSWORD'])
 
     if request.method == 'GET':
 
@@ -78,7 +82,9 @@ def _insert_file_to_vw(uploaded_file, model_run_uuid, request):
     elif watershed_name == 'Lehman Creek':
         state = 'Nevada'
 
-    _local_vw_client = default_vw_client()
+    _local_vw_client = VWClient(app.config['GSTORE_HOST'],
+                                app.config['GSTORE_USERNAME'],
+                                app.config['GSTORE_PASSWORD'])
 
     uploaded_file_name = secure_filename(uploaded_file.filename)
 
