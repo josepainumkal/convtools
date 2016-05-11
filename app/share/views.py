@@ -11,11 +11,9 @@ from .forms import ResourceForm
 from .. import db
 from ..models import Resource
 
-from vwpy import default_vw_client
-from vwpy import make_fgdc_metadata, metadata_from_file
-
-
-VW_CLIENT = default_vw_client()
+from gstore_adapter.client import (
+    VWClient, make_fgdc_metadata, metadata_from_file
+)
 
 
 def allowed_file(filename):
@@ -37,7 +35,10 @@ def resources():
 
     if form.validate_on_submit():
 
-        _local_vw_client = default_vw_client()
+        _local_vw_client = VWClient(app.config['GSTORE_HOST'],
+                                    app.config['GSTORE_USERNAME'],
+                                    app.config['GSTORE_PASSWORD'])
+
         # initialize: post to virtual watershed
         common_kwargs = {
             'description': form.description.data,
@@ -88,12 +89,17 @@ def resources():
     # add it to the list above (i.e. reload the page)
     return render_template('share/index.html', form=form)
 
+
 @share.route('/files/<model_run_uuid>')
 @login_required
 def files(model_run_uuid):
 
     if not os.path.exists(app.config['UPLOAD_FOLDER']):
         os.makedirs(app.config['UPLOAD_FOLDER'])
+
+    VW_CLIENT = VWClient(app.config['GSTORE_HOST'],
+                         app.config['GSTORE_USERNAME'],
+                         app.config['GSTORE_PASSWORD'])
 
     model_run_record = \
         VW_CLIENT.modelrun_search(model_run_id=model_run_uuid).records[0]
@@ -123,6 +129,10 @@ def insert():
     uploaded_file = request.files['file']
     if uploaded_file:
         _insert_file_to_vw(uploaded_file)
+
+    VW_CLIENT = VWClient(app.config['GSTORE_HOST'],
+                         app.config['GSTORE_USERNAME'],
+                         app.config['GSTORE_PASSWORD'])
 
     model_run_uuid = str(request.form['uuid'])
 
@@ -166,7 +176,9 @@ def _insert_file_to_vw(uploaded_file, model_run_uuid, request):
     elif watershed_name == 'Lehman Creek':
         state = 'Nevada'
 
-    _local_vw_client = default_vw_client()
+    _local_vw_client = VWClient(app.config['GSTORE_HOST'],
+                                app.config['GSTORE_USERNAME'],
+                                app.config['GSTORE_PASSWORD'])
 
     uploaded_file_name = secure_filename(uploaded_file.filename)
 

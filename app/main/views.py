@@ -11,12 +11,13 @@ import os
 
 from collections import defaultdict
 
-from flask import redirect, render_template, session, request, flash, Markup
+from flask import current_app as app
+from flask import redirect, render_template, session, request, flash
 
 from . import main
 from .forms import SearchForm
 
-from .. import vw_client
+from gstore_adapter.client import VWClient
 
 
 @main.route('/')
@@ -55,6 +56,11 @@ def search():
                      'description']
     search_results = []
     form = SearchForm(request.args)
+
+    vw_client = VWClient(app.config['GSTORE_HOST'],
+                         app.config['GSTORE_USERNAME'],
+                         app.config['GSTORE_PASSWORD'])
+
     if request.args and not form.validate():
         flash('Please fill out at least one field')
 
