@@ -1,7 +1,7 @@
-FROM virtualwatershed/vw-py:1.0.0
+FROM ubuntu:14.04
 MAINTAINER Moinul Hossain
 
-LABEL description="This Image builds an ubuntu 14.04 image from vw-py:1.0 and installs the dependencies of vwadaptor." \
+LABEL description="This Image builds an ubuntu 14.04 image from vw-py:1.0 and installs the dependencies of vw-webapp." \
       version="1.0"
 
 RUN apt-get update -y

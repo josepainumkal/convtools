@@ -43,7 +43,7 @@
 
 <script type="text/babel">
   var userId= $('#modelruns-container').data('user-id');
-  var apiUrl = "{{config['MODEL_HOST']}}/api";
+  var apiUrl = "{{config['MODEL_HOST']}}/api/";
   var apiKey = "JWT {{session['api_token']}}"
   var modelrunsQuery = {
     "filters": [{
@@ -56,7 +56,7 @@
       "direction":"desc"
     }]
   };
-  var modelrunsUrl = apiUrl+"/modelruns";
+  var modelrunsUrl = apiUrl+"modelruns";
 
   var modelresourceUrl = "upload";
 

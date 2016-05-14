@@ -59,6 +59,11 @@ class Config:
     VWWEBAPP_LOGIN_URL = os.environ.get('VWWEBAPP_REGISTER_URL','/auth/register')
     VWWEBAPP_LOGIN_URL = os.environ.get('VWWEBAPP_LOGOUT_URL','/auth/logout')
 
+    JWT_SECRET_KEY = os.environ.get('VWWEBAPP_JWT_SECRET_KEY', 'virtualwatershed')
+    JWT_EXPIRATION_DELTA = timedelta(days=int(os.environ.get(
+        'VWWEBAPP_JWT_EXPIRATION_DELTA', '30')))
+    JWT_AUTH_HEADER_PREFIX = os.environ.get(
+        'VWWEBAPP_JWT_AUTH_HEADER_PREFIX', 'JWT')
 
     @staticmethod
     def init_app(app):
