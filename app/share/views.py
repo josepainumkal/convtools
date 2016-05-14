@@ -2,7 +2,7 @@ import os
 import time
 
 from flask import render_template, flash, request
-from flask_login import login_required, current_user
+from flask.ext.security import login_required, current_user
 from flask import current_app as app
 from werkzeug import secure_filename
 

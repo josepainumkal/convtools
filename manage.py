@@ -13,6 +13,22 @@ config_opt = os.getenv('FLASKCONFIG') or 'default'
 print "CONFIGURED FOR " + config_opt
 app = create_app(config_opt)
 
+
+# from flask.ext.login import user_logged_in
+# from flask import session
+# from flask_jwt import _default_jwt_encode_handler
+# from flask.ext.security import current_user
+#
+# @user_logged_in.connect_via(app)
+# def on_user_logged_in(sender, user):
+#     key = _default_jwt_encode_handler(current_user)
+#     session['api_token'] = key
+
+
+@app.before_first_request
+def create_db():
+    db.create_all()
+
 manager = Manager(app)
 migrate = Migrate(app, db)
 

@@ -3,7 +3,7 @@ configparser==3.5.0b2
 eventlet==0.18.4
 Flask==0.10.1
 Flask-Cors==2.1.2
-Flask-Login==0.3.2
+#Flask-Login==0.3.2
 Flask-Migrate==1.8.0
 Flask-Moment==0.5.1
 Flask-Script==2.0.5
@@ -21,7 +21,16 @@ python-swiftclient==3.0.0
 requests==2.9.1
 six==1.10.0
 SQLAlchemy==1.0.12
+psycopg2==2.6.1
 vw-gstore-adapter==1.0.0
-vw-webapp==1.0.0
+#vw-webapp==1.0.0
 Werkzeug==0.11.8
 WTForms==2.1
+Flask-Session==0.2.3
+redis==2.10.5
+
+# security
+Flask-Login<0.3
+Flask-Bcrypt==0.7.1
+Flask-JWT==0.3.2
+Flask-Security==1.7.4

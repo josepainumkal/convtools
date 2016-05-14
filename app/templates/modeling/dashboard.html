@@ -42,8 +42,9 @@
 <script type="text/babel" src="/static/dashboard/app.js"></script>
 
 <script type="text/babel">
-  var userId= $('#modelruns-container').data('user-id')
-  var apiUrl = "{{VWMODEL_SERVER_URL}}"
+  var userId= $('#modelruns-container').data('user-id');
+  var apiUrl = "{{config['MODEL_HOST']}}/api";
+  var apiKey = "JWT {{session['api_token']}}"
   var modelrunsQuery = {
     "filters": [{
       "name": "user_id",
@@ -55,11 +56,19 @@
       "direction":"desc"
     }]
   };
-  var modelrunsUrl = apiUrl+"modelruns";
+  var modelrunsUrl = apiUrl+"/modelruns";
 
   var modelresourceUrl = "upload";
 
   var schemas;
+
+  $.ajaxSetup({
+    beforeSend: function (xhr) {
+       //xhr.setRequestHeader("Accept","application/vvv.website+json;version=1");
+       xhr.setRequestHeader("Authorization",apiKey);
+    }
+  });
+
   $.ajax({
       url:apiUrl,
       type:'GET',
