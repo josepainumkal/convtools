@@ -4,6 +4,7 @@ Configuration for Flask Application 'Virtual Watershed Platform'
 
 import os
 from redis import Redis
+from datetime import timedelta
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 
