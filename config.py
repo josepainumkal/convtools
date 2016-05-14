@@ -57,8 +57,8 @@ class Config:
                               port=VWWEBAPP_SESSION_REDIS_PORT, db=VWWEBAPP_SESSION_REDIS_DB)
 
     VWWEBAPP_LOGIN_URL = os.environ.get('VWWEBAPP_LOGIN_URL','/auth/login')
-    VWWEBAPP_LOGIN_URL = os.environ.get('VWWEBAPP_REGISTER_URL','/auth/register')
-    VWWEBAPP_LOGIN_URL = os.environ.get('VWWEBAPP_LOGOUT_URL','/auth/logout')
+    VWWEBAPP_REGISTER_URL = os.environ.get('VWWEBAPP_REGISTER_URL','/auth/register')
+    VWWEBAPP_LOGOUT_URL = os.environ.get('VWWEBAPP_LOGOUT_URL','/auth/logout')
 
     JWT_SECRET_KEY = os.environ.get('VWWEBAPP_JWT_SECRET_KEY', 'virtualwatershed')
     JWT_EXPIRATION_DELTA = timedelta(days=int(os.environ.get(
