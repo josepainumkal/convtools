@@ -13,7 +13,7 @@ var ModelResource = React.createClass({
       dataType: 'json',
       cache: false,
       success: function(data) {
-          console.log('success!',data);
+          //console.log('success!',data);
         this.setState({
           name: data['resource_name'],
           url:data['resource_url'],
