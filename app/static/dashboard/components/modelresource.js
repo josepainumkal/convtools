@@ -43,7 +43,7 @@ var ModelResourceList = React.createClass({
     var apiUrl = this.props.url;
     var modelResourceNodes = this.props.data.map(function (modelresource) {
       return (
-        <ModelResource url={apiUrl} id={modelresource.id}></ModelResource>
+        <ModelResource key={modelresource.id} url={apiUrl} id={modelresource.id}></ModelResource>
       );
     });
     return (

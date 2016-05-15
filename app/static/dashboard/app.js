@@ -46,7 +46,7 @@ var ModelRunBox = React.createClass({
     query = query || this.state.query;
     pageNum = pageNum || 1;
     var modelrunUrl = this.state.url+"?q="+JSON.stringify(this.state.query)+"&page="+pageNum;
-    console.log('modelrun url:',modelrunUrl);
+    //console.log('modelrun url:',modelrunUrl);
     $.ajax({
       url: modelrunUrl,
       dataType: 'json',
@@ -73,7 +73,7 @@ var ModelRunBox = React.createClass({
     //     this.getModelRunCountByState(state);
     // }
     var url = this.state.apiUrl+"users/"+this.state.userid+"/countsbystates";
-    console.log(url);
+    //console.log(url);
     $.ajax({
       url: url,
       dataType: 'json',
@@ -123,7 +123,7 @@ var ModelRunBox = React.createClass({
     $.each(filters,function(idx,val){
       options.push(<option value={val}>{val}</option>);
     });*/}
-    console.log(this.state.modelRunsByState);
+    //console.log(this.state.modelRunsByState);
     var paginator;
     if(this.state.numPages>1){
       paginator = <div id="modelrunPaginator" className="text-center">
@@ -137,7 +137,7 @@ var ModelRunBox = React.createClass({
 
     var modelrunForms=[]
     $.each(this.props.schemas,function(key,val){
-      var modelrunForm = <ModelRunForm modelname={key} inputs={val['resources']['inputs']} onModelRunCreate={this.onModelRunCreate}
+      var modelrunForm = <ModelRunForm key={key} modelname={key} inputs={val['resources']['inputs']} onModelRunCreate={this.onModelRunCreate}
                       userid={this.props.userid} apiUrl={this.state.apiUrl}
                       modelrunUrl={this.state.url} modelresourceUrl={this.state.modelresourceUrl} />
       modelrunForms.push(modelrunForm);

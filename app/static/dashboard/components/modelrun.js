@@ -143,6 +143,7 @@ var ModelRun = React.createClass({
           className="modelrun"  bsStyle="primary">
           <div className="col-lg-6">
             <ReactBootstrap.Table striped>
+            <tbody>
               <tr>
                 <td>Title</td>
                 <td> {this.props.data.title}</td>
@@ -155,6 +156,7 @@ var ModelRun = React.createClass({
                 <td>Status</td>
                 <td> {this.props.data.progress_state}</td>
               </tr>
+              </tbody>
             </ReactBootstrap.Table>
             <div className="modelrundesc" >
                 <h4>Description</h4>
@@ -210,7 +212,7 @@ var ModelRunList = React.createClass({
     var onModelRunProgress = this.props.onModelRunProgress;
     var modelrunNodes = this.props.data.map(function (modelrun) {
       return (
-        <ModelRun ref={modelrun.id} onDelete={this.onDelete.bind(this, modelrun)}
+        <ModelRun key={modelrun.id} ref={modelrun.id} onDelete={this.onDelete.bind(this, modelrun)}
           onModelRunProgress={onModelRunProgress}
           apiUrl={apiUrl}  url={url}
           data={modelrun}>

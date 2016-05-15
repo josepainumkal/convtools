@@ -43,53 +43,63 @@
 <script type="text/babel" src="/static/dashboard/app.js"></script>
 
 <script type="text/babel">
-  var userId= $('#modelruns-container').data('user-id');
-  var apiUrl = "{{config['MODEL_HOST']}}/api/";
-  var apiKey = "JWT {{session['api_token']}}"
-  var modelrunsQuery = {
-    "filters": [{
-      "name": "user_id",
-      "op": "eq",
-      "val": userId
-    }],
-    "order_by": [{
-      "field": "created_at",
-      "direction":"desc"
-    }]
-  };
-  var modelrunsUrl = apiUrl+"modelruns";
-
-  var modelresourceUrl = "upload";
-
-  var schemas;
-
-  $.ajaxSetup({
+  window.vwApiKey = "JWT {{session['api_token']}}";
+  window.ajaxSetup = {
     beforeSend: function (xhr) {
        //xhr.setRequestHeader("Accept","application/vvv.website+json;version=1");
-       xhr.setRequestHeader("Authorization",apiKey);
+       //console.log('Sending Auth: ',vwApiKey);
+       xhr.setRequestHeader("Authorization",vwApiKey);
     }
-  });
+  };
 
-  $.ajax({
-      url:apiUrl,
-      type:'GET',
-      contentType:false,
-      processData: false,
-      cache: false,
-      success: function(data) {
-        React.render(
-           <ModelRunBox title='Model Runs' apiUrl={apiUrl}
-                  url={modelrunsUrl}
-                  modelresourceUrl={modelresourceUrl}
-                  query={modelrunsQuery}
-                  userid={$('#modelruns-container').data('user-id')}
-                  schemas={data['models']} />,
-          document.getElementById('modelruns-container')
-        );
-      },
-      error: function(xhr, status, err) {
-        console.error(status, err.toString());
-      }
+  $(document).ready(function(){
+      var userId= $('#modelruns-container').data('user-id');
+      var apiUrl = "{{config['MODEL_HOST']}}/api/";
+
+      var modelrunsQuery = {
+        "filters": [{
+          "name": "user_id",
+          "op": "eq",
+          "val": userId
+        }],
+        "order_by": [{
+          "field": "created_at",
+          "direction":"desc"
+        }]
+      };
+      var modelrunsUrl = apiUrl+"modelruns";
+
+      var modelresourceUrl = "upload";
+
+      var schemas;
+
+
+
+      $.ajaxSetup(ajaxSetup);
+
+      $.ajax({
+          url:apiUrl,
+          type:'GET',
+          contentType:false,
+          processData: false,
+          cache: false,
+          success: function(data) {
+            ReactDOM.render(
+               <ModelRunBox title='Model Runs' apiUrl={apiUrl}
+                      url={modelrunsUrl}
+                      modelresourceUrl={modelresourceUrl}
+                      query={modelrunsQuery}
+                      userid={$('#modelruns-container').data('user-id')}
+                      schemas={data['models']} />,
+              document.getElementById('modelruns-container')
+            );
+          },
+          error: function(xhr, status, err) {
+            console.error(status, err.toString());
+          }
+      });
+
+
   });
 
 
