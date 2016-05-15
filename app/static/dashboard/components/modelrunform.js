@@ -100,7 +100,9 @@ var ModelRunForm = React.createClass({
 
       var modelrunData = {
           'title':this.refs.title.getValue().trim(),
-          'model_name':this.refs.model_name.getValue().trim(),'user_id':this.props.userid
+          'model_name':this.refs.model_name.getValue().trim(),
+          //'user_id':this.props.userid,
+          'description':this.refs.description.getValue().trim()
       };
       var resources=[];
       for(var ref in this.refs){
@@ -178,8 +180,8 @@ var ModelRunForm = React.createClass({
                     type="text" label="Title" placeholder="Enter Title" ref="title" />
                     <ReactBootstrap.Input
                       type="hidden" value={this.props.modelname} ref="model_name" />
-                    //<ReactBootstrap.TextArea
-                    //  label="Descripiton" placeholder="Enter Description" ref="descripiton" />
+                    <ReactBootstrap.Input
+                      type="textarea" label="Descripiton" placeholder="Enter Description" ref="descripiton" />
                   <h4>Input Resources</h4>
                   {resouces}
                   <ReactBootstrap.ButtonInput type="reset" value="Reset" />
