@@ -161,7 +161,7 @@ var ModelRun = React.createClass({
                  <div dangerouslySetInnerHTML={{__html: desc}} ></div>
               </div>
 
-            <ModelResourceList title='Resources' data={this.state.resources} />
+            <ModelResourceList title='Resources' url={this.props.apiUrl} data={this.state.resources} />
             <ReactBootstrap.Button
                                 onClick={this.props.onDelete}
                                 bsSize="small" className="run-btn"
