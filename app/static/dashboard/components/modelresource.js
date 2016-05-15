@@ -20,7 +20,9 @@ var ModelResourceList = React.createClass({
       <div className="model-resouces">
           <h4>{this.props.title}</h4>
           <ReactBootstrap.Table striped>
+            <tbody>
             {modelResourceNodes}
+            </tbody>
           </ReactBootstrap.Table>
       </div>
     );

@@ -178,6 +178,8 @@ var ModelRunForm = React.createClass({
                     type="text" label="Title" placeholder="Enter Title" ref="title" />
                     <ReactBootstrap.Input
                       type="hidden" value={this.props.modelname} ref="model_name" />
+                    //<ReactBootstrap.TextArea
+                    //  label="Descripiton" placeholder="Enter Description" ref="descripiton" />
                   <h4>Input Resources</h4>
                   {resouces}
                   <ReactBootstrap.ButtonInput type="reset" value="Reset" />

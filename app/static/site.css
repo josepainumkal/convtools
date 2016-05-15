@@ -298,6 +298,11 @@ img.watershed-header {
     padding-bottom: 10px;
 }
 
+.logbox{
+  display: block;
+  max-height: 300px;
+  overflow-y: auto;
+}
 /*div.panel {*/
     /*background-color: #ccc;*/
 /*}*/
