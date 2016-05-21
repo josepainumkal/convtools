@@ -2,6 +2,8 @@
 import logging
 import os
 
+from flask import request, redirect
+
 from flask_script import Manager, Shell
 from flask_migrate import Migrate, MigrateCommand
 
@@ -9,10 +11,19 @@ from app import create_app, db
 from app.models import User
 
 
+
+
 config_opt = os.getenv('FLASKCONFIG') or 'default'
 print "CONFIGURED FOR " + config_opt
 app = create_app(config_opt)
 
+def unauthorized():
+    url = app.config['VWWEBAPP_LOGIN_URL']
+    if not url:
+        url = "/"
+    return redirect(url)
+
+app.login_manager.unauthorized = unauthorized
 
 # from flask.ext.login import user_logged_in
 # from flask import session
