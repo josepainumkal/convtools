@@ -138,8 +138,8 @@ var ModelRun = React.createClass({
   render: function() {
     var desc = converter.makeHtml(this.props.data.description);
     return (
-      <div className="col-lg-12">
-        <ReactBootstrap.Panel header={this.props.data.id +" "+ this.props.data.title}
+      <div data-id="{this.props.data.id}" className="col-lg-12">
+        <ReactBootstrap.Panel header={this.props.data.title}
           className="modelrun"  bsStyle="primary">
           <div className="col-lg-6">
             <ReactBootstrap.Table striped>
