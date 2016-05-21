@@ -49,7 +49,7 @@ var ModelRunForm = React.createClass({
             var xhr = new window.XMLHttpRequest();
             //Upload progress
             xhr.upload.addEventListener("progress", function(evt){
-              console.log(resource.resource_type);
+              //console.log(resource.resource_type);
               if (evt.lengthComputable) {
                 var percentComplete = (evt.loaded / evt.total)*100;
                 var prog=$.extend({}, this.state.progressBars, {[resource.resource_type]:Math.floor(percentComplete)});
