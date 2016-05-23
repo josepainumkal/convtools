@@ -11,6 +11,7 @@ from flask.ext.session import Session
 from flask.ext.security import Security
 
 from flask.ext.security import SQLAlchemyUserDatastore
+from flask.ext.cache import Cache
 
 
 
@@ -18,7 +19,7 @@ moment = Moment()
 db = SQLAlchemy()
 session = Session()
 security = Security()
-
+cache = Cache()
 from .models import User, Role
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
 
@@ -49,7 +50,7 @@ def create_app(config_name):
 
     moment.init_app(app)
     db.init_app(app)
-    #login_manager.init_app(app)
+    cache.init_app(app)
     session.init_app(app)
     security.init_app(app,datastore=user_datastore)
     jwt.init_app(app)

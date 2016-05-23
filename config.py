@@ -65,7 +65,7 @@ class Config:
         'VWWEBAPP_JWT_EXPIRATION_DELTA', '30')))
     JWT_AUTH_HEADER_PREFIX = os.environ.get(
         'VWWEBAPP_JWT_AUTH_HEADER_PREFIX', 'JWT')
-
+    CACHE_TYPE = os.environ.get('VWWEBAPP_CACHE_TYPE','simple')
     @staticmethod
     def init_app(app):
         pass

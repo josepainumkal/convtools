@@ -34,3 +34,5 @@ Flask-Login<0.3
 Flask-Bcrypt==0.7.1
 Flask-JWT==0.3.2
 Flask-Security==1.7.4
+
+Flask-Cache>=0.13.1

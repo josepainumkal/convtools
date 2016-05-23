@@ -19,7 +19,9 @@ from .forms import SearchForm
 
 from gstore_adapter.client import VWClient
 
+from app import cache
 
+@cache.cached(timeout=50)
 @main.route('/')
 def index():
     """"

@@ -13,7 +13,7 @@ from app.models import User
 
 
 
-config_opt = os.getenv('FLASKCONFIG') or 'default'
+config_opt = os.environ.get('FLASKCONFIG') or 'default'
 print "CONFIGURED FOR " + config_opt
 app = create_app(config_opt)
 
