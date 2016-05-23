@@ -214,5 +214,23 @@
         "role": "PhD Student",
         "photo": "/static/images/headshots/angela-gregory.jpg",
         "blurb": "Angela leads the development of D-FLOW for coupling with the CASiMiR model. She is interested in informing water resource management decisions through hydraulic modeling, hydrologic modeling, statistical applications and applied field sciences. My areas of interest include wildfire impacts on hydrologic processes, forest hydrology, ecohydrology, fluvial geomorphology, and sediment transport."
+    },
+    {
+        "component": "watersheds",
+        "name": "Dr. Scott Tyler",
+        "institute": "University of Nevada, Reno",
+        "department": "Dept. of Geological Sciences and Engineering",
+        "role": "Professor",
+        "photo": "/static/images/headshots/scott-tyler.jpg",
+        "blurb": "Dr. Tyler’s areas of research span a wide range of hydrology and environmental fluid dynamics. In the past few years, Tyler’s research has included the use of fiber-optic sensing systems, particularly Raman backscatter distributed temperature sensing (DTS) and operate the National Science Foundation supported “Centers for Transformative Environmental Monitoring Programs” or CTEMPs; making DTS systems and training available to our hydrologic and earth science community. Dr. Tyler is focusing on data assimilation into the Virtual Watershed and assisting in the development of components for the Community Land Model (CLM)."
+    },
+    {
+        "component": "watersheds",
+        "name": "John Volk",
+        "institute": "University of Nevada, Reno",
+        "department": "Dept. of Geological Sciences and Engineering",
+        "role": "PhD Student",
+        "photo": "/static/images/headshots/john-volk.jpg",
+        "blurb": "John has applied PRMS to the Lehman and Baker creek watersheds in the Great Basin to study the impacts of projected climate change on watershed response. Current research involves using PRMS to understand how the interplay between ecology, climate, and elevation controls energy and water partitioning amongst different eco-climatic zones (alpine, subalpine, mixed conifer, and pinyon-juniper woodland) within the two snow dominated watersheds.  John is developing a Python library for PRMS that includes tools for data management, analysis, and visualization. Research interests include watershed hydrology, evaluation and intercomparison of hydrologic models, groundwater-surface water interactions, earth system modeling, and scientific programming."
     }
 ]
