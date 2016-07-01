@@ -49,7 +49,7 @@ var ModelRunForm = React.createClass({
             var xhr = new window.XMLHttpRequest();
             //Upload progress
             xhr.upload.addEventListener("progress", function(evt){
-              console.log(resource.resource_type);
+              //console.log(resource.resource_type);
               if (evt.lengthComputable) {
                 var percentComplete = (evt.loaded / evt.total)*100;
                 var prog=$.extend({}, this.state.progressBars, {[resource.resource_type]:Math.floor(percentComplete)});
@@ -100,7 +100,9 @@ var ModelRunForm = React.createClass({
 
       var modelrunData = {
           'title':this.refs.title.getValue().trim(),
-          'model_name':this.refs.model_name.getValue().trim(),'user_id':this.props.userid
+          'model_name':this.refs.model_name.getValue().trim(),
+          //'user_id':this.props.userid,
+          'description':this.refs.description.getValue()
       };
       var resources=[];
       for(var ref in this.refs){
@@ -118,7 +120,8 @@ var ModelRunForm = React.createClass({
         contentType: 'application/json; charset=utf-8',
         cache: false,
         data:JSON.stringify(modelrunData),
-        beforeSend: function(){
+        beforeSend: function(xhr){
+          ajaxSetup.beforeSend(xhr);
           this.setState({postingData:true,progressIconClass:'fa fa-2x fa-spinner fa-spin',progressText:'Uploading Resource To Model Server'});
         }.bind(this),
         success: function(data) {
@@ -137,15 +140,15 @@ var ModelRunForm = React.createClass({
   render: function() {
       var progBars=[]
       $.each(this.state.progressBars,function(idx,val){
-        var progBar=<ReactBootstrap.ProgressBar active={true} now={val} label={idx+"  %(percent)s%"} />
+        var progBar=<ReactBootstrap.ProgressBar key={idx} active={true} now={val} label={idx+"  %(percent)s%"} />
         progBars.push(progBar);
       });
 
       var resouces = [];
       $.each(this.props.inputs,function(key,val){
         resouces.push(
-          <ReactBootstrap.Input
-          bsStyle={this.state.validationErrors[key]?this.state.validationErrors[key].styleClass:''}
+          <ReactBootstrap.Input key={key}
+          bsStyle={this.state.validationErrors[key]?this.state.validationErrors[key].styleClass:'success'}
           type="file" label={key} ref={key} />
         );
       }.bind(this));
@@ -174,10 +177,12 @@ var ModelRunForm = React.createClass({
               <div className="modelrunForm-container">
                 <form id="modelrunForm" onSubmit={this.handleSubmit} encType="multipart/form-data">
                   <ReactBootstrap.Input
-                    bsStyle={this.state.validationErrors.title?this.state.validationErrors.title.styleClass:''}
+                    bsStyle={this.state.validationErrors.title?this.state.validationErrors.title.styleClass:'success'}
                     type="text" label="Title" placeholder="Enter Title" ref="title" />
                     <ReactBootstrap.Input
                       type="hidden" value={this.props.modelname} ref="model_name" />
+                    <ReactBootstrap.Input
+                      type="textarea" label="Description" placeholder="Enter Description" ref="description" />
                   <h4>Input Resources</h4>
                   {resouces}
                   <ReactBootstrap.ButtonInput type="reset" value="Reset" />

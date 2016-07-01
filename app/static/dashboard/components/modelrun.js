@@ -1,3 +1,5 @@
+var converter = new showdown.Converter();
+
 var ModelRun = React.createClass({
   getInitialState: function() {
 
@@ -134,12 +136,14 @@ var ModelRun = React.createClass({
   },
 
   render: function() {
+    var desc = converter.makeHtml(this.props.data.description);
     return (
-      <div className="col-lg-12">
-        <ReactBootstrap.Panel header={this.props.data.id +" "+ this.props.data.title}
+      <div data-id="{this.props.data.id}" className="col-lg-12">
+        <ReactBootstrap.Panel header={this.props.data.title}
           className="modelrun"  bsStyle="primary">
           <div className="col-lg-6">
             <ReactBootstrap.Table striped>
+            <tbody>
               <tr>
                 <td>Title</td>
                 <td> {this.props.data.title}</td>
@@ -152,12 +156,22 @@ var ModelRun = React.createClass({
                 <td>Status</td>
                 <td> {this.props.data.progress_state}</td>
               </tr>
+              </tbody>
             </ReactBootstrap.Table>
-            <ModelResourceList title='Resources' data={this.state.resources} />
+            <div className="modelrundesc" >
+                <h4>Description</h4>
+                 <div dangerouslySetInnerHTML={{__html: desc}} ></div>
+              </div>
+
+            <ModelResourceList title='Resources' url={this.props.apiUrl} data={this.state.resources} />
             <ReactBootstrap.Button
                                 onClick={this.props.onDelete}
                                 bsSize="small" className="run-btn"
                                 bsStyle="danger">Delete</ReactBootstrap.Button>
+            <div className="logbox">
+              { this.props.data.logs && <h3>Logs</h3> }
+              { this.props.data.logs }
+            </div>
           </div>
           <div ref="runBtn" className="col-lg-6 margin-bottom">
             {this.state.progressButton}
@@ -198,7 +212,7 @@ var ModelRunList = React.createClass({
     var onModelRunProgress = this.props.onModelRunProgress;
     var modelrunNodes = this.props.data.map(function (modelrun) {
       return (
-        <ModelRun ref={modelrun.id} onDelete={this.onDelete.bind(this, modelrun)}
+        <ModelRun key={modelrun.id} ref={modelrun.id} onDelete={this.onDelete.bind(this, modelrun)}
           onModelRunProgress={onModelRunProgress}
           apiUrl={apiUrl}  url={url}
           data={modelrun}>
@@ -215,5 +229,5 @@ var ModelRunList = React.createClass({
 });
 
 
-window.ModelRun=ModelRun
-window.ModelRunList=ModelRunList
+window.ModelRun=ModelRun;
+window.ModelRunList=ModelRunList;

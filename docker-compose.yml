@@ -1,0 +1,42 @@
+postgres-userdb:
+  image: postgres
+postgres-appdb:
+  image: postgres
+vw-webapp:
+  ports:
+  - 5005:80/tcp
+  environment:
+    VWAUTH_ENV: dev
+    VWAUTH_HOST: 0.0.0.0
+    VWAUTH_JWT_EXPIRATION_DELTA: '10'
+    VWAUTH_JWT_SECRET_KEY: virtualwatershed
+    VWAUTH_MAIL_PORT: '25'
+    VWAUTH_MAIL_SERVER: vwmail
+    VWAUTH_MAIL_USE_SSL: 'false'
+    VWAUTH_PORT: '80'
+    VWAUTH_SECRET: vwauth
+    VWAUTH_SECURITY_CONFIRMABLE: 'true'
+    VWAUTH_SECURITY_EMAIL_SENDER: welcome@virtualwatershed.org
+    VWAUTH_SECURITY_PASSWORD_HASH: sha512_crypt
+    VWAUTH_SECURITY_PASSWORD_SALT: add_salt
+    VWAUTH_SECURITY_RECOVERABLE: 'true'
+    VWAUTH_SECURITY_REGISTERABLE: 'true'
+    VWAUTH_SQLALCHEMY_DATABASE_URI: postgresql://postgres:postgres@userdb:5432/postgres
+    VWAUTH_WTF_CSRF_CHECK_DEFAULT: 'false'
+    VWAUTH_WTF_CSRF_ENABLED: 'false'
+  labels:
+    io.rancher.container.network: 'true'
+  command:
+  - python
+  - manage.py
+  - runserver
+  - -h
+  - 0.0.0.0
+  - -p
+  - '80'
+  - --threaded
+  image: vw-webapp
+  links:
+  - vwmail:vwmail
+  - postgres-userdb:userdb
+  - postgres-appdb:appdb
