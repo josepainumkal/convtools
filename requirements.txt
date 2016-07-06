@@ -29,6 +29,13 @@ WTForms==2.1
 Flask-Session==0.2.3
 redis==2.10.5
 
+# REST Api
+flask-restless==0.17.0
+marshmallow==2.0.0rc1
+
+# For config
+python-decouple==3.0
+
 # security
 Flask-Login<0.3
 Flask-Bcrypt==0.7.1
@@ -36,3 +43,9 @@ Flask-JWT==0.3.2
 Flask-Security==1.7.4
 
 Flask-Cache>=0.13.1
+
+#pyee for modlerunner
+pyee==1.0.1
+
+# For config
+git+https://github.com/VirtualWatershed/vwmodels-python-client.git@capstone
