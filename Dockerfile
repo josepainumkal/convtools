@@ -18,6 +18,7 @@ RUN npm install -g bower
 # copy source code
 COPY . /var/www/vwtools
 WORKDIR /var/www/vwtools
+ENV PYTHONPATH /var/www/vwtools
 
 # install requirements
 #RUN echo bakkas
