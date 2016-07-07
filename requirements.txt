@@ -95,5 +95,6 @@ factory-boy==2.5.1
 # For config
 git+https://github.com/VirtualWatershed/vwmodels-python-client.git@capstone
 
+git+https://github.com/lisapalathingal/PRMS_Adaptor.git@master
 
 
