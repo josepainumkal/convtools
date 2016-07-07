@@ -1,4 +1,17 @@
 # Everything needed in production
+alembic==0.8.6
+configparser==3.5.0b2
+eventlet==0.18.4
+Flask-Migrate==1.8.0
+Flask-Moment==0.5.1
+Flask-Script==2.0.5
+Mako==1.0.4
+
+python-editor==1.0
+python-swiftclient==3.0.0
+requests==2.9.1
+six==1.10.0
+
 
 # Flask
 Flask==0.10.1
@@ -6,6 +19,10 @@ MarkupSafe==0.23
 Werkzeug==0.10.4
 Jinja2==2.7.3
 itsdangerous==0.24
+
+futures==3.0.5
+greenlet==0.4.9
+
 
 # Database
 psycopg2
@@ -28,7 +45,7 @@ cssmin>=0.2.0
 jsmin>=2.0.11
 
 # Auth
-Flask-Login==0.2.11
+Flask-Login<0.3
 Flask-Bcrypt==0.6.2
 
 # Caching
@@ -77,9 +94,6 @@ Flask-Security==1.7.4
 pytest>=2.6.3
 webtest
 factory-boy==2.5.1
-
-# Management script
-Flask-Script
 
 # For config
 git+https://github.com/VirtualWatershed/vwmodels-python-client.git@capstone
