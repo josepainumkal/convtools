@@ -60,6 +60,10 @@ class Config:
     VWWEBAPP_REGISTER_URL = os.environ.get('VWWEBAPP_REGISTER_URL','/auth/register')
     VWWEBAPP_LOGOUT_URL = os.environ.get('VWWEBAPP_LOGOUT_URL','/auth/logout')
 
+    #for prms conversion tools
+    UPLOAD_FOLDER = os.environ.get('UPLOAD_FOLDER', '/var/www/vwtools/app/static/uploadFolder')
+    DOWNLOAD_FOLDER = os.environ.get('DOWNLOAD_FOLDER', '/var/www/vwtools/app/static/downloadFolder')
+
     JWT_SECRET_KEY = os.environ.get('VWWEBAPP_JWT_SECRET_KEY', 'virtualwatershed')
     JWT_EXPIRATION_DELTA = timedelta(days=int(os.environ.get(
         'VWWEBAPP_JWT_EXPIRATION_DELTA', '30')))

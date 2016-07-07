@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+{% set active_page = "toolset.index" %}
+
+{% block link %}
+{{ super() }}
+<style>
+p {
+    margin: 35px 0;
+}
+p#main-blurb {
+    padding: 5px;
+    font-size: 1.1em;
+    background-color:#555;
+    color: white;
+    text-align: justify;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+
+
+<br><br>
+<p id="main-blurb">
+    PRMS Data Conversion Portal
+</p><br>
+
+<form action="prms_convert" method="post" enctype="multipart/form-data" data-toggle="validator" role="form">
+
+  <div class="row">
+      <div class="col-xs-3">
+        <label class="control-label">Select Data File (.data)</label>
+        <input name ="input_data_file" type="file" class="file" data-show-preview="false" required> <br><br><br>
+      </div>
+  </div>
+  <div class="row">
+      <div class="col-xs-3" >
+        <label class="control-label">Select Parameter File (.param)</label>
+        <input name ="input_param_file" type="file" class="file" data-show-preview="false" required><br><br><br>
+      </div>
+  </div>
+  <div class="row">
+      <div class="col-xs-3">
+        <label class="control-label">Select Location File (.dat)</label>
+        <input name ="input_location_file" type="file" class="file" data-show-preview="false" required><br><br><br>
+      </div>
+      <div class="col-xs-3">
+        <div class="form-group col-lg-7">
+          <label for="rows">No. of Rows</label>
+          <input class="form-control input-sm" type="number"  name="nrows" id="nrows" placeholder="rows" required>
+        </div>
+      </div>
+      <div class="col-xs-3">
+        <div class="form-group col-lg-7">
+          <label for="cols">No. of Columns</label>
+          <input class="form-control input-sm" type="number"  name="ncols" id="ncols" placeholder="columns" required>
+        </div>
+      </div>
+  </div>
+  <div class="row">
+      <div class="col-xs-3">
+        <label class="control-label">Select Control File (.control)</label>
+        <input name ="input_control_file" type="file" class="file" data-show-preview="false" required><br>
+      </div>
+  </div>
+  <div class="row">
+      <div class="col-xs-3">
+      </div>
+      <div class="col-xs-3">
+          <br>
+          <button type="submit" class="btn btn-primary btn-sm">Convert to netcdf</button>
+      </div>
+  </div>
+</form>
+<!-- <form action="removefiles" methods=['GET', 'POST']>
+    <button type="submit" class="btn btn-default">removefiles</button>
+</form> -->
+<br><br>
+{% if success == 'true'%}
+{% endif %}
+<div class="alert alert-warning fade in">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <strong>Success!</strong> The files are converted successfully. You can download the netcdf files here.... &nbsp;&nbsp;&nbsp;&nbsp;
+    <div class="btn-group" role="group" aria-label="...">
+      <div class="row">
+          <div class="col-xs-3">
+            <form action="downloaddatafile" methods=['GET', 'POST']>
+                <button type="submit" class="btn btn-default">data.nc</button>
+            </form>
+          </div>
+          <div class="col-xs-3">
+            <form action="downloadparamfile" methods=['GET', 'POST']>
+                <button type="submit" class="btn btn-default">parameter.nc</button>
+            </form>
+          </div>
+    </div>
+    </div>
+</div>
+
+<div class="alert alert-success  fade in">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+     Want to run PRMS Model ?&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <div class="btn-group" role="group" aria-label="...">
+      <div class="row">
+          <div class="col-xs-3">
+            <form action="invoke_model" methods=['GET', 'POST']>
+                <button type="submit" class="btn btn-default"> RUN PRMS</button>
+            </form>
+          </div>
+    </div>
+    </div>
+</div>
+
+
+<!-- {% if success == 'true'%}
+<div class="alert alert-success">
+  <strong>Success!</strong> The files were successfully converted.
+</div><br><br>
+<form action="downloadfolder" methods=['GET', 'POST']>
+    <button type="submit" value="Download"  />
+</form>
+<br>
+{% endif %} -->
+
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class="list-unstyled">
+    {% for message in messages %}
+    <div class="alert alert-danger">
+        <strong>Sorry!</strong> <li>{{ message }}</li>
+    </div>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+
+
+{% endblock %}
