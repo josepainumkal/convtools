@@ -14,7 +14,7 @@ def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
 from flask.ext.login import user_logged_in
 from flask_jwt import _default_jwt_encode_handler
 from flask.ext.security import current_user
-from vwpy.prms import data_to_netcdf, parameter_to_netcdf
+from prms.text_to_netcdf import dataToNetcdf, parameterToNetcdf
 #from client.model_client.client import ModelApiClient
 #
 # @user_logged_in.connect_via(app)
@@ -83,14 +83,11 @@ def invoke_model_api():
     api_inputParamFile = os.path.join(app.config['DOWNLOAD_FOLDER'], paramFileName)
     api_inputControlFile = os.path.join(app.config['DOWNLOAD_FOLDER'], controlFileName)
 
+    flash(current_user)
 
 
 
-
-
-    filename = 'parameter.nc'
-    return send_from_directory(app.config['DOWNLOAD_FOLDER'],
-                               filename, as_attachment=True)
+    return render_template('toolset/index.html')
 
 
 
@@ -136,8 +133,8 @@ def prms_convert():
             inputControlFile.save(os.path.join(app.config['DOWNLOAD_FOLDER'], inputControlFileName))
 
             nhrucells = int(rows) * int(cols)
-            data_to_netcdf(os.path.join(app.config['UPLOAD_FOLDER'], inputDataFileName),os.path.join(app.config['DOWNLOAD_FOLDER'], outputDataFileName))
-            parameter_to_netcdf(os.path.join(app.config['UPLOAD_FOLDER'], inputParamFileName), os.path.join(app.config['UPLOAD_FOLDER'], inputLocationFileName), nhrucells, int(rows), int(cols), os.path.join(app.config['DOWNLOAD_FOLDER'], outputParamFileName))
+            dataToNetcdf.data_to_netcdf(os.path.join(app.config['UPLOAD_FOLDER'], inputDataFileName),os.path.join(app.config['DOWNLOAD_FOLDER'], outputDataFileName))
+            parameterToNetcdf.parameter_to_netcdf(os.path.join(app.config['UPLOAD_FOLDER'], inputParamFileName), os.path.join(app.config['UPLOAD_FOLDER'], inputLocationFileName), nhrucells, int(rows), int(cols), os.path.join(app.config['DOWNLOAD_FOLDER'], outputParamFileName))
             return render_template('toolset/index.html', success ='true')
 
         else:
