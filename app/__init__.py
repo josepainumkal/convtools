@@ -69,7 +69,7 @@ def create_app(config_name):
     from .api import api as api_blueprint
     app.register_blueprint(api_blueprint, url_prefix='/api')
 
-    from .toolset import api as toolset_blueprint
+    from .toolset import toolset as toolset_blueprint
     app.register_blueprint(toolset_blueprint, url_prefix='/toolset')
 
     return app

@@ -15,7 +15,8 @@ from flask.ext.login import user_logged_in
 from flask_jwt import _default_jwt_encode_handler
 from flask.ext.security import current_user
 from prms.text_to_netcdf import dataToNetcdf, parameterToNetcdf
-#from client.model_client.client import ModelApiClient
+from client.model_client.client import ModelApiClient
+from client.swagger_client.apis.default_api import DefaultApi
 #
 # @user_logged_in.connect_via(app)
 # def on_user_logged_in(sender, user):
@@ -38,6 +39,8 @@ def allowed_file(filename):
 
 
 @toolset.route('/', methods=['GET'])
+@login_required
+@set_api_token
 def toolset_index():
     return render_template('toolset/index.html')
 
@@ -59,6 +62,8 @@ def download_data_file():
 
 ##tests
 @toolset.route('/removefiles')
+@login_required
+@set_api_token
 def removefiles():
     remove_directories(app)
     flash("removed")
@@ -66,6 +71,8 @@ def removefiles():
 
 
 @toolset.route('/downloadparamfile')
+@login_required
+@set_api_token
 def download_param_file():
     filename = 'parameter.nc'
     return send_from_directory(app.config['DOWNLOAD_FOLDER'],
@@ -73,6 +80,8 @@ def download_param_file():
 
 
 @toolset.route('/invoke_model', methods=['GET','POST'])
+@login_required
+@set_api_token
 def invoke_model_api():
     dataFileName = 'data.nc'
     paramFileName = 'parameter.nc'
@@ -85,7 +94,18 @@ def invoke_model_api():
 
     flash(current_user)
 
+    auth_host = app.config['AUTH_HOST']
+    model_host = app.config['MODEL_HOST']
+    cl = ModelApiClient(api_key=session['api_token'],auth_host=auth_host, model_host=model_host)
+    api = DefaultApi(api_client=cl)
+    mr = api.create_modelrun( modelrun=dict(title="Model Run-Toolset", model_name='prms'))
 
+    # name input files with the id, rename temp name with id+control
+    api.upload_resource_to_modelrun(mr.id, 'control', api_inputControlFile)
+    api.upload_resource_to_modelrun( mr.id, 'data', api_inputDataFile)
+    api.upload_resource_to_modelrun(mr.id, 'param', api_inputParamFile)
+    api.start_modelrun(mr.id)
+    flash("Model run from Toolset started....")
 
     return render_template('toolset/index.html')
 
@@ -95,6 +115,8 @@ def invoke_model_api():
 
 
 @toolset.route('/prms_convert', methods=['POST'])
+@login_required
+@set_api_token
 def prms_convert():
     remove_directories(app)
     create_directories(app)
