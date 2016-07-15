@@ -87,26 +87,26 @@ def invoke_model_api():
     paramFileName = 'parameter.nc'
     #fix this issue with control file name. Right now, it works only if control file name is LC.control
     controlFileName = 'LC.control'
+    modelTitle = request.args.get('modelTitle')
+    modelID = None
 
     api_inputDataFile = os.path.join(app.config['DOWNLOAD_FOLDER'], dataFileName)
     api_inputParamFile = os.path.join(app.config['DOWNLOAD_FOLDER'], paramFileName)
     api_inputControlFile = os.path.join(app.config['DOWNLOAD_FOLDER'], controlFileName)
 
-    flash(current_user)
-
     auth_host = app.config['AUTH_HOST']
-    model_host = app.config['MODEL_HOST']
+    model_host = app.config['MODEL_HOST']+'/api'
     cl = ModelApiClient(api_key=session['api_token'],auth_host=auth_host, model_host=model_host)
     api = DefaultApi(api_client=cl)
-    mr = api.create_modelrun( modelrun=dict(title="Model Run-Toolset", model_name='prms'))
+    mr = api.create_modelrun( modelrun=dict(title=modelTitle, model_name='prms'))
 
     # name input files with the id, rename temp name with id+control
     api.upload_resource_to_modelrun(mr.id, 'control', api_inputControlFile)
     api.upload_resource_to_modelrun( mr.id, 'data', api_inputDataFile)
     api.upload_resource_to_modelrun(mr.id, 'param', api_inputParamFile)
     api.start_modelrun(mr.id)
-    flash("Model run from Toolset started....")
-
+    if modelID:
+        return render_template('toolset/index.html', modelID = modelID)
     return render_template('toolset/index.html')
 
 

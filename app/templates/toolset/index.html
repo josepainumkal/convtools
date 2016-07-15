@@ -77,7 +77,6 @@ p#main-blurb {
 </form> -->
 <br><br>
 {% if success == 'true'%}
-{% endif %}
 <div class="alert alert-warning fade in">
     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
     <strong>Success!</strong> The files are converted successfully. You can download the netcdf files here.... &nbsp;&nbsp;&nbsp;&nbsp;
@@ -99,17 +98,26 @@ p#main-blurb {
 
 <div class="alert alert-success  fade in">
     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-     Want to run PRMS Model ?&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <div class="btn-group" role="group" aria-label="...">
+     Want to run PRMS Model ? <br><br>
+      <form action="invoke_model" methods=['GET','POST']>
       <div class="row">
-          <div class="col-xs-3">
-            <form action="invoke_model" methods=['GET', 'POST']>
-                <button type="submit" class="btn btn-default"> RUN PRMS</button>
-            </form>
-          </div>
-    </div>
-    </div>
+            <div class="col-xs-3">
+              <input name="modelTitle" class="form-control input-sm" type="text" placeholder="Please enter a title for the model run" required>
+            </div>
+            <div class="col-xs-3">
+              <button type="submit" class="btn btn-default">RUN PRMS</button>
+            </div>
+      </div>
+      <div class="row">
+        {% if modelID %}
+         <br>
+          &nbsp;&nbsp;&nbsp;&nbsp;PRMS model run initiated. The model run id for the job is {{ modelID }}
+        {% endif %}
+      </div>
+      </form>
+    
 </div>
+{% endif %}
 
 
 <!-- {% if success == 'true'%}
