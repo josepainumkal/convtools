@@ -85,11 +85,12 @@ def download_param_file():
 def invoke_model_api():
     dataFileName = 'data.nc'
     paramFileName = 'parameter.nc'
-    #fix this issue with control file name. Right now, it works only if control file name is LC.control
-    controlFileName = 'LC.control'
-    modelTitle = request.args.get('modelTitle')
-    modelID = None
+    #getting .control file from DOWNLOAD Folder
+    results = []
+    results += [file for file in os.listdir(app.config['DOWNLOAD_FOLDER']) if file.endswith('.control')]
+    controlFileName = results[0]
 
+    modelTitle = request.args.get('modelTitle')
     api_inputDataFile = os.path.join(app.config['DOWNLOAD_FOLDER'], dataFileName)
     api_inputParamFile = os.path.join(app.config['DOWNLOAD_FOLDER'], paramFileName)
     api_inputControlFile = os.path.join(app.config['DOWNLOAD_FOLDER'], controlFileName)
@@ -105,13 +106,7 @@ def invoke_model_api():
     api.upload_resource_to_modelrun( mr.id, 'data', api_inputDataFile)
     api.upload_resource_to_modelrun(mr.id, 'param', api_inputParamFile)
     api.start_modelrun(mr.id)
-    if modelID:
-        return render_template('toolset/index.html', modelID = modelID)
-    return render_template('toolset/index.html')
-
-
-
-
+    return render_template('modeling/dashboard.html')
 
 
 @toolset.route('/prms_convert', methods=['POST'])
