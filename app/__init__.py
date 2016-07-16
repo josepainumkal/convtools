@@ -60,14 +60,14 @@ def create_app(config_name):
     #from .auth import auth as auth_blueprint
     #app.register_blueprint(auth_blueprint, url_prefix='/auth')
 
-    from .share import share as share_blueprint
-    app.register_blueprint(share_blueprint, url_prefix='/share')
+    # from .share import share as share_blueprint
+    # app.register_blueprint(share_blueprint, url_prefix='/share')
 
-    from .modeling import modeling as modeling_blueprint
-    app.register_blueprint(modeling_blueprint, url_prefix='/modeling')
+    # from .modeling import modeling as modeling_blueprint
+    # app.register_blueprint(modeling_blueprint, url_prefix='/modeling')
 
-    from .api import api as api_blueprint
-    app.register_blueprint(api_blueprint, url_prefix='/api')
+    # from .api import api as api_blueprint
+    # app.register_blueprint(api_blueprint, url_prefix='/api')
 
     from .toolset import toolset as toolset_blueprint
     app.register_blueprint(toolset_blueprint, url_prefix='/toolset')

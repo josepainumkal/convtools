@@ -25,13 +25,14 @@ p#main-blurb {
     PRMS Data Conversion Portal
 </p><br>
 
-<form action="prms_convert" method="post" enctype="multipart/form-data" data-toggle="validator" role="form">
+<form action="/toolset/prms_convert" method="post" enctype="multipart/form-data" data-toggle="validator" role="form">
 
   <div class="row">
       <div class="col-xs-3">
         <label class="control-label">Select Data File (.data)</label>
         <input name ="input_data_file" type="file" class="file" data-show-preview="false" required> <br><br><br>
       </div>
+      
   </div>
   <div class="row">
       <div class="col-xs-3" >
@@ -94,9 +95,29 @@ p#main-blurb {
           </div>
     </div>
     </div>
+
+    <!-- <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a> <br><br> -->
+    <br>Want to run PRMS Model ? <br><br>
+      <form action="invoke_model" methods=['GET','POST']>
+      <div class="row">
+            <div class="col-xs-3">
+              <input name="modelTitle" class="form-control input-sm" type="text" placeholder="Please enter a title for the model run" required>
+            </div>
+            <div class="col-xs-3">
+              <button type="submit" class="btn btn-default">RUN PRMS</button>
+            </div>
+      </div>
+      <div class="row">
+        {% if modelID %}
+         <br>
+          &nbsp;&nbsp;&nbsp;&nbsp;PRMS model run initiated. The model run id for the job is {{ modelID }}
+        {% endif %}
+      </div>
+      </form>
+
 </div>
 
-<div class="alert alert-success  fade in">
+<!-- <div class="alert alert-success  fade in">
     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
      Want to run PRMS Model ? <br><br>
       <form action="invoke_model" methods=['GET','POST']>
@@ -116,7 +137,7 @@ p#main-blurb {
       </div>
       </form>
     
-</div>
+</div> -->
 {% endif %}
 
 

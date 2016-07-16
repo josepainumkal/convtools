@@ -20,28 +20,44 @@ from .forms import SearchForm
 from gstore_adapter.client import VWClient
 
 from app import cache
+from flask.ext.security import login_required, current_user
+from functools import wraps
 
-@cache.cached(timeout=50)
-@main.route('/')
-def index():
-    """"
-    Splash page reads index.md
+# @cache.cached(timeout=50)
+# @main.route('/')
+# def index():
+#     """"
+#     Splash page reads index.md
 
-    """
-    user_name = None
-    if 'email' in session:
-        user_name = session['email']
+#     """
+#     user_name = None
+#     if 'email' in session:
+#         user_name = session['email']
 
-    content = open(
-        os.path.join(os.getcwd(), 'app', 'static', 'docs', 'index.md')
-    ).read()
+#     content = open(
+#         os.path.join(os.getcwd(), 'app', 'static', 'docs', 'index.md')
+#     ).read()
 
-    cc_file = open(
-        os.path.join(os.getcwd(), 'app', 'static', 'docs', 'roster.json')
-    )
-    contributor_cards = json.load(cc_file)
+#     cc_file = open(
+#         os.path.join(os.getcwd(), 'app', 'static', 'docs', 'roster.json')
+#     )
+#     contributor_cards = json.load(cc_file)
 
-    return render_template("index-info.html", **locals())
+#     return render_template("index-info.html", **locals())
+
+def set_api_token(func):
+    @wraps(func)
+    def decorated(*args, **kwargs):
+        if current_user and 'api_token' not in session:
+            session['api_token'] = _default_jwt_encode_handler(current_user)
+        return func(*args, **kwargs)
+    return decorated
+
+@main.route('/', methods=['GET'])
+@login_required
+@set_api_token
+def toolset_index():
+    return render_template('toolset/index.html')
 
 
 @main.route('/search', methods=['GET', 'POST'])

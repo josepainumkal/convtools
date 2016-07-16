@@ -32,12 +32,6 @@
   </head>
   <body>
 
-  {% set navigation_bar = [('/', 'main.index', 'Home'),
-                           ('/search', 'main.search', 'Search'),
-                           ('/modeling', 'modeling.index', 'Modeling'),
-                           ('/share', 'share.index', 'Share')
-                           ] %}
-  {% set active_page = active_page|default('index') %}
 
   <div class="container">
 
@@ -55,43 +49,24 @@
             <span class="icon-bar"></span>
           </button>
 
-            <a class="navbar-brand" style="position:absolute;">The Virtual Watershed</a>
+            <a class="navbar-brand" style="position:absolute;">Virtual Watershed - Data Conversion Portal</a>
         </div>
 
         <div class="collapse navbar-collapse" id="navbar">
 
           <ul id="main-menu" class="nav navbar-nav navbar-right">
-            {% for href, id, caption in navigation_bar %}
+            
 
-              {% if request.endpoint %}
+            <li><a href="{{config['VWWEBAPP_HOST']}}"> Home</b></a></li>
+            <li><a href="{{config['VWWEBAPP_HOST']}}/share"> Share</b></a></li>
+            <li><a href="{{config['VWWEBAPP_HOST']}}/modeling"> Modeling</b></a></li>
 
-
-              <li{% if id == request.endpoint or request.endpoint[:5] == href[1:6] %}
-                    class="active"
-                 {% endif %}>
-
-                <a href="{{ href|e }}"
-                  {% if id == request.endpoint %} class="active"
-                  {% endif %}>{{ caption|e }}
-                </a>
-              </li>
-              {% elif href == request.script_root  %}
-                <a href="{{ href|e }}" class="active">{{ caption|e }}</a>
-              </li>
-
-
-             {% else %}
-
-             <li> <a href="{{ href|e }}">{{ caption|e }}</a></li>
-
-            {% endif %}
-
-            {% endfor %}
             
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown"> Data Conversion Tools <b class="caret"></b></a>
               <ul class="dropdown-menu">
-                <li><a href="{{config['MODEL_HOST']}}/toolset">PRMS Model</a></li>
+                    <li><a href="/toolset">PRMS Model</a></li>
+               <!--  <li><a href="{{config['MODEL_HOST']}}/toolset">PRMS Model</a></li> -->
               </ul>
             </li>
 

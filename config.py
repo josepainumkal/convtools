@@ -37,10 +37,14 @@ class Config:
     }
 
     MODEL_HOST =\
-        os.environ.get('MODEL_HOST', 'http://192.168.99.100:5000')
+        os.environ.get('MODEL_HOST', 'http://vw-dev:5000')
 
     AUTH_HOST =\
-        os.environ.get('AUTH_HOST', 'http://192.168.99.100:5005')
+        os.environ.get('AUTH_HOST', 'http://vw-dev:5005')
+
+    VWWEBAPP_HOST = os.environ.get('VWWEBAPP_HOST', 'http://vw-dev:5030')
+
+
 
     SESSION_COOKIE_NAME = os.environ.get(
         'VWWEBAPP_SESSION_COOKIE_NAME','vwsession')
