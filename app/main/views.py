@@ -22,6 +22,7 @@ from gstore_adapter.client import VWClient
 from app import cache
 from flask.ext.security import login_required, current_user
 from functools import wraps
+from flask_jwt import _default_jwt_encode_handler
 
 # @cache.cached(timeout=50)
 # @main.route('/')
