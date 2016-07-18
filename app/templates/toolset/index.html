@@ -9,78 +9,94 @@ p {
 }
 p#main-blurb {
     padding: 5px;
-    font-size: 1.1em;
-    background-color:#555;
-    color: white;
+    font-size: 1.6em;
+    /*background-color:#555;*/
+    color: black;
     text-align: justify;
 }
+
+
 </style>
 {% endblock %}
+
 
 {% block content %}
 
 
-<br><br>
+ <br><br>
 <p id="main-blurb">
-    PRMS Data Conversion Portal
-</p><br>
+    <u>PRMS Model Run Using Conversion Tools </u>
+</p> 
 
-<form action="/toolset/prms_convert" method="post" enctype="multipart/form-data" data-toggle="validator" role="form">
 
-  <div class="row">
-      <div class="col-xs-3">
-        <label class="control-label">Select Data File (.data)</label>
-        <input name ="input_data_file" type="file" class="file" data-show-preview="false" required> <br><br><br>
-      </div>
-      
-  </div>
-  <div class="row">
-      <div class="col-xs-3" >
-        <label class="control-label">Select Parameter File (.param)</label>
-        <input name ="input_param_file" type="file" class="file" data-show-preview="false" required><br><br><br>
-      </div>
-  </div>
-  <div class="row">
-      <div class="col-xs-3">
-        <label class="control-label">Select Location File (.dat)</label>
-        <input name ="input_location_file" type="file" class="file" data-show-preview="false" required><br><br><br>
-      </div>
-      <div class="col-xs-3">
-        <div class="form-group col-lg-7">
-          <label for="rows">No. of Rows</label>
-          <input class="form-control input-sm" type="number"  name="nrows" id="nrows" placeholder="rows" required>
+<br>
+<div class = "panel panel-primary">
+   <div class = "panel-heading">
+      <h3 class = "panel-title">Upload Files</h3>
+   </div>
+   
+   <div class = "panel-body"><br>
+      <form action="/toolset/prms_convert" method="post" enctype="multipart/form-data" data-toggle="validator" role="form" style="margin-left: 100px;">
+        <div class="row">
+            <div class="col-xs-3">
+              <label class="control-label">Select Data File (.data)</label>
+              <input name ="input_data_file" type="file" class="file" data-show-preview="false" required> <br><br><br>
+            </div>  
         </div>
-      </div>
-      <div class="col-xs-3">
-        <div class="form-group col-lg-7">
-          <label for="cols">No. of Columns</label>
-          <input class="form-control input-sm" type="number"  name="ncols" id="ncols" placeholder="columns" required>
+        <div class="row">
+            <div class="col-xs-3" >
+                <label class="control-label">Select Parameter File (.param)</label>
+                <input name ="input_param_file" type="file" class="file" data-show-preview="false" required><br><br><br>
+            </div>
         </div>
-      </div>
-  </div>
-  <div class="row">
-      <div class="col-xs-3">
-        <label class="control-label">Select Control File (.control)</label>
-        <input name ="input_control_file" type="file" class="file" data-show-preview="false" required><br>
-      </div>
-  </div>
-  <div class="row">
-      <div class="col-xs-3">
-      </div>
-      <div class="col-xs-3">
-          <br>
-          <button type="submit" class="btn btn-primary btn-sm">Convert to netcdf</button>
-      </div>
-  </div>
-</form>
-<!-- <form action="removefiles" methods=['GET', 'POST']>
-    <button type="submit" class="btn btn-default">removefiles</button>
-</form> -->
-<br><br>
-{% if success == 'true'%}
-<div class="alert alert-warning fade in">
+        <div class="row ">
+            <div class="col-xs-3">
+              <label class="control-label">Select Location File (.dat)</label>
+              <input name ="input_location_file" type="file" class="file" data-show-preview="false" required><br><br><br>
+            </div>
+            <div class="col-xs-3">
+              <div class="form-group col-lg-7">
+                <label for="rows">No. of Rows</label>
+                <input class="form-control input-sm" type="number"  name="nrows" id="nrows" placeholder="rows" required>
+              </div>
+            </div>
+            <div class="col-xs-3">
+              <div class="form-group col-lg-7">
+                <label for="cols">No. of Columns</label>
+                <input class="form-control input-sm" type="number"  name="ncols" id="ncols" placeholder="columns" required>
+              </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-3">
+              <label class="control-label">Select Control File (.control)</label>
+              <input name ="input_control_file" type="file" class="file" data-show-preview="false" required><br>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-3">
+            </div>
+            <div class="col-xs-3">
+                <br>
+                <button type="submit" class="btn btn-warning btn-sm">Convert to netcdf</button><br><br><br>
+            </div>
+        </div>
+
+      </form>
+
+   </div>
+</div>
+
+
+<br><br> 
+{% if success == 'true'%} 
+
+<div class="alert alert-success fade in ">
     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-    <strong>Success!</strong> The files are converted successfully. You can download the netcdf files here.... &nbsp;&nbsp;&nbsp;&nbsp;
+    <font size="3" color="black">The files are converted successfully. You can download the netcdf files here....</font> &nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
     <div class="btn-group" role="group" aria-label="...">
       <div class="row">
           <div class="col-xs-3">
@@ -93,11 +109,11 @@ p#main-blurb {
                 <button type="submit" class="btn btn-default">parameter.nc</button>
             </form>
           </div>
-    </div>
+      </div>
     </div>
 
     <!-- <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a> <br><br> -->
-    <br>Want to run PRMS Model ? <br><br>
+    <br><br><font size="3" color="black">Want to run PRMS Model ?</font><br><br>
       <form action="invoke_model" methods=['GET','POST']>
       <div class="row">
             <div class="col-xs-3">
@@ -116,40 +132,9 @@ p#main-blurb {
       </form>
 
 </div>
-
-<!-- <div class="alert alert-success  fade in">
-    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-     Want to run PRMS Model ? <br><br>
-      <form action="invoke_model" methods=['GET','POST']>
-      <div class="row">
-            <div class="col-xs-3">
-              <input name="modelTitle" class="form-control input-sm" type="text" placeholder="Please enter a title for the model run" required>
-            </div>
-            <div class="col-xs-3">
-              <button type="submit" class="btn btn-default">RUN PRMS</button>
-            </div>
-      </div>
-      <div class="row">
-        {% if modelID %}
-         <br>
-          &nbsp;&nbsp;&nbsp;&nbsp;PRMS model run initiated. The model run id for the job is {{ modelID }}
-        {% endif %}
-      </div>
-      </form>
-    
-</div> -->
-{% endif %}
+{% endif %} 
 
 
-<!-- {% if success == 'true'%}
-<div class="alert alert-success">
-  <strong>Success!</strong> The files were successfully converted.
-</div><br><br>
-<form action="downloadfolder" methods=['GET', 'POST']>
-    <button type="submit" value="Download"  />
-</form>
-<br>
-{% endif %} -->
 
 {% with messages = get_flashed_messages() %}
   {% if messages %}
