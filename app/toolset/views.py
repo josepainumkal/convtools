@@ -1,7 +1,7 @@
 import random, string, os, shutil
 from functools import wraps
 
-from flask import render_template, flash, request, session,  send_from_directory
+from flask import render_template, flash, request, session,  send_from_directory, redirect
 from flask import current_app as app
 from flask.ext.security import login_required
 from . import toolset
@@ -130,7 +130,7 @@ def download_statvar_file():
 def download_animation_file():
     filename = 'animation.nc'
     return send_from_directory(app.config['DOWNLOAD_FOLDER'],
-                               filename, as_attachment=True) 
+                               filename, as_attachment=True)
 
 
 @toolset.route('/invoke_model', methods=['GET','POST'])
@@ -160,7 +160,7 @@ def invoke_model_api():
     api.upload_resource_to_modelrun( mr.id, 'data', api_inputDataFile)
     api.upload_resource_to_modelrun(mr.id, 'param', api_inputParamFile)
     api.start_modelrun(mr.id)
-    return render_template('modeling/dashboard.html')
+    return redirect(app.config['VWWEBAPP_HOST']+'/modeling/dashboard/')
 
 
 @toolset.route('/prms_convert', methods=['POST'])
@@ -285,7 +285,7 @@ def param_netcdf():
 
     if inputParamFile and inputLocationFile and rows and cols:
         # securing the filenames before saving in server
-        
+
         inputParamFileName = secure_filename(inputParamFile.filename)
         inputLocationFileName = secure_filename(inputLocationFile.filename)
 
@@ -369,13 +369,13 @@ def animation_netcdf():
     # name with which output files will be saved in DOWNLOAD_FOLDER
     outputAnimationFileName = 'animation.nc'
 
-    inputAnimationFile = request.files['input_animation_file']    
+    inputAnimationFile = request.files['input_animation_file']
     inputParamFile = request.files['input_param_file']
-   
-    
+
+
     if inputAnimationFile and inputParamFile :
         # securing the filenames before saving in server
-       
+
         inputParamFileName = secure_filename(inputParamFile.filename)
         inputAnimationFileName = secure_filename(inputAnimationFile.filename)
 
