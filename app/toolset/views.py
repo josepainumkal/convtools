@@ -196,14 +196,15 @@ def prms_convert():
 
         if fDataExtension.lower() == '.data' and fParamExtension.lower() == '.param' and fControlExtension.lower() == '.control' and fLocationExtension.lower() =='.dat' :
             # saving all the files in UPLOAD_FOLDER
-            try:       
-                inputDataFile.save(os.path.join(app.config['UPLOAD_FOLDER'], inputDataFileName))
-                inputParamFile.save(os.path.join(app.config['UPLOAD_FOLDER'], inputParamFileName))
-                inputLocationFile.save(os.path.join(app.config['UPLOAD_FOLDER'], inputLocationFileName))
-                #inputControlFile.save(os.path.join(app.config['DOWNLOAD_FOLDER'], inputControlFileName))
-                # Since control file need not be converted to netcdf,copying control file directly to download folder
-                inputControlFile.save(os.path.join(app.config['DOWNLOAD_FOLDER'], inputControlFileName))
-
+                   
+            inputDataFile.save(os.path.join(app.config['UPLOAD_FOLDER'], inputDataFileName))
+            inputParamFile.save(os.path.join(app.config['UPLOAD_FOLDER'], inputParamFileName))
+            inputLocationFile.save(os.path.join(app.config['UPLOAD_FOLDER'], inputLocationFileName))
+            #inputControlFile.save(os.path.join(app.config['DOWNLOAD_FOLDER'], inputControlFileName))
+            # Since control file need not be converted to netcdf,copying control file directly to download folder
+            inputControlFile.save(os.path.join(app.config['DOWNLOAD_FOLDER'], inputControlFileName))
+            
+            try:
                 nhrucells = int(rows) * int(cols)
                 dataToNetcdf.data_to_netcdf(os.path.join(app.config['UPLOAD_FOLDER'], inputDataFileName),os.path.join(app.config['DOWNLOAD_FOLDER'], outputDataFileName))
                 parameterToNetcdf.parameter_to_netcdf(os.path.join(app.config['UPLOAD_FOLDER'], inputParamFileName), os.path.join(app.config['UPLOAD_FOLDER'], inputLocationFileName), nhrucells, int(rows), int(cols), os.path.join(app.config['DOWNLOAD_FOLDER'], outputParamFileName))
