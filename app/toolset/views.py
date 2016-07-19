@@ -231,11 +231,16 @@ def control_netcdf():
 
         if fControlExtension.lower() == '.control' :
             # saving the file in UPLOAD_FOLDER
-            inputControlFile.save(os.path.join(app.config['UPLOAD_FOLDER'], inputControlFileName))
-            controlToNetcdf.control_to_netcdf(os.path.join(app.config['UPLOAD_FOLDER'], inputControlFileName), os.path.join(app.config['DOWNLOAD_FOLDER'], outputControlFileName))
-            return render_template('toolset/conversion_tools.html', pageTab="controlFile", success ='true')
+            try:
+                inputControlFile.save(os.path.join(app.config['UPLOAD_FOLDER'], inputControlFileName))
+                controlToNetcdf.control_to_netcdf(os.path.join(app.config['UPLOAD_FOLDER'], inputControlFileName), os.path.join(app.config['DOWNLOAD_FOLDER'], outputControlFileName))
+                return render_template('toolset/conversion_tools.html', pageTab="controlFile", success ='true')
+            except Exception as e:
+                flash(e)
+                remove_directories(app)  
         else:
             flash("The uploaded file has an unknown file extension. Please upload a valid control file with '.control' file extension")
+            remove_directories(app)  
 
     return render_template('toolset/conversion_tools.html', pageTab="controlFile")
 
@@ -257,11 +262,16 @@ def data_netcdf():
 
         if fDataExtension.lower() == '.data' :
             # saving the file in UPLOAD_FOLDER
-            inputDataFile.save(os.path.join(app.config['UPLOAD_FOLDER'], inputDataFileName))
-            dataToNetcdf.data_to_netcdf(os.path.join(app.config['UPLOAD_FOLDER'], inputDataFileName),os.path.join(app.config['DOWNLOAD_FOLDER'], outputDataFileName))
-            return render_template('toolset/conversion_tools.html', success ='true', pageTab= "dataFile")
+            try:
+                inputDataFile.save(os.path.join(app.config['UPLOAD_FOLDER'], inputDataFileName))
+                dataToNetcdf.data_to_netcdf(os.path.join(app.config['UPLOAD_FOLDER'], inputDataFileName),os.path.join(app.config['DOWNLOAD_FOLDER'], outputDataFileName))
+                return render_template('toolset/conversion_tools.html', success ='true', pageTab= "dataFile")
+            except Exception as e:
+                flash(e)
+                remove_directories(app)  
         else:
             flash("The uploaded file has an unknown file extension. Please upload a valid control file with '.data' file extension")
+            remove_directories(app)  
 
     return render_template('toolset/conversion_tools.html', pageTab= "dataFile")
 
@@ -285,7 +295,7 @@ def param_netcdf():
 
     if inputParamFile and inputLocationFile and rows and cols:
         # securing the filenames before saving in server
-
+        
         inputParamFileName = secure_filename(inputParamFile.filename)
         inputLocationFileName = secure_filename(inputLocationFile.filename)
 
@@ -294,15 +304,18 @@ def param_netcdf():
 
         if fParamExtension.lower() == '.param' and fLocationExtension.lower() =='.dat' :
             # saving all the files in UPLOAD_FOLDER
-            inputParamFile.save(os.path.join(app.config['UPLOAD_FOLDER'], inputParamFileName))
-            inputLocationFile.save(os.path.join(app.config['UPLOAD_FOLDER'], inputLocationFileName))
-
-            nhrucells = int(rows) * int(cols)
-            parameterToNetcdf.parameter_to_netcdf(os.path.join(app.config['UPLOAD_FOLDER'], inputParamFileName), os.path.join(app.config['UPLOAD_FOLDER'], inputLocationFileName), nhrucells, int(rows), int(cols), os.path.join(app.config['DOWNLOAD_FOLDER'], outputParamFileName))
-            return render_template('toolset/conversion_tools.html', success ='true', pageTab= "paramFile")
-
+            try:
+                inputParamFile.save(os.path.join(app.config['UPLOAD_FOLDER'], inputParamFileName))
+                inputLocationFile.save(os.path.join(app.config['UPLOAD_FOLDER'], inputLocationFileName))
+                nhrucells = int(rows) * int(cols)
+                parameterToNetcdf.parameter_to_netcdf(os.path.join(app.config['UPLOAD_FOLDER'], inputParamFileName), os.path.join(app.config['UPLOAD_FOLDER'], inputLocationFileName), nhrucells, int(rows), int(cols), os.path.join(app.config['DOWNLOAD_FOLDER'], outputParamFileName))
+                return render_template('toolset/conversion_tools.html', success ='true', pageTab= "paramFile")
+            except Exception as e:
+                flash(e)
+                remove_directories(app)  
         else:
             flash("The uploaded files are not in the expected format. Please upload files with the correct extension.")
+            remove_directories(app)  
 
     return render_template('toolset/conversion_tools.html', pageTab= "paramFile")
 
@@ -324,11 +337,17 @@ def prmsout_netcdf():
 
         if fPRMSOutExtension.lower() == '.out' :
             # saving the file in UPLOAD_FOLDER
-            inputPRMSOutFile.save(os.path.join(app.config['UPLOAD_FOLDER'], inputPRMSOutFileName))
-            prmsoutToNetcdf.prmsout_to_netcdf(os.path.join(app.config['UPLOAD_FOLDER'], inputPRMSOutFileName),os.path.join(app.config['DOWNLOAD_FOLDER'], outputPRMSOutFileName))
-            return render_template('toolset/conversion_tools.html', success ='true', pageTab= "prmsoutFile")
+            try:
+                inputPRMSOutFile.save(os.path.join(app.config['UPLOAD_FOLDER'], inputPRMSOutFileName))
+                prmsoutToNetcdf.prmsout_to_netcdf(os.path.join(app.config['UPLOAD_FOLDER'], inputPRMSOutFileName),os.path.join(app.config['DOWNLOAD_FOLDER'], outputPRMSOutFileName))
+                return render_template('toolset/conversion_tools.html', success ='true', pageTab= "prmsoutFile")
+            except Exception as e:
+                flash(e)
+                remove_directories(app) 
+
         else:
             flash("The uploaded file has an unknown file extension. Please upload a valid prmsout file with '.out' file extension")
+            remove_directories(app)  
 
     return render_template('toolset/conversion_tools.html', pageTab= "prmsoutFile")
 
@@ -350,11 +369,16 @@ def statvar_netcdf():
 
         if fStatvarExtension.lower() == '.dat' :
             # saving the file in UPLOAD_FOLDER
-            inputStatvarFile.save(os.path.join(app.config['UPLOAD_FOLDER'], inputStatvarFileName))
-            statvarToNetcdf.statvar_to_netcdf(os.path.join(app.config['UPLOAD_FOLDER'], inputStatvarFileName),os.path.join(app.config['DOWNLOAD_FOLDER'], outputStatvarFileName))
-            return render_template('toolset/conversion_tools.html', success ='true', pageTab= "statvarFile")
+            try:
+                inputStatvarFile.save(os.path.join(app.config['UPLOAD_FOLDER'], inputStatvarFileName))
+                statvarToNetcdf.statvar_to_netcdf(os.path.join(app.config['UPLOAD_FOLDER'], inputStatvarFileName),os.path.join(app.config['DOWNLOAD_FOLDER'], outputStatvarFileName))
+                return render_template('toolset/conversion_tools.html', success ='true', pageTab= "statvarFile")
+            except Exception as e:
+                flash(e)
+                remove_directories(app) 
         else:
             flash("The uploaded file has an unknown file extension. Please upload a valid statvar file with '.dat' file extension")
+            remove_directories(app)  
 
     return render_template('toolset/conversion_tools.html', pageTab= "statvarFile")
 
@@ -369,13 +393,12 @@ def animation_netcdf():
     # name with which output files will be saved in DOWNLOAD_FOLDER
     outputAnimationFileName = 'animation.nc'
 
-    inputAnimationFile = request.files['input_animation_file']
+    inputAnimationFile = request.files['input_animation_file']    
     inputParamFile = request.files['input_param_file']
-
-
+   
     if inputAnimationFile and inputParamFile :
         # securing the filenames before saving in server
-
+       
         inputParamFileName = secure_filename(inputParamFile.filename)
         inputAnimationFileName = secure_filename(inputAnimationFile.filename)
 
@@ -384,14 +407,20 @@ def animation_netcdf():
 
         if fParamExtension.lower() == '.nc' and fAnimationExtension.lower() == '.out' :
             # saving all the files in UPLOAD_FOLDER
-            inputParamFile.save(os.path.join(app.config['UPLOAD_FOLDER'], inputParamFileName))
-            inputAnimationFile.save(os.path.join(app.config['UPLOAD_FOLDER'], inputAnimationFileName))
+            try:
+                inputParamFile.save(os.path.join(app.config['UPLOAD_FOLDER'], inputParamFileName))
+                inputAnimationFile.save(os.path.join(app.config['UPLOAD_FOLDER'], inputAnimationFileName))
 
-            animationToNetcdf.animation_to_netcdf(os.path.join(app.config['UPLOAD_FOLDER'], inputAnimationFileName), os.path.join(app.config['UPLOAD_FOLDER'], inputParamFileName), os.path.join(app.config['DOWNLOAD_FOLDER'], outputAnimationFileName))
-            return render_template('toolset/conversion_tools.html', success ='true', pageTab= "animationFile")
+                animationToNetcdf.animation_to_netcdf(os.path.join(app.config['UPLOAD_FOLDER'], inputAnimationFileName), os.path.join(app.config['UPLOAD_FOLDER'], inputParamFileName), os.path.join(app.config['DOWNLOAD_FOLDER'], outputAnimationFileName))
+                return render_template('toolset/conversion_tools.html', success ='true', pageTab= "animationFile")
+
+            except Exception as e:
+                flash(e)
+                remove_directories(app)
 
         else:
             flash("The uploaded files have unknown file extensions. Please upload a valid parameter file with '.nc' file extension and a valid animation file with '.out' extension")
+            remove_directories(app)  
 
     return render_template('toolset/conversion_tools.html', pageTab= "animationFile")
 
@@ -415,11 +444,17 @@ def netcdf_data():
 
         if fDataExtension.lower() == '.nc' :
             # saving the file in UPLOAD_FOLDER
-            inputDataFile.save(os.path.join(app.config['UPLOAD_FOLDER'], inputDataFileName))
-            netcdfToData.netcdf_to_data(os.path.join(app.config['UPLOAD_FOLDER'], inputDataFileName),os.path.join(app.config['DOWNLOAD_FOLDER'], outputDataFileName))
-            return render_template('toolset/netcdf_text_tools.html', success ='true', pageTab= "dataFile")
+            try:
+                inputDataFile.save(os.path.join(app.config['UPLOAD_FOLDER'], inputDataFileName))
+                netcdfToData.netcdf_to_data(os.path.join(app.config['UPLOAD_FOLDER'], inputDataFileName),os.path.join(app.config['DOWNLOAD_FOLDER'], outputDataFileName))
+                return render_template('toolset/netcdf_text_tools.html', success ='true', pageTab= "dataFile")
+            except Exception as e:
+                flash(e)
+                remove_directories(app)
+
         else:
             flash("The uploaded file has an unknown file extension. Please upload a valid data file with '.nc' file extension")
+            remove_directories(app)  
 
     return render_template('toolset/netcdf_text_tools.html', pageTab= "dataFile")
 
@@ -441,36 +476,18 @@ def netcdf_param():
 
         if fParamExtension.lower() == '.nc' :
             # saving the file in UPLOAD_FOLDER
-            inputParamFile.save(os.path.join(app.config['UPLOAD_FOLDER'], inputParamFileName))
-            netcdfToParameter.netcdf_to_parameter(os.path.join(app.config['UPLOAD_FOLDER'], inputParamFileName),os.path.join(app.config['DOWNLOAD_FOLDER'], outputParamFileName))
-            return render_template('toolset/netcdf_text_tools.html', success ='true', pageTab= "paramFile")
+            try:       
+                inputParamFile.save(os.path.join(app.config['UPLOAD_FOLDER'], inputParamFileName))
+                netcdfToParameter.netcdf_to_parameter(os.path.join(app.config['UPLOAD_FOLDER'], inputParamFileName),os.path.join(app.config['DOWNLOAD_FOLDER'], outputParamFileName))
+                return render_template('toolset/netcdf_text_tools.html', success ='true', pageTab= "paramFile")
+            except Exception as e:
+                flash(e)
+                remove_directories(app)
         else:
             flash("The uploaded file has an unknown file extension. Please upload a valid parameter file with '.nc' file extension")
+            remove_directories(app)  
 
     return render_template('toolset/netcdf_text_tools.html', pageTab= "paramFile")
-
-        #fName, fExtension = os.path.splitext(inputDataFileName)
-        #if fExtension != '.control' or fExtension != '.data' or fExtension != '.dat' or fExtension != '.out':
-        #   wrongFileMessage = "Please upload Control / Data / Statistic Variables / Water Budget File"
-
-
-
-        #if fExtension == '.control':
-        #    outputFileName = 'control.nc''
-        #elif fExtension == '.data':
-        #    outputFileName = 'data.nc'
-        #elif fExtension == '.param':
-        #    outputFileName = 'param.nc'
-        #else:
-        #    return render_template('toolset/index.html', wrongFileMessage = "Please upload Control / Data / Statistic Variables / Water Budget File")
-
-
-
-
-
-
-
-
 
 
 
