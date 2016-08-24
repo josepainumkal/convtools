@@ -43,6 +43,7 @@ class Config:
         os.environ.get('AUTH_HOST', 'http://vw-dev:5005')
 
     VWWEBAPP_HOST = os.environ.get('VWWEBAPP_HOST', 'http://vw-dev:5030')
+	VWPRMS_HOST = os.environ.get('VWPRMS_HOST', 'http://vw-dev:5010')
 
 
 
