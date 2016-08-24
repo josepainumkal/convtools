@@ -276,7 +276,7 @@ def data_netcdf():
                 flash(e)
                 remove_directories(app)  
         else:
-            flash("The uploaded file has an unknown file extension. Please upload a valid control file with '.data' file extension")
+            flash("The uploaded file has an unknown file extension. Please upload a valid data file with '.data' file extension")
             remove_directories(app)  
 
     return render_template('toolset/conversion_tools.html', pageTab= "dataFile")
