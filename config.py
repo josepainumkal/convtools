@@ -27,7 +27,7 @@ class Config:
 
     GSTORE_USERNAME = os.environ.get('GSTORE_USERNAME', '')
     GSTORE_PASSWORD = os.environ.get('GSTORE_PASSWORD', '')
-    GSTORE_HOST = os.environ.get('GSTORE_HOST', 'https://vwp-dev.unm.edu')
+    GSTORE_HOST = os.environ.get('GSTORE_HOST', 'https://vwp-dev.unm.edu/')
 
     SQLALCHEMY_DATABASE_URI = os.environ.get(
         'SQLALCHEMY_DATABASE_URI', 'sqlite:///' + os.path.join(basedir, 'data-dev.sqlite'))
@@ -75,6 +75,17 @@ class Config:
     JWT_AUTH_HEADER_PREFIX = os.environ.get(
         'VWWEBAPP_JWT_AUTH_HEADER_PREFIX', 'JWT')
     CACHE_TYPE = os.environ.get('VWWEBAPP_CACHE_TYPE','simple')
+
+    # for vwppush 
+    TEMP_DATA = '/temp_data.nc'
+    TEMP_CONTROL = '/temp_control.control'
+    TEMP_PARAM = '/temp_param.nc'
+    TEMP_STAT = '/temp_stat.nc'
+    TEMP_ANIMATION = '/temp_animation.nc'
+    TEMP_OUTPUT = '/temp_output.nc'
+    VWP_PUSH_INFO = '/vwp_push-info.txt'
+
+
     @staticmethod
     def init_app(app):
         pass

@@ -1,0 +1,213 @@
+{% extends "base.html" %}
+{% set active_page = "toolset.index" %}
+
+
+{% block scripts %}
+    {{ super() }}
+    <script src="/static/vwppush.js"></script>
+{% endblock %}
+
+{% block link %}
+{{ super() }}
+<style>
+p {
+    margin: 35px 0;
+}
+p#main-blurb {
+    padding: 5px;
+    font-size: 1.6em;
+    /*background-color:#555;*/
+    color: black;
+    text-align: justify;
+}
+
+.input-small {
+  height: 22px;
+  padding: 2px 5px;
+  font-size: 12px;
+  line-height: 1.5; /* If Placeholder of the input is moved up, rem/modify this. */
+  border-radius: 3px;
+  width:200px;
+}
+
+.btn-small{
+  height: 22px;
+  padding: 2px 5px;
+  font-size: 12px;
+  line-height: 1.5; /* If Placeholder of the input is moved up, rem/modify this. */
+  border-radius: 3px;
+  width:70px;
+}
+
+.small-rw{
+  line-height: 0.5px; 
+}
+ 
+</style>
+{% endblock %}
+
+
+{% block content %}
+
+
+ <br><br>
+<p id="main-blurb">
+    <u>Push Models to VWP (Gstore)</u>
+    <input id="model_api_url" type="hidden" value="{{config['MODEL_HOST']}}" />
+     <input id="sample" type="hidden" value="{{session['sampletest']}}" />
+   <!--  <input type='' id='model_api_url'>{{config['MODEL_HOST']}}</p>
+    <p id='model_run_server_id'>{{model_run_server}}</p> -->
+</p> 
+
+   
+
+
+<br>
+<div class = "panel panel-primary">
+   <div class = "panel-heading">
+         <div class="row small-rw">
+              <div class="col-xs-7">
+                   <h3 class = "panel-title">Model Runs</h3>
+              </div>
+
+
+              {% if not session['g-uname'] %}
+              <form class="gstoreCred form-signin" action="setGstoreCred" method="post" role="form">
+              <div class="col-xs-2 gCred">
+                   <input name="gstore-uname" id="gstore-uname" type="email" class="form-control input-small"  type="text" value="{{session['g-uname']}}" placeholder="Gstore Username" required autofocus/><br>
+              </div>
+              <div class="col-xs-2 gCred">
+                   <input name="gstore-pwd" id="gstore-pwd" type="password" class="form-control input-small"  type="text" value="{{session['g-pass']}}" placeholder="Gstore Password" required/>
+              </div> 
+              
+               <div class="col-xs-1 gCred">
+                    <button id="gstoreSbtId" type="button" class="btn btn-warning btn-small">Save</button>
+               </div>
+              </form>
+              {% else %} 
+              <form class="gstoreCred form-signin" action="setGstoreCred" method="post" role="form">
+              <div class="col-xs-2 gCred">
+                   <input name="gstore-uname" id="gstore-uname" type="email" class="form-control input-small"  type="text" value="{{session['g-uname']}}" placeholder="Gstore Username"  disabled/><br>
+              </div>
+              <div class="col-xs-2 gCred">
+                   <input name="gstore-pwd" id="gstore-pwd" type="password" class="form-control input-small"  type="text" value="{{session['g-pass']}}" placeholder="Gstore Password" disabled/>
+              </div> 
+              
+               <div class="col-xs-1 gCred">
+                    <button id="gstoreSbtId" type="button" class="btn btn-warning btn-small">Change</button>
+               </div>
+              </form>
+              {% endif %}
+
+
+          </div>
+          <div class="row .small-rw" >
+          <div class="col-xs-7">
+          </div>
+          <div class="col-xs-2 gCred">
+          <span id="error-gstoreCred"></span>
+          </div>
+
+          </div>
+
+   </div>
+   
+   <div class = "panel-body" >
+   <div class="row .small-rw" >
+   <div class="col-xs-7"><span id="gstoreCredAlert" class="alert-warning"> </span>
+
+   </div>
+   </div><br>
+      
+      <div class="modelRunList">
+            <table class="table table-striped" id='model-run-table-id'>
+                <thead>
+                    <tr>
+                        <td><strong>Model ID</strong></td>
+                        <td><strong>Title</strong></td>
+                        <td><strong>Created at</strong></td>
+                        <td><strong>VWP Model Id</strong></td>
+                        <td><strong>Pushed(VWP) at</strong></td>
+                        <td className="download-link"><strong>Choose This Model Run</strong></td>
+                    </tr>
+                </thead>
+                <tbody id='model-run-items'>
+                </tbody>
+            </table>
+      </div>
+      <div id='additional-info'></div> 
+   </div>
+</div>
+<div id='error-info'></div>
+
+<br><br> 
+
+
+
+
+
+
+
+
+
+{% if success == 'true'%} 
+
+<div class="alert alert-success fade in ">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <font size="3" color="black">The files are converted successfully. You can download the netcdf files here....</font> &nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+    <div class="btn-group" role="group" aria-label="...">
+      <div class="row">
+          <div class="col-xs-3">
+            <form action="downloaddatafile" methods=['GET', 'POST']>
+                <button type="submit" class="btn btn-default">data.nc</button>
+            </form>
+          </div>
+          <div class="col-xs-3">
+            <form action="downloadparamfile" methods=['GET', 'POST']>
+                <button type="submit" class="btn btn-default">parameter.nc</button>
+            </form>
+          </div>
+      </div>
+    </div>
+
+    <!-- <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a> <br><br> -->
+    <br><br><font size="3" color="black">Want to run PRMS Model ?</font><br><br>
+      <form action="invoke_model" methods=['GET','POST']>
+      <div class="row">
+            <div class="col-xs-3">
+              <input name="modelTitle" class="form-control input-sm" type="text" placeholder="Please enter a title for the model run" required>
+            </div>
+            <div class="col-xs-3">
+              <button type="submit" class="btn btn-default">RUN PRMS</button>
+            </div>
+      </div>
+      <div class="row">
+        {% if modelID %}
+         <br>
+          &nbsp;&nbsp;&nbsp;&nbsp;PRMS model run initiated. The model run id for the job is {{ modelID }}
+        {% endif %}
+      </div>
+      </form>
+
+</div>
+{% endif %} 
+
+
+
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class="list-unstyled">
+    {% for message in messages %}
+    <div class="alert alert-danger">
+        <strong>Sorry! An error has occurred.</strong> <li>{{ message }}</li>
+    </div>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+
+
+{% endblock %}
