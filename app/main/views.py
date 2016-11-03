@@ -352,9 +352,10 @@ def vwp_push_remove():
         modelRunID = request.args.get("modelRunID")
         # gstore testing - Start
         # gstore testing - Start
-        gstore_username = "josepainumkal@gmail.com"
-        gstore_password = "Rosh@2016"
-        gstore_host_url = "https://vwp-dev.unm.edu/"
+		
+		gstore_username = session['g-uname']
+        gstore_password =  session['g-pass']
+        gstore_host_url = app.config['GSTORE_HOST']
 
         vwclient = VWClient(gstore_host_url, gstore_username, gstore_password)
         vwclient.authenticate()
