@@ -89,8 +89,8 @@ def setGstoreCred():
     gstore_username = request.form['gstore-uname']
     gstore_password = request.form['gstore-pwd']
 
-    # gstore_username = "josepainumkal@gmail.com"
-    # gstore_password = "Rosh@2016"
+    # gstore_username = ""
+    # gstore_password = ""
     # gstore_host_url = "https://vwp-dev.unm.edu/" #TODO: get this from config
     gstore_host_url = app.config['GSTORE_HOST']
 
@@ -185,6 +185,8 @@ def find_user_folder():
     return app_root
 
 
+
+
 def model_vwp_push(model_Id, model_type, model_desc, model_title, controlURL, dataURL, paramURL, statsURL, outURL, animationURL):  
     app_root = find_user_folder()
     if not os.path.exists(app_root):
@@ -234,10 +236,8 @@ def model_vwp_push(model_Id, model_type, model_desc, model_title, controlURL, da
     if statsURL is not None:
         urllib.urlretrieve(statsURL, statvar_file)
 
-
     # gstore testing - Start
     
-
     gstore_username = session['g-uname']
     gstore_password =  session['g-pass']
     gstore_host_url = app.config['GSTORE_HOST']
@@ -250,6 +250,16 @@ def model_vwp_push(model_Id, model_type, model_desc, model_title, controlURL, da
     failed = []
     modeluuid_vwp = vwclient.createNewModelRun(model_Id, model_title, model_type, model_desc)
     if modeluuid_vwp!= '':
+       
+        # changing the working directory to upload folder path
+        os.chdir(app_root)
+        control_file = app.config['TEMP_CONTROL'].strip("/")
+        data_file = app.config['TEMP_DATA'].strip("/")
+        param_file = app.config['TEMP_PARAM'].strip("/")
+        animation_file = app.config['TEMP_ANIMATION'].strip("/")
+        output_file = app.config['TEMP_OUTPUT'].strip("/")
+        statvar_file = app.config['TEMP_STAT'].strip("/")
+
         c = vwclient.uploadModelData_swift(modeluuid_vwp, control_file) #upload control file
         d = vwclient.uploadModelData_swift(modeluuid_vwp, data_file)    #upload data file
         p = vwclient.uploadModelData_swift(modeluuid_vwp, param_file)   #upload parameter file
@@ -289,6 +299,10 @@ def model_vwp_push(model_Id, model_type, model_desc, model_title, controlURL, da
         resp['output_file_status_code'] = o.status_code
         if animationURL is not None:
             resp['animation_file_status_code'] = a.status_code
+
+        # test
+        # resp['approot'] = app_root
+        # resp['d_file'] = data_file
 
 
         # store it in a file
@@ -351,11 +365,14 @@ def vwp_push_remove():
         vwpModelId = request.args.get("vwpModelId")
         modelRunID = request.args.get("modelRunID")
         # gstore testing - Start
-        # gstore testing - Start
-		
-	gstore_username = session['g-uname']
-        gstore_password =  session['g-pass']
+        # gstore_username = ""
+        # gstore_password = ""
+        # gstore_host_url = "https://vwp-dev.unm.edu/"
+
+        gstore_username = session['g-uname']
+        gstore_password = session['g-pass']
         gstore_host_url = app.config['GSTORE_HOST']
+
 
         vwclient = VWClient(gstore_host_url, gstore_username, gstore_password)
         vwclient.authenticate()
