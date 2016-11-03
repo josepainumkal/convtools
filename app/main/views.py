@@ -353,7 +353,7 @@ def vwp_push_remove():
         # gstore testing - Start
         # gstore testing - Start
 		
-		gstore_username = session['g-uname']
+	gstore_username = session['g-uname']
         gstore_password =  session['g-pass']
         gstore_host_url = app.config['GSTORE_HOST']
 
