@@ -1,0 +1,410 @@
+{% extends "base.html" %}
+{% set active_page = "toolset.conversion_tools" %}
+
+{% block link %}
+{{ super() }}
+
+
+<style>
+p {
+    margin: 35px 0;
+}
+p#main-blurb {
+    padding: 5px;
+    font-size: 1.1em;
+    background-color:#555;
+    color: white;
+    text-align: justify;
+}
+
+
+</style>
+{% endblock %}
+
+{% block content %}
+
+
+<div class="container">
+  <h2>Text to NetCDF Conversion</h2><br><br>
+  <ul class="nav nav-tabs">
+    <li {% if pageTab == 'controlFile' %} class="active" {% endif %}><a data-toggle="tab" href="#controlFile">Control File </a></li>
+    <li {% if pageTab == "dataFile" %} class="active" {% endif %}><a data-toggle="tab" href="#dataFile">Data File </a></li>
+    <li {% if pageTab == "paramFile" %} class="active" {% endif %}><a data-toggle="tab" href="#paramFile">Parameter File </a></li>
+    <li {% if pageTab == "prmsoutFile" %} class="active" {% endif %}><a data-toggle="tab" href="#prmsoutFile">PRMSOut File </a></li>
+    <li {% if pageTab == "statvarFile" %} class="active" {% endif %}><a data-toggle="tab" href="#statvarFile">Statvar File </a></li>
+    <li {% if pageTab == "animationFile" %} class="active" {% endif %}><a data-toggle="tab" href="#animationFile">Animation File </a></li>
+   <!--  <li><a data-toggle="tab" href="#menu3">Menu 3</a></li> -->
+  </ul> 
+
+<div class="tab-content">
+  {% if pageTab == "controlFile" %}
+        <div id="controlFile" class="tab-pane fade in active"><br>
+        {% else %}
+        <div id="controlFile" class="tab-pane fade"><br>
+  {% endif %}
+
+              <h3>Control File to NetCDF</h3>
+              <!-- <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>-->  
+              <br><br>
+              <div class="container">
+                <div class="panel panel-primary">
+                  <div class="panel-heading"><strong>Upload Control File</strong> <small  class="text-lowercase"> &nbsp;&nbsp; (Expected file extension: .control)</small></div>
+                  <div class="panel-body"><br>
+
+                    <!-- Standar Form -->
+                   <!--  <h4>Select files from your computer</h4> -->
+                    <form action="/toolset/control_netcdf" method="post" enctype="multipart/form-data" >
+                      <div class="form-inline">
+                        <div class="form-group">
+                          <input type="file" name="input_control_file" required>
+                        </div>
+                        <button style="float: right;" type="submit" class="btn btn-warning">Convert to NetCDF</button>
+                      </div>
+                    </form>
+                    
+                    {% if success == 'true' and pageTab == 'controlFile' %}
+                    <form action="/toolset/downloadcontrolfile" methods=['GET', 'POST']>
+                    <br><br><br><br>Done! The netcdf file is genereted successfully. To download the file, click 
+                        <button  type="submit" class="btn btn-sm btn-default">Download</button>  
+                    </form>
+                    {% endif %}
+                 
+                 <br><br><br>
+                 {% if pageTab == 'controlFile'%}
+                  {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                      <ul class="list-unstyled">
+                      {% for message in messages %}
+                      <div class="alert alert-danger">
+                          <strong>Sorry! An error has occurred.</strong> <li>{{ message }}</li>
+                      </div>
+                      {% endfor %}
+                      </ul>
+                    {% endif %}
+                  {% endwith %}
+                 {% endif %}
+                  </div>
+                </div>
+               </div> 
+  </div>
+
+
+ {% if pageTab == "dataFile" %}
+  <div id="dataFile" class="tab-pane fade in active"><br>
+  {% else %}
+  <div id="dataFile" class="tab-pane fade"><br>
+  {% endif %}
+
+             <h3>Data File to NetCDF</h3>
+              <!-- <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>-->  
+              <br><br>
+              <div class="container">
+                <div class="panel panel-primary">
+                  <div class="panel-heading"><strong>Upload Data File</strong> <small  class="text-lowercase"> &nbsp;&nbsp; (Expected file extension: .data)</small></div>
+                  <div class="panel-body"><br>
+
+                    <!-- Standar Form -->
+                   <!--  <h4>Select files from your computer</h4> -->
+                    <form action="/toolset/data_netcdf" method="post" enctype="multipart/form-data" >
+                      <div class="form-inline">
+                        <div class="form-group">
+                          <input type="file" name="input_data_file" required>
+                        </div>
+                        <button style="float: right;" type="submit" class="btn btn-warning">Convert to NetCDF</button>
+                      </div>
+                    </form>
+                    
+                    {% if success == 'true' and  pageTab == 'dataFile'%}
+                    <form action="/toolset/downloaddatafile" methods=['GET', 'POST']>
+                    <br><br><br><br>Done! The netcdf file is genereted successfully. To download the file, click 
+                        <button  type="submit" class="btn btn-default btn-sm">Download</button>  
+                    </form>
+                    {% endif %}
+                 
+                 <br><br><br>
+                  {% if pageTab == 'dataFile'%}
+                  {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                      <ul class="list-unstyled">
+                      {% for message in messages %}
+                      <div class="alert alert-danger">
+                          <strong>Sorry! An error has occurred.</strong> <li>{{ message }}</li>
+                      </div>
+                      {% endfor %}
+                      </ul>
+                    {% endif %}
+                  {% endwith %}
+                  {% endif %}
+                  </div>
+                </div>
+               </div> 
+  </div>
+  {% if pageTab == "paramFile" %}
+  <div id="paramFile" class="tab-pane fade in active"><br>
+  {% else %}
+  <div id="paramFile" class="tab-pane fade"><br>
+  {% endif %}
+
+             <h3>Parameter File to NetCDF</h3>
+              <!-- <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>-->  
+              <br><br>
+              <div class="container">
+                <div class="panel panel-primary">
+                  <div class="panel-heading"><strong>Upload Files</strong> <small  class="text-lowercase"> &nbsp;&nbsp; </small></div>
+                  <div class="panel-body"><br>
+
+                    <!-- Standar Form -->
+                   <form action="/toolset/param_netcdf" method="post" enctype="multipart/form-data" >
+                   <h5>Select parameter file (.param)</h5> 
+                      <div class="form-inline">
+                        <div class="form-group">
+                          <input type="file" name="input_param_file" required>
+                        </div>
+                      </div>
+                     <br><br><br>
+    
+                      <div class="row ">
+                      <div class="col-xs-4">
+                           <h5>Select location file (.dat)</h5> 
+                            <input name ="input_location_file" type="file" class="file" data-show-preview="false" required><br><br><br>
+                      </div>
+                      <div class="col-xs-4">
+                            <div class="form-group col-lg-7">
+                            <h5>Rows</h5> 
+                            <input class="form-control input-sm" type="number"  name="nrows" id="nrows" placeholder="rows" required>
+                            </div>
+                      </div>
+                      <div class="col-xs-4">
+                            <div class="form-group col-lg-7">
+                            <h5>Columns</h5>
+                            <input class="form-control input-sm" type="number"  name="ncols" id="ncols" placeholder="columns" required>
+                            </div>
+                      </div>
+                      </div>
+                      <button style="float: right;" type="submit" class="btn btn-warning">Convert to NetCDF</button>
+                  </form>
+
+                  {% if success == 'true' and  pageTab == 'paramFile'%}
+                    <form action="/toolset/downloadparamfile" methods=['GET', 'POST']>
+                    <br><br><br><br>Done! The netcdf file is genereted successfully. To download the file, click 
+                        <button  type="submit" class="btn btn-default btn-sm">Download</button>  
+                    </form>
+                  {% endif %}   
+                 
+                 <br><br><br>
+                  {% if pageTab == 'paramFile'%}
+                  {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                      <ul class="list-unstyled">
+                      {% for message in messages %}
+                      <div class="alert alert-danger">
+                          <strong>Sorry! An error has occurred.</strong> <li>{{ message }}</li>
+                      </div>
+                      {% endfor %}
+                      </ul>
+                    {% endif %}
+                  {% endwith %}
+                  {% endif %}
+                  </div>
+                </div>
+               </div> 
+  </div>
+  {% if pageTab == "prmsoutFile" %}
+  <div id="prmsoutFile" class="tab-pane fade in active"><br>
+  {% else %}
+  <div id="prmsoutFile" class="tab-pane fade"><br>
+  {% endif %}
+
+             <h3>PRMS-Out File to NetCDF</h3>
+              <!-- <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>-->  
+              <br><br>
+              <div class="container">
+                <div class="panel panel-primary">
+                  <div class="panel-heading"><strong>Upload PRMS-Out File</strong> <small  class="text-lowercase"> &nbsp;&nbsp; (Expected file extension: .out)</small></div>
+                  <div class="panel-body"><br>
+
+                    <!-- Standar Form -->
+                   <!--  <h4>Select files from your computer</h4> -->
+                    <form action="/toolset/prmsout_netcdf" method="post" enctype="multipart/form-data" >
+                      <div class="form-inline">
+                        <div class="form-group">
+                          <input type="file" name="input_prmsout_file" required>
+                        </div>
+                        <button style="float: right;" type="submit" class="btn btn-warning">Convert to NetCDF</button>
+                      </div>
+                    </form>
+                    
+                    {% if success == 'true' and  pageTab == 'prmsoutFile'%}
+                    <form action="/toolset/downloadprmsoutfile" methods=['GET', 'POST']>
+                    <br><br><br><br>Done! The netcdf file is genereted successfully. To download the file, click 
+                        <button  type="submit" class="btn btn-default btn-sm">Download</button>  
+                    </form>
+                    {% endif %}
+                 
+                 <br><br><br>
+                  {% if pageTab == 'prmsoutFile'%}
+                  {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                      <ul class="list-unstyled">
+                      {% for message in messages %}
+                      <div class="alert alert-danger">
+                          <strong>Sorry! An error has occurred.</strong> <li>{{ message }}</li>
+                      </div>
+                      {% endfor %}
+                      </ul>
+                    {% endif %}
+                  {% endwith %}
+                  {% endif %}
+                  </div>
+                </div>
+               </div> 
+  </div>
+
+  {% if pageTab == "statvarFile" %}
+  <div id="statvarFile" class="tab-pane fade in active"><br>
+  {% else %}
+  <div id="statvarFile" class="tab-pane fade"><br>
+  {% endif %}
+
+             <h3>Statvar File to NetCDF</h3>
+              <!-- <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>-->  
+              <br><br>
+              <div class="container">
+                <div class="panel panel-primary">
+                  <div class="panel-heading"><strong>Upload Statvar File</strong> <small  class="text-lowercase"> &nbsp;&nbsp; (Expected file extension: .dat)</small></div>
+                  <div class="panel-body"><br>
+
+                    <!-- Standar Form -->
+                   <!--  <h4>Select files from your computer</h4> -->
+                    <form action="/toolset/statvar_netcdf" method="post" enctype="multipart/form-data" >
+                      <div class="form-inline">
+                        <div class="form-group">
+                          <input type="file" name="input_statvar_file" required>
+                        </div>
+                        <button style="float: right;" type="submit" class="btn btn-warning">Convert to NetCDF</button>
+                      </div>
+                    </form>
+                    
+                    {% if success == 'true' and  pageTab == 'statvarFile'%}
+                    <form action="/toolset/downloadstatvarfile" methods=['GET', 'POST']>
+                    <br><br><br><br>Done! The netcdf file is genereted successfully. To download the file, click 
+                        <button  type="submit" class="btn btn-default btn-sm">Download</button>  
+                    </form>
+                    {% endif %}
+                 
+                 <br><br><br>
+                  {% if pageTab == 'statvarFile'%}
+                  {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                      <ul class="list-unstyled">
+                      {% for message in messages %}
+                      <div class="alert alert-danger">
+                          <strong>Sorry! An error has occurred.</strong> <li>{{ message }}</li>
+                      </div>
+                      {% endfor %}
+                      </ul>
+                    {% endif %}
+                  {% endwith %}
+                  {% endif %}
+                  </div>
+                </div>
+               </div> 
+  </div>
+  {% if pageTab == "animationFile" %}
+  <div id="animationFile" class="tab-pane fade in active"><br>
+  {% else %}
+  <div id="animationFile" class="tab-pane fade"><br>
+  {% endif %}
+
+             <h3>Animation File to NetCDF</h3>
+              <!-- <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>-->  
+              <br><br>
+              <div class="container">
+                <div class="panel panel-primary">
+                  <div class="panel-heading"><strong>Upload Animation File</strong> <small  class="text-lowercase"> &nbsp;&nbsp; (Expected file extension: .out)</small></div>
+                  <div class="panel-body"><br>
+
+                    <form action="/toolset/animation_netcdf" method="post" enctype="multipart/form-data" >
+                            <h5>Select Animation file (.out)</h5> 
+                            <div class="form-inline">
+                              <div class="form-group">
+                                <input type="file" name="input_animation_file" required>
+                              </div>
+                            </div>
+                           <br><br><br>
+          
+                            <div class="row ">
+                            <div class="col-xs-4">
+                                 <h5>Select parameter file (.nc)</h5> 
+                                  <input name ="input_param_file" type="file" class="file" data-show-preview="false" required><br><br><br>
+                            </div>
+                            </div>
+                            <button style="float: right;" type="submit" class="btn btn-warning">Convert to NetCDFf</button>
+                    </form>
+                    
+                    {% if success == 'true' and  pageTab == 'animationFile'%}
+                    <form action="/toolset/downloadanimationfile" methods=['GET', 'POST']>
+                    <br><br><br><br>Done! The netcdf file is genereted successfully. To download the file, click 
+                        <button  type="submit" class="btn btn-default btn-sm ">Download</button>  
+                    </form>
+                    {% endif %}
+                 
+                 <br><br><br>
+                  {% if pageTab == 'animationFile'%}
+                  {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                      <ul class="list-unstyled">
+                      {% for message in messages %}
+                      <div class="alert alert-danger">
+                          <strong>Sorry! An error has occurred.</strong> <li>{{ message }}</li>
+                      </div>
+                      {% endfor %}
+                      </ul>
+                    {% endif %}
+                  {% endwith %}
+                  {% endif %}
+                  </div>
+                </div>
+               </div> 
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div id="menu2" class="tab-pane fade">
+      <h3>Menu 2</h3>
+      <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
+  </div>
+  <div id="menu3" class="tab-pane fade">
+      <h3>Menu 3</h3>
+      <p>Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+  </div>
+</div>
+</div>
+
+
+
+
+
+{% endblock %}
+

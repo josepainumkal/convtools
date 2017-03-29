@@ -27,7 +27,7 @@ class Config:
 
     GSTORE_USERNAME = os.environ.get('GSTORE_USERNAME', '')
     GSTORE_PASSWORD = os.environ.get('GSTORE_PASSWORD', '')
-    GSTORE_HOST = os.environ.get('GSTORE_HOST', 'https://vwp-dev.unm.edu')
+    GSTORE_HOST = os.environ.get('GSTORE_HOST', 'https://vwp-dev.unm.edu/')
 
     SQLALCHEMY_DATABASE_URI = os.environ.get(
         'SQLALCHEMY_DATABASE_URI', 'sqlite:///' + os.path.join(basedir, 'data-dev.sqlite'))
@@ -37,10 +37,15 @@ class Config:
     }
 
     MODEL_HOST =\
-        os.environ.get('MODEL_HOST', 'http://192.168.99.100:5000')
+        os.environ.get('MODEL_HOST', 'http://vw-dev:5000')
 
     AUTH_HOST =\
-        os.environ.get('AUTH_HOST', 'http://192.168.99.100:5005')
+        os.environ.get('AUTH_HOST', 'http://vw-dev:5005')
+
+    VWWEBAPP_HOST = os.environ.get('VWWEBAPP_HOST', 'http://vw-dev:5030')
+    VWPRMS_HOST = os.environ.get('VWPRMS_HOST', 'http://vw-dev:5010')
+
+
 
     SESSION_COOKIE_NAME = os.environ.get(
         'VWWEBAPP_SESSION_COOKIE_NAME','vwsession')
@@ -60,12 +65,27 @@ class Config:
     VWWEBAPP_REGISTER_URL = os.environ.get('VWWEBAPP_REGISTER_URL','/auth/register')
     VWWEBAPP_LOGOUT_URL = os.environ.get('VWWEBAPP_LOGOUT_URL','/auth/logout')
 
+    #for prms conversion tools
+    UPLOAD_FOLDER = os.environ.get('UPLOAD_FOLDER', '/var/www/vwtools/app/static/uploadFolder')
+    DOWNLOAD_FOLDER = os.environ.get('DOWNLOAD_FOLDER', '/var/www/vwtools/app/static/downloadFolder')
+
     JWT_SECRET_KEY = os.environ.get('VWWEBAPP_JWT_SECRET_KEY', 'virtualwatershed')
     JWT_EXPIRATION_DELTA = timedelta(days=int(os.environ.get(
         'VWWEBAPP_JWT_EXPIRATION_DELTA', '30')))
     JWT_AUTH_HEADER_PREFIX = os.environ.get(
         'VWWEBAPP_JWT_AUTH_HEADER_PREFIX', 'JWT')
     CACHE_TYPE = os.environ.get('VWWEBAPP_CACHE_TYPE','simple')
+
+    # for vwppush 
+    TEMP_DATA = '/temp_data.nc'
+    TEMP_CONTROL = '/temp_control.control'
+    TEMP_PARAM = '/temp_param.nc'
+    TEMP_STAT = '/temp_stat.nc'
+    TEMP_ANIMATION = '/temp_animation.nc'
+    TEMP_OUTPUT = '/temp_output.nc'
+    VWP_PUSH_INFO = '/vwp_push-info.txt'
+
+
     @staticmethod
     def init_app(app):
         pass

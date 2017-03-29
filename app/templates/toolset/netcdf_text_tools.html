@@ -1,0 +1,180 @@
+{% extends "base.html" %}
+{% set active_page = "toolset.conversion_tools" %}
+
+{% block link %}
+{{ super() }}
+
+
+<style>
+p {
+    margin: 35px 0;
+}
+p#main-blurb {
+    padding: 5px;
+    font-size: 1.1em;
+    background-color:#555;
+    color: white;
+    text-align: justify;
+}
+
+
+</style>
+{% endblock %}
+
+{% block content %}
+
+
+<div class="container">
+  <h2>NetCDF To Text Conversion</h2><br><br>
+  <ul class="nav nav-tabs">
+    <li {% if pageTab == "dataFile" %} class="active" {% endif %}><a data-toggle="tab" href="#dataFile">Data File </a></li>
+    <li {% if pageTab == "paramFile" %} class="active" {% endif %}><a data-toggle="tab" href="#paramFile">Parameter File </a></li>
+   <!--  <li><a data-toggle="tab" href="#menu3">Menu 3</a></li> -->
+  </ul> 
+
+<div class="tab-content">
+  
+
+
+ {% if pageTab == "dataFile" %}
+  <div id="dataFile" class="tab-pane fade in active"><br>
+  {% else %}
+  <div id="dataFile" class="tab-pane fade"><br>
+  {% endif %}
+
+             <h3>Convert Data File to Text </h3>
+              <!-- <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>-->  
+              <br><br>
+              <div class="container">
+                <div class="panel panel-primary">
+                  <div class="panel-heading"><strong>Upload Data File in NETCDF Format</strong> <small  class="text-lowercase"> &nbsp;&nbsp; (Expected file extension: .nc)</small></div>
+                  <div class="panel-body"><br>
+
+                   <!-- Standar Form -->
+                   <!--  <h4>Select files from your computer</h4> -->
+                    <form action="/toolset/netcdf_data" method="post" enctype="multipart/form-data" >
+                      <div class="form-inline">
+                        <div class="form-group">
+                          <input type="file" name="input_data_file" required>
+                        </div>
+                        <button style="float: right;" type="submit" class="btn btn-warning">Convert</button>
+                      </div>
+                    </form>
+                    
+                    {% if success == 'true' and  pageTab == 'dataFile'%}
+                    <form action="/toolset/downloaddatatxtfile" methods=['GET', 'POST']>
+                    <br><br><br><br>Done! The data file is genereted successfully. To download the file, click 
+                        <button  type="submit" class="btn btn-default btn-sm">Download</button>  
+                    </form>
+                    {% endif %}
+                 
+                 <br><br><br>
+                  {% if pageTab == 'dataFile'%}
+                  {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                      <ul class="list-unstyled">
+                      {% for message in messages %}
+                      <div class="alert alert-danger">
+                          <strong>Sorry! An error has occurred.</strong> <li>{{ message }}</li>
+                      </div>
+                      {% endfor %}
+                      </ul>
+                    {% endif %}
+                  {% endwith %}
+                  {% endif %}
+                  </div>
+                </div>
+               </div> 
+  </div>
+  {% if pageTab == "paramFile" %}
+  <div id="paramFile" class="tab-pane fade in active"><br>
+  {% else %}
+  <div id="paramFile" class="tab-pane fade"><br>
+  {% endif %}
+
+             <h3>Convert Parameter File to Text</h3>
+              <!-- <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>-->  
+              <br><br>
+              <div class="container">
+                <div class="panel panel-primary">
+                  <div class="panel-heading"><strong>Upload Files</strong> <small  class="text-lowercase"> &nbsp;&nbsp; </small></div>
+                  <div class="panel-body"><br>
+                  
+                  <!-- Standar Form -->
+                   <!--  <h4>Select files from your computer</h4> -->
+                    <form action="/toolset/netcdf_param" method="post" enctype="multipart/form-data" >
+                      <div class="form-inline">
+                        <div class="form-group">
+                          <input type="file" name="input_param_file" required>
+                        </div>
+                        <button style="float: right;" type="submit" class="btn btn-warning">Convert</button>
+                      </div>
+                    </form>
+                    
+
+                  {% if success == 'true' and  pageTab == 'paramFile'%}
+                    <form action="/toolset/downloadparamtxtfile" methods=['GET', 'POST']>
+                    <br><br><br><br>Done! The parameter file is genereted successfully. To download the file, click 
+                        <button  type="submit" class="btn btn-default btn-sm">Download</button>  
+                    </form>
+                  {% endif %}   
+                 
+                 <br><br><br>
+                  {% if pageTab == 'paramFile'%}
+                  {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                      <ul class="list-unstyled">
+                      {% for message in messages %}
+                      <div class="alert alert-danger">
+                          <strong>Sorry! An error has occurred.</strong> <li>{{ message }}</li>
+                      </div>
+                      {% endfor %}
+                      </ul>
+                    {% endif %}
+                  {% endwith %}
+                  {% endif %}
+                  </div>
+                </div>
+               </div> 
+  </div>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div id="menu2" class="tab-pane fade">
+      <h3>Menu 2</h3>
+      <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
+  </div>
+  <div id="menu3" class="tab-pane fade">
+      <h3>Menu 3</h3>
+      <p>Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+  </div>
+</div>
+</div>
+
+
+
+
+
+{% endblock %}
+
