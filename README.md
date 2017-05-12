@@ -33,13 +33,18 @@ This tool performs the following functionalities :
 ####  Text to NetCDF    ####
 ![Alt text](app/static/cn.PNG?raw=true "Title")
 
+
 ![Alt text](app/static/dn.PNG?raw=true "Title")
+
 
 ![Alt text](app/static/pn.PNG?raw=true "Title")
 
+
 ![Alt text](app/static/parn.PNG?raw=true "Title")
 
+
 ![Alt text](app/static/sn.PNG?raw=true "Title")
+
 
 ![Alt text](app/static/an.png?raw=true "Title")
 
@@ -47,7 +52,10 @@ This tool performs the following functionalities :
 
 ![Alt text](app/static/dt.PNG?raw=true "Title")
 
+
 ![Alt text](app/static/pt.PNG?raw=true "Title")
+
+
 
 ####  RUN PRMS Model using model input files in text format    ####
 
