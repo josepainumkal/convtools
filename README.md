@@ -1,4 +1,4 @@
-# Virtual Watershed Platform (VWP)
+# Data Converter Tool for Virtual Watershed Platform (VWP)
 
 The virtual watershed platform will serve many purposes when it is fully
 operational. These include 
