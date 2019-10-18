@@ -25,7 +25,7 @@ six==1.10.0
 
 
 # Flask
-Flask==0.10.1
+Flask==1.0
 MarkupSafe==0.23
 Werkzeug==0.10.4
 Jinja2==2.7.3
