@@ -90,7 +90,7 @@ python-decouple==3.0
 # For celery
 celery==3.1.21
 redis==2.10.5
-flower==0.8.4
+flower==0.9.2
 
 # for auth
 #git+https://github.com/VirtualWatershed/vw-auth.git@v-1.0.0#egg=vw-auth-v-1.0.0
