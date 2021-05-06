@@ -71,7 +71,7 @@ vw-gstore-adapter==1.0.0
 voluptuous == 0.8.7
 
 #for cors
-flask-cors == 2.1.0
+flask-cors == 3.0.9
 
 #pyee for modlerunner
 pyee==1.0.1
