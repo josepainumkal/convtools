@@ -88,7 +88,7 @@ git+https://github.com/itsrifat/libcloud.git@vw-1.0#egg=apache-libcloud-vw-1.0
 python-decouple==3.0
 
 # For celery
-celery==3.1.21
+celery==5.2.2
 redis==2.10.5
 flower==0.8.4
 
