@@ -17,7 +17,7 @@ configparser==3.5.0b2
 Flask-Migrate==1.8.0
 Flask-Moment==0.5.1
 Flask-Script==2.0.5
-Mako==1.0.4
+Mako==1.2.2
 
 python-swiftclient==3.0.0
 requests==2.9.1
